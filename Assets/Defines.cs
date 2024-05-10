@@ -5,36 +5,21 @@ using UnityEngine;
 
 public static class DataTableIds
 {
-    public static readonly string[] String =
-    {
-        "StringTableKr",
-        "StringTableEn",
-        "StringTableJp"
-    };
+    public static readonly string Text = "TextTable";
 
-    public static readonly string Item = "ItemTable";
+    public static readonly string SpellBook = "SpellTable";
 
-    public static readonly string character = "CharacterTable";
+    public static readonly string Debuff = "DebuffTable";
 
-    public static readonly string Exp = "ExpTable";
+    public static readonly string Monster = "MonsterTable";
 
-    public static string CurrString
-    {
-        get
-        {
-            return String[(int)Vars.currentLang];
-        }
-    }
 }
 
 public static class Vars
 {
     public static readonly string Version = "1.0.0";
-    public static readonly int BuildVersion = 8;
+    public static readonly int BuildVersion = 1;
 
-    public static Languages currentLang = Languages.Korean;
-
-    public static Languages editorLang = Languages.Korean;
 }
 
 
@@ -55,16 +40,16 @@ public static class Layers
     public static readonly string UI = "UI";
 }
 
-public enum Languages
-{
-    Korean,
-    English,
-    Japanese,
-}
 
-public enum ItemType
+public enum Ranks
 {
-    Weapon,
-    Equip,
-    Consumable
+    OnePair = 1111,
+    Triple = 1121,
+    Straight3 = 1131,
+    TwoPair = 1141,
+    KindOf4 = 1151,
+    Straight4 = 1161,
+    FullHouse = 1171,
+    Straight5 = 1181,
+    KindOf5 = 1191,
 }

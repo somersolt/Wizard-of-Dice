@@ -15,7 +15,7 @@ public static class SaveLoadSystem
 
     public static Mode FileMode { get; set; } = Mode.Json;
 
-    public static int SaveDataVersion { get; private set; } = 2;
+    public static int SaveDataVersion { get; private set; } = 1;
 
     // 0 (자동), 1, 2, 3 ...
     private static readonly string[] SaveFileName =
@@ -65,8 +65,7 @@ public static class SaveLoadSystem
             var serializer = new JsonSerializer();
             serializer.Formatting = Formatting.Indented;
             serializer.TypeNameHandling = TypeNameHandling.All;
-            serializer.Converters.Add(new SaveItemDataConverter());
-            //serializer.Converters.Add(new SaveCharDataConverter());
+            //serializer.Converters.Add(new SavePlayDataConverter()); int로만 이뤄져서 컨버터 필요없을듯
             serializer.Serialize(writer, CurrSaveData);
         }
 
@@ -91,14 +90,13 @@ public static class SaveLoadSystem
             var serializer = new JsonSerializer();
             serializer.Formatting = Formatting.Indented;
             serializer.TypeNameHandling = TypeNameHandling.All;
-            serializer.Converters.Add(new SaveItemDataConverter());
-            //serializer.Converters.Add(new SaveCharDataConverter());
+            //serializer.Converters.Add(new SavePlayDataConverter()); 마찬가지
             data = serializer.Deserialize<SaveData>(reader);
         }
 
         //while (data.Version < SaveDataVersion)
         //{
-        //    data = data.VersionUp();
+        //    data = data.VersionUp(); 버전업 메소드
         //}
 
         CurrSaveData = data as SaveDataV1;

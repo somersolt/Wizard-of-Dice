@@ -9,31 +9,17 @@ public static class DataTableMgr
 
     static DataTableMgr()
     {
-        foreach (var id in DataTableIds.String)
-        {
-            DataTable table = new StringTable();
-            table.Load(id);
-            tables.Add(id, table);
-        }
 
-        ItemTable itemTable = new ItemTable();
-        itemTable.Load(DataTableIds.Item);
-        tables.Add(DataTableIds.Item, itemTable);
+        TextTable textTable = new TextTable();
+        textTable.Load(DataTableIds.Text);
+        tables.Add(DataTableIds.Text, textTable);
 
+        SpellTable spellTable = new SpellTable();
+        spellTable.Load(DataTableIds.SpellBook);
+        tables.Add(DataTableIds.SpellBook, spellTable);
 
-        //CharacterTable characterTable = new CharacterTable();
-        //characterTable.Load(DataTableIds.character);
-        //tables.Add(DataTableIds.character, characterTable);
-
-        //ExpTable expTable = new ExpTable();
-        //expTable.Load(DataTableIds.Exp);
-        //tables.Add(DataTableIds.Exp, expTable);
     }
 
-    public static StringTable GetStringTable()
-    {
-        return Get<StringTable>(DataTableIds.String[(int)Vars.currentLang]);
-    }
 
     public static T Get<T>(string id) where T : DataTable
     {

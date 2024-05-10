@@ -6,15 +6,15 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class StringTable : DataTable
+public class TextTable : DataTable
 {
-    private class Data
+    private class TextData
     {
-        public string Id { get; set; }
-        public string String { get; set; }
+        public int ID { get; set; }
+        public string TEXT { get; set; }
     }
 
-    private Dictionary<string, string> table = new Dictionary<string, string>();
+    private Dictionary<int, string> table = new Dictionary<int, string>();
 
     public override void Load(string path)
     {
@@ -23,23 +23,22 @@ public class StringTable : DataTable
         table.Clear();
 
         var textAsset = Resources.Load<TextAsset>(path);
-        //Debug.Log(textAsset.text);
 
         using (var reader = new StringReader(textAsset.text))
         using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            var records = csvReader.GetRecords<Data>();
+            var records = csvReader.GetRecords<TextData>();
             foreach (var record in records)
             {
-                table.Add(record.Id, record.String);
+                table.Add(record.ID, record.TEXT);
             }
         }
     }
 
-    public string Get(string id)
+    public string Get(int id)
     {
         if (!table.ContainsKey(id))
-            return string.Empty;
+            return "Null ID";
         return table[id];
     }
 
