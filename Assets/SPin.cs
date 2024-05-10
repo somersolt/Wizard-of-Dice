@@ -18,20 +18,15 @@ public class SPin : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            StopCoroutine(a);
-            Debug.Log("d");
-            a =StartCoroutine(spindice());
+    //void Update()
+    //{
+    //    if(Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        StopCoroutine(a);
+    //        a =StartCoroutine(spindice());
             
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Debug.Log("d");
-        }
-    }
+    //    }
+    //}
 
         
     IEnumerator spindice()
