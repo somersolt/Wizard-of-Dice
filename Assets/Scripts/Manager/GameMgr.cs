@@ -36,6 +36,11 @@ public class GameMgr : MonoBehaviour
 
     public DiceCount currentDiceCount;
     int[] RankList = new int[(int)Ranks.count]; // 플레이어의 족보 리스트
+    private RanksFlag currentRanks; //현재 주사위로 나온 족보
+    
+
+
+
 
     private void Awake()
     {
@@ -85,4 +90,8 @@ public class GameMgr : MonoBehaviour
         currentDiceCount = DiceCount.five;
     }
 
+    public void DamageCheck(RanksFlag list)
+    {
+        currentRanks = list;
+    }
 }
