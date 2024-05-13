@@ -26,13 +26,13 @@ public class GameMgr : MonoBehaviour
             }
             return instance;
         }
-        
+
     }    // ΩÃ±€≈Ê ∆–≈œ
 
     public enum DiceCount
     {
-        three = 3, 
-        four = 4, 
+        three = 3,
+        four = 4,
         five = 5,
     }
 
@@ -61,7 +61,7 @@ public class GameMgr : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             currentDiceCount = DiceCount.three;
             DiceMgr.Instance.DiceThree();
@@ -70,7 +70,7 @@ public class GameMgr : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            currentDiceCount = DiceCount.four;
+            GetDice4Ranks();
             DiceMgr.Instance.DiceFour();
             DiceMgr.Instance.DiceRoll(true);
 
@@ -78,7 +78,8 @@ public class GameMgr : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            currentDiceCount = DiceCount.five;
+            GetDice4Ranks();
+            GetDice5Ranks();
             DiceMgr.Instance.DiceFive();
             DiceMgr.Instance.DiceRoll(true);
 
@@ -98,7 +99,7 @@ public class GameMgr : MonoBehaviour
 
     public void SetRankList(int i)
     {
-        if( RankList[i] == 3) 
+        if (RankList[i] == 3)
         {
             return;
             //max level
@@ -106,12 +107,12 @@ public class GameMgr : MonoBehaviour
         else if (RankList[i] == 0)
         {
             return;
-           //¡∑∫∏ πÃ»πµÊ
+            //¡∑∫∏ πÃ»πµÊ
         }
         RankList[i] += 1;
     }
 
-    public void GetDice4Ranks ()
+    public void GetDice4Ranks()
     {
         for (int i = (int)Ranks.TwoPair; i < (int)Ranks.FullHouse; i++)
         {
@@ -140,19 +141,20 @@ public class GameMgr : MonoBehaviour
         for (int i = 0; i < scrolls.Length; i++)
         {
             scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text = "¡÷πÆº≠ æ¯¿Ω";
-            for (int j = 8; j >= 0 ; j--)
+            for (int j = 8 - r; j >= 0; j--)
             {
                 RanksFlag currentFlag = (RanksFlag)(1 << j);
-                if ((currentRanks & currentFlag) != 0 && r == i)
+
+                r++;
+
+                if ((currentRanks & currentFlag) != 0)
                 {
-                    scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text =
-                        DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[0] + RankList[i] - 1).GetName;
-                    break;
+                        scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text =
+                            DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[j]).GetName;
+                        break;
                 }
             }
-            r++;
         }
-
     }
 
 }
