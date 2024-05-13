@@ -1119,6 +1119,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentDiceCount: 0
+  damageInfo: {fileID: 2011875671}
+  scrolls:
+  - {fileID: 2064061554}
+  - {fileID: 1719618839}
+  - {fileID: 1007356569}
+  totalScrolls: {fileID: 115022555}
 --- !u!1 &524087972
 GameObject:
   m_ObjectHideFlags: 0
@@ -4919,6 +4925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127510344c17058478440c8cc2a73379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDiceRoll: 0
   SpinControlers:
   - {fileID: 2090748552}
   - {fileID: 2048577147}

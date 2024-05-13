@@ -53,9 +53,10 @@ public class DiceMgr : MonoBehaviour
     private int countToResult;
     private bool onResult;
 
+    private int totalValue;
+
     private void Start()
     {
-        GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.five;
 
         for (int i = 0; i < constant.diceNumberMax; i++)
         {
@@ -68,12 +69,7 @@ public class DiceMgr : MonoBehaviour
             dices[index].onClick.AddListener(() => ButtonSelect(index));  // 버튼 세팅
         }
         reRoll.onClick.AddListener(() => DiceRoll());
-
-        for (int i = 0; i < constant.diceMax; i++)
-        {
-            selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
-        }
-        DiceRoll(true);
+        confirm.onClick.AddListener(() => GameMgr.Instance.SetResult(checkedRanksList, totalValue));
     }
 
     private void Update()
@@ -85,6 +81,13 @@ public class DiceMgr : MonoBehaviour
 
             selectedDice.Clear();
             onResult = false;
+
+            totalValue = 0;
+            for (int i = 0; i < (int)GameMgr.Instance.currentDiceCount; i++)
+            {
+                totalValue += dicesValues[i];
+            }
+            Debug.Log(totalValue);
 
             // 결과 출력. TO-DO 게임 매니저로 결과 전송
         }
@@ -126,7 +129,7 @@ public class DiceMgr : MonoBehaviour
         int selectedDiceCount = selectedDice.Count;
         if (starting)
         {
-            selectedDiceCount = constant.diceMax;
+            selectedDiceCount = (int)GameMgr.Instance.currentDiceCount;
         }
 
         for (int i = 0; i < selectedDiceCount; i++)
@@ -144,7 +147,7 @@ public class DiceMgr : MonoBehaviour
             buttonToggle[selectedDice[i]] = false;
         }
 
-        for (int i = 0; i < dicesValues.Length; i++)
+        for (int i = 0; i < (int)GameMgr.Instance.currentDiceCount; i++)
         {
             numbersCount[dicesValues[i] - 1]++;
         }
@@ -153,6 +156,16 @@ public class DiceMgr : MonoBehaviour
 
     private IEnumerator SelectDiceRoll(int index , bool starting, Action<int> callback)
     {
+        if(GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.three && (index == 3 || index == 4))
+        {
+            dicesValues[index] = 0;
+            yield break;
+        }
+        if (GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.four && index == 4)
+        {
+            dicesValues[index] = 0;
+            yield break;
+        }
         dices[index].GetComponentInChildren<TextMeshProUGUI>().text = string.Empty;
         dices[index].interactable = false;
         dicesValues[index] = diceNumbers[UnityEngine.Random.Range(0, diceNumbers.Count)];
@@ -197,4 +210,34 @@ public class DiceMgr : MonoBehaviour
         }
     }
 
+    public void DiceThree()
+    {
+        dices[3].gameObject.SetActive(false);
+        dices[4].gameObject.SetActive(false);
+        selectedDice.Clear();
+        for (int i = 0; i < 3; i++)
+        {
+            selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
+        }
+    }
+    public void DiceFour()
+    {
+        dices[3].gameObject.SetActive(true);
+        dices[4].gameObject.SetActive(false);
+        selectedDice.Clear();
+        for (int i = 0; i < 4; i++)
+        {
+            selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
+        }
+    }
+    public void DiceFive()
+    {
+        dices[3].gameObject.SetActive(true);
+        dices[4].gameObject.SetActive(true);
+        selectedDice.Clear();
+        for (int i = 0; i < 5; i++)
+        {
+            selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
+        }
+    }
 }

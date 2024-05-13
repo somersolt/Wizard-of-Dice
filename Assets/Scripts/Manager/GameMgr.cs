@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameMgr : MonoBehaviour
 {
@@ -37,10 +39,14 @@ public class GameMgr : MonoBehaviour
     public DiceCount currentDiceCount;
     int[] RankList = new int[(int)Ranks.count]; // 플레이어의 족보 리스트
     private RanksFlag currentRanks; //현재 주사위로 나온 족보
-    
-
-
-
+    private int currentValue;
+    [SerializeField]
+    private TextMeshProUGUI damageInfo;
+    private int currentDamage;
+    [SerializeField]
+    private Button[] scrolls = new Button[3];
+    [SerializeField]
+    private Button totalScrolls;
 
     private void Awake()
     {
@@ -49,7 +55,39 @@ public class GameMgr : MonoBehaviour
             RankList[i] = 1; // 원페어, 트리플, 3스트레이트 1레벨 등록
         }
         currentDiceCount = DiceCount.three;
+
     }
+
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            currentDiceCount = DiceCount.three;
+            DiceMgr.Instance.DiceThree();
+            DiceMgr.Instance.DiceRoll(true);
+            Debug.Log("three");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            currentDiceCount = DiceCount.four;
+            DiceMgr.Instance.DiceFour();
+            DiceMgr.Instance.DiceRoll(true);
+
+            Debug.Log("four");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            currentDiceCount = DiceCount.five;
+            DiceMgr.Instance.DiceFive();
+            DiceMgr.Instance.DiceRoll(true);
+
+            Debug.Log("five");
+        }
+
+        // 테스트 코드
+    }
+
 
     public int[] GetRankList()
     {
@@ -90,8 +128,31 @@ public class GameMgr : MonoBehaviour
         currentDiceCount = DiceCount.five;
     }
 
-    public void DamageCheck(RanksFlag list)
+    public void SetResult(RanksFlag ranks, int value)
     {
-        currentRanks = list;
+        currentRanks = ranks;
+        currentValue = value;
+
+        currentDamage = DamageCheckSystem.DamageCheck(currentValue, RankList, currentRanks);
+        damageInfo.text = currentDamage.ToString();
+
+        int r = 0;
+        for (int i = 0; i < scrolls.Length; i++)
+        {
+            scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text = "주문서 없음";
+            for (int j = 8; j >= 0 ; j--)
+            {
+                RanksFlag currentFlag = (RanksFlag)(1 << j);
+                if ((currentRanks & currentFlag) != 0 && r == i)
+                {
+                    scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text =
+                        DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[0] + RankList[i] - 1).GetName;
+                    break;
+                }
+            }
+            r++;
+        }
+
     }
+
 }
