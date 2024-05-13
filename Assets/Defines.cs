@@ -8,9 +8,9 @@ public static class DataTableIds
 {
     public static readonly string Text = "TextTable";
 
-    public static readonly string SpellBook = "SpellTable";
+    public static readonly string SpellBook = "MagicBookTable";
 
-    public static readonly string Debuff = "DebuffTable";
+    public static readonly string Debuff = "StatusEffectTable";
 
     public static readonly string Monster = "MonsterTable";
 
