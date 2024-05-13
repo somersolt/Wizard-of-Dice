@@ -1,11 +1,51 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
+public class AttackEventArgs : EventArgs
+{
+    public int value { get; }
+    public int target { get; }
+
+    public AttackEventArgs(int param1, int param2)
+    {
+        value = param1;
+        target = param2;
+    }
+
+}
+
+public delegate void AttackEventHandler(object sender, AttackEventArgs e);
+
+public class AttackEventPublisher
+{
+    public event AttackEventHandler AttackEvent;
+
+    public void RaiseEvent(int param1, int param2)
+    {
+        AttackEvent?.Invoke(this, new AttackEventArgs(param1, param2));
+    }
+}
+
+
+
+public class AttackEventListener
+{
+    public void AttackHandleEvent(object sender, AttackEventArgs e)
+    {
+        for (int i = 0; i < StageMgr.Instance.enemies.Count; i++)
+        {
+            StageMgr.Instance.enemies[i].OnDamage(e.value);
+        }
+    }
+}
 
 public class GameMgr : MonoBehaviour
 {
@@ -29,6 +69,28 @@ public class GameMgr : MonoBehaviour
 
     }    // 싱글톤 패턴
 
+    public enum TurnStatus
+    {
+        PlayerDice = 0,
+        PlayerAttack = 1,
+        GetRewards = 2,
+        MonsterDice = 3,
+        MonsterAttack = 4,
+        PlayerLose = 5,
+    }
+
+    private TurnStatus currentStatus = 0;
+    public TurnStatus CurrentStatus
+    {
+        get; set;
+    }
+
+    AttackEventPublisher publisher = new AttackEventPublisher();
+    AttackEventListener listener = new AttackEventListener();
+
+    /// </summary>
+    /// 주사위 , 마법서 관련 필드
+
     public enum DiceCount
     {
         three = 3,
@@ -43,10 +105,16 @@ public class GameMgr : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI damageInfo;
     private int currentDamage;
+    public int currentTarget;
     [SerializeField]
     private Button[] scrolls = new Button[3];
     [SerializeField]
     private Button totalScrolls;
+
+    ///  
+    /// </summary>
+
+
 
     private void Awake()
     {
@@ -56,11 +124,43 @@ public class GameMgr : MonoBehaviour
         }
         currentDiceCount = DiceCount.three;
 
+        // 이벤트에 이벤트 핸들러 메서드를 추가
+        publisher.AttackEvent += listener.AttackHandleEvent;
+
     }
 
 
     private void Update()
     {
+        switch (currentStatus)
+        {
+            case TurnStatus.PlayerDice:
+                PlayerDiceUpdate();
+                break;
+            case TurnStatus.PlayerAttack:
+                PlayerAttackUpdate();
+                break;
+            case TurnStatus.GetRewards:
+                GetRewardsUpdate();
+                break;
+            case TurnStatus.MonsterDice:
+                MonsterDiceUpdate();
+                break;
+            case TurnStatus.MonsterAttack:
+                MonsterAttackUpdate();
+                break;
+            case TurnStatus.PlayerLose:
+                PlayerLoseUpdate();
+                break;
+        }
+
+    }
+
+
+
+    private void PlayerDiceUpdate()
+    {
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             currentDiceCount = DiceCount.three;
@@ -87,7 +187,31 @@ public class GameMgr : MonoBehaviour
         }
 
         // 테스트 코드
+
+
     }
+    private void PlayerAttackUpdate()
+    {
+
+    }
+    private void GetRewardsUpdate()
+    {
+
+    }
+    private void MonsterDiceUpdate()
+    {
+
+    }
+    private void MonsterAttackUpdate()
+    {
+
+    }
+    private void PlayerLoseUpdate()
+    {
+
+    }
+
+
 
 
     public int[] GetRankList()
@@ -149,12 +273,17 @@ public class GameMgr : MonoBehaviour
 
                 if ((currentRanks & currentFlag) != 0)
                 {
-                        scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text =
-                            DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[j]).GetName;
-                        break;
+                    scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text =
+                        DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[j]).GetName;
+                    break;
                 }
             }
         }
+    }
+
+    public void AttackButtonClicked()
+    {
+        publisher.RaiseEvent(currentDamage, currentTarget);  // 이벤트 발생
     }
 
 }

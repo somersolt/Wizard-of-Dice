@@ -26,6 +26,7 @@ public static class DamageCheckSystem
     {
         int sum = 0;
         int multiple = 0;
+        int target = 0;
         for (int i = 0; i < ranks.Length; i++)
         {
             RanksFlag currentFlag = (RanksFlag)(1 << i);
@@ -34,9 +35,11 @@ public static class DamageCheckSystem
                 var spelldata = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(rankids[i] + ranks[i] - 1);
                 sum += spelldata.SUM_OPERATION;
                 multiple += spelldata.MULTIPLICATION_OPERATION;
+                target = Math.Max(target, spelldata.TARGET);
             }
         }
 
+        GameMgr.Instance.currentTarget = target;
         return (value + sum) * (100 + multiple) / 100;
 
         //( 주사위 눈금 총합 + 마법서 합연산 추가 값 ) x (100 + 마법서 곱연산 추가 값) / 100

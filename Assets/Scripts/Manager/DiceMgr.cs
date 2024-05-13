@@ -69,7 +69,7 @@ public class DiceMgr : MonoBehaviour
             dices[index].onClick.AddListener(() => ButtonSelect(index));  // 버튼 세팅
         }
         reRoll.onClick.AddListener(() => DiceRoll());
-        //confirm.onClick.AddListener(() => 
+        confirm.onClick.AddListener(() => GameMgr.Instance.AttackButtonClicked());
     }
 
     private void Update()
