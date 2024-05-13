@@ -29,13 +29,12 @@ public static class DamageCheckSystem
         for (int i = 0; i < ranks.Length; i++)
         {
             RanksFlag currentFlag = (RanksFlag)(1 << i);
-            if ((checkedlist & currentFlag) == 0)
+            if ((checkedlist & currentFlag) != 0)
             {
-                break;
+                var spelldata = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(rankids[i] + ranks[i] - 1);
+                sum += spelldata.SUM_OPERATION;
+                multiple += spelldata.MULTIPLICATION_OPERATION;
             }
-            var spelldata = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(rankids[i] + ranks[i] - 1);
-            sum += spelldata.SUM_OPERATION;
-            multiple += spelldata.MULTIPLICATION_OPERATION;
         }
 
         return (value + sum) * (100 + multiple) / 100;

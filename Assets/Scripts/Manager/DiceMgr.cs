@@ -69,7 +69,7 @@ public class DiceMgr : MonoBehaviour
             dices[index].onClick.AddListener(() => ButtonSelect(index));  // 버튼 세팅
         }
         reRoll.onClick.AddListener(() => DiceRoll());
-        confirm.onClick.AddListener(() => GameMgr.Instance.SetResult(checkedRanksList, totalValue));
+        //confirm.onClick.AddListener(() => 
     }
 
     private void Update()
@@ -77,7 +77,6 @@ public class DiceMgr : MonoBehaviour
         if (countToResult == selectedDice.Count && onResult)
         {
             checkedRanksList = RankCheckSystem.RankCheck(numbersCount);
-            Debug.Log(checkedRanksList);
 
             selectedDice.Clear();
             onResult = false;
@@ -87,9 +86,7 @@ public class DiceMgr : MonoBehaviour
             {
                 totalValue += dicesValues[i];
             }
-            Debug.Log(totalValue);
-
-            // 결과 출력. TO-DO 게임 매니저로 결과 전송
+            GameMgr.Instance.SetResult(checkedRanksList, totalValue);
         }
 
         if (onDiceRoll)
