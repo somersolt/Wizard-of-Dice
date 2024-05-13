@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using System.Reflection;
 
 public class DiceMgr : MonoBehaviour
 {
@@ -26,8 +27,12 @@ public class DiceMgr : MonoBehaviour
         }
 
     }    // 싱글톤 패턴
+
+
+    public bool onDiceRoll;
     [SerializeField]
     private SpinControl[] SpinControlers = new SpinControl[5];
+    private bool[] buttonToggle = new bool[5];
 
     public Button[] dices = new Button[constant.diceMax]; // 주사위들
     private int[] dicesValues = new int[constant.diceMax]; // 주사위 눈 결과값
@@ -45,6 +50,8 @@ public class DiceMgr : MonoBehaviour
     [SerializeField]
     private Button confirm; // 확정
 
+    private int countToResult;
+    private bool onResult;
 
     private void Start()
     {
@@ -66,42 +73,128 @@ public class DiceMgr : MonoBehaviour
         {
             selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
         }
-        DiceRoll();
+        DiceRoll(true);
     }
 
-    public void DiceRoll()
+    private void Update()
     {
+        if (countToResult == selectedDice.Count && onResult)
+        {
+            checkedRanksList = RankCheckSystem.RankCheck(numbersCount);
+            Debug.Log(checkedRanksList);
+
+            selectedDice.Clear();
+            onResult = false;
+
+            // 결과 출력. TO-DO 게임 매니저로 결과 전송
+        }
+
+        if (onDiceRoll)
+        {
+            for (int i = 0; i < constant.diceMax; i++)
+            { dices[i].interactable = false; }
+            confirm.interactable = false;
+            reRoll.interactable = false;
+        }
+        else
+        {
+            for (int i = 0; i < constant.diceMax; i++)
+            { dices[i].interactable = true; }
+            confirm.interactable = true;
+
+            if (selectedDice.Count == 0)
+            {
+                reRoll.interactable = false;
+            }
+            else
+            {
+                reRoll.interactable = true;
+            }
+        }
+    }
+
+    public void DiceRoll(bool starting = false)
+    {
+        onDiceRoll = true;
+        onResult = true;
+        countToResult = 0;
         for (int i = 0; i < numbersCount.Length; i++)
         {
             numbersCount[i] = 0;
         }
 
-        for (int i = 0; i < selectedDice.Count; i++)
+        int selectedDiceCount = selectedDice.Count;
+        if (starting)
         {
-            SelectDiceRoll(selectedDice[i]);
+            selectedDiceCount = constant.diceMax;
         }
-        selectedDice.Clear();
+
+        for (int i = 0; i < selectedDiceCount; i++)
+        {
+            Action<int> spinCallback = (diceIndex) =>
+            {
+                dices[diceIndex].GetComponentInChildren<TextMeshProUGUI>().text = dicesValues[diceIndex].ToString();
+                dices[diceIndex].interactable = true;
+                onDiceRoll = false;
+                countToResult++;
+            };
+
+            StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback));
+            dices[selectedDice[i]].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
+            buttonToggle[selectedDice[i]] = false;
+        }
 
         for (int i = 0; i < dicesValues.Length; i++)
         {
             numbersCount[dicesValues[i] - 1]++;
         }
-        checkedRanksList = RankCheckSystem.RankCheck(numbersCount);
-        Debug.Log(checkedRanksList);
+
     }
 
-    public void SelectDiceRoll(int index)
+    private IEnumerator SelectDiceRoll(int index , bool starting, Action<int> callback)
     {
+        dices[index].GetComponentInChildren<TextMeshProUGUI>().text = string.Empty;
+        dices[index].interactable = false;
         dicesValues[index] = diceNumbers[UnityEngine.Random.Range(0, diceNumbers.Count)];
-        SpinControlers[index].DiceSpin(30, RotatePos.posList[dicesValues[index] - 1]);
-        dices[index].GetComponentInChildren<TextMeshProUGUI>().text = dicesValues[index].ToString();
-        dices[index].interactable = true;
+        if (starting)
+        {
+            switch (GameMgr.Instance.currentDiceCount)
+            {
+                case GameMgr.DiceCount.three:
+                    SpinControlers[index].DiceSpin(30 + index * 16, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
+                    break;
+                case GameMgr.DiceCount.four:
+                    SpinControlers[index].DiceSpin(30 + index * 12, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
+                    break;
+                case GameMgr.DiceCount.five:
+                    SpinControlers[index].DiceSpin(30 + index * 9, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
+                    break;
+            }
+        }
+        else
+        {
+            SpinControlers[index].DiceSpin(30, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
+        }
+        yield return null;
     }
 
     public void ButtonSelect(int i)
     {
-        selectedDice.Add(i);
-        dices[i].interactable = false;
+        if (!onDiceRoll)
+        {
+            if (!buttonToggle[i])
+            {
+                selectedDice.Add(i);
+                dices[i].GetComponent<Image>().color = new Color(0x57 / 255f, 0x57 / 255f, 0x57 / 255f);
+                buttonToggle[i] = true;
+            }
+            else if (buttonToggle[i])
+            {
+                selectedDice.Remove(i);
+                dices[i].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
+                buttonToggle[i] = false;
+            }
+        }
     }
 
 }

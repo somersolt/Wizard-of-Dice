@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 
 public static class RotatePos
@@ -25,10 +26,12 @@ public class SpinControl : MonoBehaviour
     private float spinDuration = 0.03f;
     private float stopsecond;
     private Vector3 spinAmount = new Vector3(50, 0, 50);
+    private Action spinCallback;
 
-    public void DiceSpin(int count, Vector3 Pos)
+    public void DiceSpin(int count, Vector3 Pos, Action callback = null)
     {
         spinCount = count;
+        spinCallback = callback;
         StartCoroutine(Spin(Pos));
     }
 
@@ -40,6 +43,8 @@ public class SpinControl : MonoBehaviour
             yield return new WaitForSeconds(spinDuration);
         }
         transform.rotation = Quaternion.Euler(Pos);
+
+        spinCallback?.Invoke();
     }
         
 }
