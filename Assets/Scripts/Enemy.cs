@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class Enemy : MonoBehaviour
 {
 
-    int MaxHp = 100;
+    public int MaxHp = 100;
     public int Damage = 3;
-    public int Hp;
+    int Hp;
 
     [SerializeField]
     private Image HpBar;
@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         Hp = MaxHp;
+        Life.text = Hp.ToString();
     }
 
     public void OnDamage(int d)

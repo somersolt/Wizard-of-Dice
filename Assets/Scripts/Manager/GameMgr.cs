@@ -85,13 +85,14 @@ public class GameMgr : MonoBehaviour
     private TurnStatus currentStatus = 0;
     public TurnStatus CurrentStatus
     {
-        get; set;
+        get { return currentStatus; }
+        set { currentStatus = value; }
     }
 
     AttackEventPublisher publisher = new AttackEventPublisher();
     AttackEventListener listener = new AttackEventListener();
 
-    private int currentTurn = 1;
+    public int currentTurn = 1;
     [SerializeField]
     private TextMeshProUGUI turnInfo;
     private bool enemyDiceRoll;
@@ -182,35 +183,31 @@ public class GameMgr : MonoBehaviour
     private void PlayerDiceUpdate()
     {
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            currentDiceCount = DiceCount.three;
-            DiceMgr.Instance.DiceThree();
-            DiceMgr.Instance.DiceRoll(true);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            GetDice4Ranks();
-            DiceMgr.Instance.DiceFour();
-            DiceMgr.Instance.DiceRoll(true);
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    currentDiceCount = DiceCount.three;
+        //    DiceMgr.Instance.DiceThree();
+        //    DiceMgr.Instance.DiceRoll(true);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    GetDice4Ranks();
+        //    DiceMgr.Instance.DiceFour();
+        //    DiceMgr.Instance.DiceRoll(true);
 
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            GetDice4Ranks();
-            GetDice5Ranks();
-            DiceMgr.Instance.DiceFive();
-            DiceMgr.Instance.DiceRoll(true);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    GetDice4Ranks();
+        //    GetDice5Ranks();
+        //    DiceMgr.Instance.DiceFive();
+        //    DiceMgr.Instance.DiceRoll(true);
+        //}
 
-        }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             currentDamage = 100;
             damageInfo.text = currentDamage.ToString();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            Debug.Log(ui.rewardList.Count.ToString());
         }
         // 테스트 코드
 
@@ -300,7 +297,7 @@ public class GameMgr : MonoBehaviour
         int r = 0;
         for (int i = 0; i < scrolls.Length; i++)
         {
-            scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text = "주문서 없음";
+            scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text = " ";
             for (int j = 8 - r; j >= 0; j--)
             {
                 RanksFlag currentFlag = (RanksFlag)(1 << j);
@@ -332,6 +329,11 @@ public class GameMgr : MonoBehaviour
         //TO-DO 스테이지 mgr 리스트에서 몬스터 받아와서 다 잡았는지 체크,
         if (StageMgr.Instance.enemies.Count == 0)
         {
+            if (StageMgr.Instance.currentStage == 10)
+            {
+                ui.Victory();
+                return;
+            }
             currentStatus = TurnStatus.GetRewards;
             ui.OnReward();
             return;
@@ -344,7 +346,6 @@ public class GameMgr : MonoBehaviour
     public void MonsterEffect()
     {
         //이펙트 관리자가 필요할까?
-        //TO-DO 플레이어 사망했는지 체크,
         enemyDiceRoll = false;
 
         for ( int i = 0; i < StageMgr.Instance.enemies.Count; i++ ) 
@@ -354,9 +355,15 @@ public class GameMgr : MonoBehaviour
             PlayerHpInfo.text = PlayerHp.ToString();
             PlayerHpBarInfo.fillAmount = (float)PlayerHp / PlayerHpMax;
 
+            if(PlayerHp <= 0)
+            {
+                currentStatus = TurnStatus.PlayerLose;
+                return;
+                //플레이어 사망 체크
+            }
         }
 
-        TurnUpdate(currentTurn--);
+        TurnUpdate(--currentTurn);
         if(currentTurn < 0)
         {
             currentStatus = TurnStatus.PlayerLose;
@@ -379,5 +386,14 @@ public class GameMgr : MonoBehaviour
                 DiceMgr.Instance.DiceRoll(true);
                 break;
         }
+    }
+
+    public void ScrollsClear()
+    {
+        for(int i = 0; i < 3;  i++)
+        {
+            scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text = " ";
+        }
+        damageInfo.text = " ";
     }
 }

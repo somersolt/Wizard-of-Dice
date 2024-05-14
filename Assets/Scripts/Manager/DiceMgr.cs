@@ -125,6 +125,7 @@ public class DiceMgr : MonoBehaviour
 
     public void DiceRoll(bool starting = false)
     {
+        GameMgr.Instance.ScrollsClear();
         onDiceRoll = true;
         onResult = true;
         countToResult = 0;
