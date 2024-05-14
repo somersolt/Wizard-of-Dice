@@ -70,6 +70,8 @@ public class GameMgr : MonoBehaviour
 
     }    // 싱글톤 패턴
 
+    public UI ui;
+
     public enum TurnStatus
     {
         PlayerDice = 0,
@@ -135,8 +137,10 @@ public class GameMgr : MonoBehaviour
         for (int i = 0; i < (int)Ranks.TwoPair; i++)
         {
             RankList[i] = 1; // 원페어, 트리플, 3스트레이트 1레벨 등록
+            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 1);
+            ui.rewardList.Add(spells);
         }
-        TurnUpdate(1);
+        TurnUpdate(10);
         publisher.AttackEvent += listener.AttackHandleEvent;// 이벤트에 이벤트 핸들러 메서드를 추가
 
     }
@@ -199,7 +203,15 @@ public class GameMgr : MonoBehaviour
             DiceMgr.Instance.DiceRoll(true);
 
         }
-
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            currentDamage = 100;
+            damageInfo.text = currentDamage.ToString();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            Debug.Log(ui.rewardList.Count.ToString());
+        }
         // 테스트 코드
 
 
@@ -207,7 +219,6 @@ public class GameMgr : MonoBehaviour
     private void PlayerAttackUpdate()
     {
         //뭔가의 애니메이션
-        PlayerAttackEffect(); //TO-DO 한번만 작동해야함
     }
     private void GetRewardsUpdate()
     {
@@ -227,7 +238,7 @@ public class GameMgr : MonoBehaviour
     }
     private void PlayerLoseUpdate()
     {
-
+        ui.GameOver();
     }
 
 
@@ -260,16 +271,22 @@ public class GameMgr : MonoBehaviour
         for (int i = (int)Ranks.TwoPair; i < (int)Ranks.FullHouse; i++)
         {
             RankList[i] = 1; // 투페어, 카인드4, 4스트레이트 1레벨 등록
+            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 1);
+            ui.rewardList.Add(spells);
         }
         currentDiceCount = DiceCount.four;
+
     }
     public void GetDice5Ranks()
     {
         for (int i = (int)Ranks.FullHouse; i < (int)Ranks.count; i++)
         {
             RankList[i] = 1; // 풀하우스 5스트레이트, 카인드5 1레벨 등록
+            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 1);
+            ui.rewardList.Add(spells);
         }
         currentDiceCount = DiceCount.five;
+
     }
 
     public void SetResult(RanksFlag ranks, int value)
@@ -311,9 +328,16 @@ public class GameMgr : MonoBehaviour
     {
         CurrentStatus = TurnStatus.PlayerAttack;
         publisher.RaiseEvent(currentDamage, currentTarget); // 이벤트 발생 ondamage, 코루틴으로 해야되나
-        //끝나면 몬스터 턴 
 
         //TO-DO 스테이지 mgr 리스트에서 몬스터 받아와서 다 잡았는지 체크,
+        if (StageMgr.Instance.enemies.Count == 0)
+        {
+            currentStatus = TurnStatus.GetRewards;
+            ui.OnReward();
+            return;
+        }
+
+        //끝나면 몬스터 턴 
         currentStatus = TurnStatus.MonsterDice;
     }
 
@@ -322,9 +346,23 @@ public class GameMgr : MonoBehaviour
         //이펙트 관리자가 필요할까?
         //TO-DO 플레이어 사망했는지 체크,
         enemyDiceRoll = false;
-        PlayerHp -= enemyValue;
-        PlayerHpInfo.text = PlayerHp.ToString();
-        PlayerHpBarInfo.fillAmount = (float)PlayerHp / PlayerHpMax;
+
+        for ( int i = 0; i < StageMgr.Instance.enemies.Count; i++ ) 
+        {
+
+            PlayerHp -= enemyValue + StageMgr.Instance.enemies[i].Damage;
+            PlayerHpInfo.text = PlayerHp.ToString();
+            PlayerHpBarInfo.fillAmount = (float)PlayerHp / PlayerHpMax;
+
+        }
+
+        TurnUpdate(currentTurn--);
+        if(currentTurn < 0)
+        {
+            currentStatus = TurnStatus.PlayerLose;
+            return;
+        }
+
         currentStatus = TurnStatus.PlayerDice;
         switch (currentDiceCount) 
         {

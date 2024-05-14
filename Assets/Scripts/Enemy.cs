@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
 {
 
     int MaxHp = 100;
+    public int Damage = 3;
     public int Hp;
 
     [SerializeField]
@@ -29,10 +30,7 @@ public class Enemy : MonoBehaviour
         {
             Hp = 0;
             StageMgr.Instance.enemies.Remove(this);
-            if (StageMgr.Instance.enemies.Count == 0)
-            {
-                StageMgr.Instance.NextStage();
-            }
+
             Destroy(gameObject);
             return;
         }
