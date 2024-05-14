@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using System.Reflection;
+using Unity.VisualScripting;
 
 public class DiceMgr : MonoBehaviour
 {
@@ -51,11 +52,17 @@ public class DiceMgr : MonoBehaviour
     private Button confirm; // 확정
 
     private int countToResult;
+    private int rerollCount = 1;
     private bool onResult;
 
     private int totalValue;
 
-    private void Start()
+
+    [SerializeField]
+    private SpinControl enemyDice;
+    public int enemyValue;
+
+    private void Awake()
     {
 
         for (int i = 0; i < constant.diceNumberMax; i++)
@@ -69,7 +76,8 @@ public class DiceMgr : MonoBehaviour
             dices[index].onClick.AddListener(() => ButtonSelect(index));  // 버튼 세팅
         }
         reRoll.onClick.AddListener(() => DiceRoll());
-        confirm.onClick.AddListener(() => GameMgr.Instance.AttackButtonClicked());
+        confirm.onClick.AddListener(() => GameMgr.Instance.PlayerAttackEffect());
+        confirm.onClick.AddListener(() => { onDiceRoll = true; });
     }
 
     private void Update()
@@ -80,11 +88,12 @@ public class DiceMgr : MonoBehaviour
 
             selectedDice.Clear();
             onResult = false;
-
+            onDiceRoll = false;
             totalValue = 0;
             for (int i = 0; i < (int)GameMgr.Instance.currentDiceCount; i++)
             {
                 totalValue += dicesValues[i];
+                selectedDice.Add(i);
             }
             GameMgr.Instance.SetResult(checkedRanksList, totalValue);
         }
@@ -92,24 +101,25 @@ public class DiceMgr : MonoBehaviour
         if (onDiceRoll)
         {
             for (int i = 0; i < constant.diceMax; i++)
-            { dices[i].interactable = false; }
+            {
+                dices[i].interactable = false;
+            }
             confirm.interactable = false;
             reRoll.interactable = false;
         }
         else
         {
-            for (int i = 0; i < constant.diceMax; i++)
-            { dices[i].interactable = true; }
-            confirm.interactable = true;
+            if (rerollCount > 0)
+            {
+                for (int i = 0; i < constant.diceMax; i++)
+                {
 
-            if (selectedDice.Count == 0)
-            {
-                reRoll.interactable = false;
-            }
-            else
-            {
+                    dices[i].interactable = true;
+
+                }
                 reRoll.interactable = true;
             }
+            confirm.interactable = true;
         }
     }
 
@@ -127,6 +137,13 @@ public class DiceMgr : MonoBehaviour
         if (starting)
         {
             selectedDiceCount = (int)GameMgr.Instance.currentDiceCount;
+            rerollCount = 1;
+            reRoll.GetComponentInChildren<TextMeshProUGUI>().text = "재굴림 : " + rerollCount.ToString();
+        }
+        else
+        {
+            rerollCount--;
+            reRoll.GetComponentInChildren<TextMeshProUGUI>().text = "재굴림 : " + rerollCount.ToString();
         }
 
         for (int i = 0; i < selectedDiceCount; i++)
@@ -134,8 +151,6 @@ public class DiceMgr : MonoBehaviour
             Action<int> spinCallback = (diceIndex) =>
             {
                 dices[diceIndex].GetComponentInChildren<TextMeshProUGUI>().text = dicesValues[diceIndex].ToString();
-                dices[diceIndex].interactable = true;
-                onDiceRoll = false;
                 countToResult++;
             };
 
@@ -151,9 +166,9 @@ public class DiceMgr : MonoBehaviour
 
     }
 
-    private IEnumerator SelectDiceRoll(int index , bool starting, Action<int> callback)
+    private IEnumerator SelectDiceRoll(int index, bool starting, Action<int> callback)
     {
-        if(GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.three && (index == 3 || index == 4))
+        if (GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.three && (index == 3 || index == 4))
         {
             dicesValues[index] = 0;
             yield break;
@@ -194,13 +209,13 @@ public class DiceMgr : MonoBehaviour
         {
             if (!buttonToggle[i])
             {
-                selectedDice.Add(i);
+                selectedDice.Remove(i);
                 dices[i].GetComponent<Image>().color = new Color(0x57 / 255f, 0x57 / 255f, 0x57 / 255f);
                 buttonToggle[i] = true;
             }
             else if (buttonToggle[i])
             {
-                selectedDice.Remove(i);
+                selectedDice.Add(i);
                 dices[i].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
                 buttonToggle[i] = false;
             }
@@ -236,5 +251,14 @@ public class DiceMgr : MonoBehaviour
         {
             selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
         }
+    }
+
+
+    public void EnemyDiceRoll()
+    {
+        enemyValue = UnityEngine.Random.Range(1, 7);
+        GameMgr.Instance.enemyValue = enemyValue;
+        Action enemySpincallback = () => { GameMgr.Instance.MonsterEffect(); };
+        enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], () => enemySpincallback());
     }
 }

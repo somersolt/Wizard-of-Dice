@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Events;
 using UnityEngine.UI;
 public class AttackEventArgs : EventArgs
@@ -88,6 +89,10 @@ public class GameMgr : MonoBehaviour
     AttackEventPublisher publisher = new AttackEventPublisher();
     AttackEventListener listener = new AttackEventListener();
 
+    private int currentTurn = 1;
+    [SerializeField]
+    private TextMeshProUGUI turnInfo;
+    private bool enemyDiceRoll;
     /// </summary>
     /// 주사위 , 마법서 관련 필드
 
@@ -111,6 +116,14 @@ public class GameMgr : MonoBehaviour
     [SerializeField]
     private Button totalScrolls;
 
+    public int enemyValue;
+    [SerializeField]
+    private Image PlayerHpBarInfo;
+    [SerializeField]
+    private TextMeshProUGUI PlayerHpInfo;
+
+    private int PlayerHp;
+    private int PlayerHpMax = 100;
     ///  
     /// </summary>
 
@@ -118,18 +131,22 @@ public class GameMgr : MonoBehaviour
 
     private void Awake()
     {
+        PlayerHp = PlayerHpMax;
         for (int i = 0; i < (int)Ranks.TwoPair; i++)
         {
             RankList[i] = 1; // 원페어, 트리플, 3스트레이트 1레벨 등록
         }
-        currentDiceCount = DiceCount.three;
-
-        // 이벤트에 이벤트 핸들러 메서드를 추가
-        publisher.AttackEvent += listener.AttackHandleEvent;
+        TurnUpdate(1);
+        publisher.AttackEvent += listener.AttackHandleEvent;// 이벤트에 이벤트 핸들러 메서드를 추가
 
     }
 
-
+    private void Start()
+    {
+        currentDiceCount = DiceCount.three;
+        DiceMgr.Instance.DiceThree();
+        DiceMgr.Instance.DiceRoll(true);
+    }
     private void Update()
     {
         switch (currentStatus)
@@ -166,7 +183,6 @@ public class GameMgr : MonoBehaviour
             currentDiceCount = DiceCount.three;
             DiceMgr.Instance.DiceThree();
             DiceMgr.Instance.DiceRoll(true);
-            Debug.Log("three");
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -174,7 +190,6 @@ public class GameMgr : MonoBehaviour
             DiceMgr.Instance.DiceFour();
             DiceMgr.Instance.DiceRoll(true);
 
-            Debug.Log("four");
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
@@ -183,7 +198,6 @@ public class GameMgr : MonoBehaviour
             DiceMgr.Instance.DiceFive();
             DiceMgr.Instance.DiceRoll(true);
 
-            Debug.Log("five");
         }
 
         // 테스트 코드
@@ -192,7 +206,8 @@ public class GameMgr : MonoBehaviour
     }
     private void PlayerAttackUpdate()
     {
-
+        //뭔가의 애니메이션
+        PlayerAttackEffect(); //TO-DO 한번만 작동해야함
     }
     private void GetRewardsUpdate()
     {
@@ -200,7 +215,11 @@ public class GameMgr : MonoBehaviour
     }
     private void MonsterDiceUpdate()
     {
-
+        if (!enemyDiceRoll)
+        {
+            enemyDiceRoll = true;
+            DiceMgr.Instance.EnemyDiceRoll();
+        }
     }
     private void MonsterAttackUpdate()
     {
@@ -281,9 +300,46 @@ public class GameMgr : MonoBehaviour
         }
     }
 
-    public void AttackButtonClicked()
+    public void TurnUpdate(int n)
     {
-        publisher.RaiseEvent(currentDamage, currentTarget);  // 이벤트 발생
+        currentTurn = n;
+        turnInfo.text = currentTurn.ToString() + " Turn";
+        currentStatus = TurnStatus.PlayerDice;
     }
 
+    public void PlayerAttackEffect()
+    {
+        CurrentStatus = TurnStatus.PlayerAttack;
+        publisher.RaiseEvent(currentDamage, currentTarget); // 이벤트 발생 ondamage, 코루틴으로 해야되나
+        //끝나면 몬스터 턴 
+
+        //TO-DO 스테이지 mgr 리스트에서 몬스터 받아와서 다 잡았는지 체크,
+        currentStatus = TurnStatus.MonsterDice;
+    }
+
+    public void MonsterEffect()
+    {
+        //이펙트 관리자가 필요할까?
+        //TO-DO 플레이어 사망했는지 체크,
+        enemyDiceRoll = false;
+        PlayerHp -= enemyValue;
+        PlayerHpInfo.text = PlayerHp.ToString();
+        PlayerHpBarInfo.fillAmount = (float)PlayerHp / PlayerHpMax;
+        currentStatus = TurnStatus.PlayerDice;
+        switch (currentDiceCount) 
+        {
+            case DiceCount.three:
+                DiceMgr.Instance.DiceThree();
+                DiceMgr.Instance.DiceRoll(true);
+                break;
+            case DiceCount.four:
+                DiceMgr.Instance.DiceFour();
+                DiceMgr.Instance.DiceRoll(true);
+                break;
+            case DiceCount.five:
+                DiceMgr.Instance.DiceFive();
+                DiceMgr.Instance.DiceRoll(true);
+                break;
+        }
+    }
 }

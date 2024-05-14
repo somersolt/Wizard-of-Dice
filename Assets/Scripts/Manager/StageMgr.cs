@@ -58,7 +58,6 @@ public class StageMgr : MonoBehaviour
         }
 
         enemySpawner.Spawn(testPrefab, (int)PosNum.Center);
-
         StageInfo.text = $"Stage {currentStage}";
     }
 }   
