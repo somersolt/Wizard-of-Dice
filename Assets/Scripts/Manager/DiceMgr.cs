@@ -93,6 +93,8 @@ public class DiceMgr : MonoBehaviour
             for (int i = 0; i < (int)GameMgr.Instance.currentDiceCount; i++)
             {
                 totalValue += dicesValues[i];
+                buttonToggle[i] = false;
+                dices[i].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
                 selectedDice.Add(i);
             }
             GameMgr.Instance.SetResult(checkedRanksList, totalValue);
@@ -109,7 +111,12 @@ public class DiceMgr : MonoBehaviour
         }
         else
         {
-            if (rerollCount > 0)
+            if (selectedDice.Count == 0)
+            {
+                reRoll.interactable = false;
+            }
+
+            if (selectedDice.Count != 0 && rerollCount > 0)
             {
                 for (int i = 0; i < constant.diceMax; i++)
                 {
@@ -138,7 +145,7 @@ public class DiceMgr : MonoBehaviour
         if (starting)
         {
             selectedDiceCount = (int)GameMgr.Instance.currentDiceCount;
-            rerollCount = 1;
+            rerollCount = 2;
             reRoll.GetComponentInChildren<TextMeshProUGUI>().text = "Àç±¼¸² : " + rerollCount.ToString();
         }
         else

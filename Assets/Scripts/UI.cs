@@ -104,7 +104,7 @@ public class UI : MonoBehaviour
 
         if (rewardSpells[index].LEVEL != 0)
         {
-            GameMgr.Instance.SetRankList((spellData.ID % 100) / 10);
+            GameMgr.Instance.SetRankList((spellData.ID % 100) / 10 - 1);
         }
 
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
