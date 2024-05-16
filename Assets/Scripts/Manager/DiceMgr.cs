@@ -93,9 +93,12 @@ public class DiceMgr : MonoBehaviour
             for (int i = 0; i < (int)GameMgr.Instance.currentDiceCount; i++)
             {
                 totalValue += dicesValues[i];
-                buttonToggle[i] = false;
-                dices[i].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
-                selectedDice.Add(i);
+                //buttonToggle[i] = false; // 전부 고정 푸는 코드
+                if (buttonToggle[i] == false)
+                {
+                    dices[i].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
+                    selectedDice.Add(i);
+                }
             }
             GameMgr.Instance.SetResult(checkedRanksList, totalValue);
         }
@@ -120,8 +123,10 @@ public class DiceMgr : MonoBehaviour
             {
                 for (int i = 0; i < constant.diceMax; i++)
                 {
-
-                    dices[i].interactable = true;
+                    if (buttonToggle[i] == false)
+                    {
+                        dices[i].interactable = true;
+                    }
 
                 }
                 reRoll.interactable = true;

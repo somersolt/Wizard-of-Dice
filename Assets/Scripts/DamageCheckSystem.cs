@@ -26,7 +26,7 @@ public static class DamageCheckSystem
     {
         int sum = 0;
         int multiple = 0;
-        int target = 0;
+        int target = 1;
         for (int i = 0; i < ranks.Length; i++)
         {
             RanksFlag currentFlag = (RanksFlag)(1 << i);

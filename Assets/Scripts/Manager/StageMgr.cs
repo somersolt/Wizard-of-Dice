@@ -39,6 +39,7 @@ public class StageMgr : MonoBehaviour
     public int currentStage;
 
     public List<Enemy> enemies = new List<Enemy>();
+    public List<Enemy> DeadEnemies = new List<Enemy>();
     public Enemy testPrefab; // TO-DO 테스트 적
     public Enemy bosstestPrefab; // TO-DO 테스트 적
 
@@ -46,7 +47,7 @@ public class StageMgr : MonoBehaviour
     private void Awake()
     {
         currentStage = 1;
-        enemySpawner.Spawn(testPrefab, (int)PosNum.Center);
+        SetEnemy();
     }
 
 
@@ -57,13 +58,13 @@ public class StageMgr : MonoBehaviour
         if (currentStage == 4)
         {
             GameMgr.Instance.GetDice4Ranks();
-            enemySpawner.Spawn(testPrefab, (int)PosNum.Center);
+            SetEnemy();
 
         }
         else if (currentStage == 7)
         {
             GameMgr.Instance.GetDice5Ranks();
-            enemySpawner.Spawn(testPrefab, (int)PosNum.Center);
+            SetEnemy();
 
         }
         else if (currentStage == 3 || currentStage == 6)
@@ -73,7 +74,7 @@ public class StageMgr : MonoBehaviour
         }
         else
         {
-            enemySpawner.Spawn(testPrefab, (int)PosNum.Center);
+            SetEnemy();
         }
         StageInfo.text = $"Stage {currentStage}";
 
@@ -93,4 +94,27 @@ public class StageMgr : MonoBehaviour
                 break;
         }
     }
+
+    private void SetEnemy()
+    {
+        int enemyCount = UnityEngine.Random.Range(0, 3);
+        switch (enemyCount)
+        {
+            case 0:
+                enemySpawner.Spawn(testPrefab, (int)PosNum.Center);
+                break;
+            case 1:
+                enemySpawner.Spawn(testPrefab, (int)PosNum.Left);
+                enemySpawner.Spawn(testPrefab, (int)PosNum.Right);
+                break;
+            case 2:
+                enemySpawner.Spawn(testPrefab, (int)PosNum.Left);
+                enemySpawner.Spawn(testPrefab, (int)PosNum.Center);
+                enemySpawner.Spawn(testPrefab, (int)PosNum.Right);
+                break;
+        }
+
+    }
+
+
 }

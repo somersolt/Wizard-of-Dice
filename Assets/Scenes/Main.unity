@@ -1734,7 +1734,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Wou win!
+  m_text: You win!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9447f0baefdcf8b46aec0d0dda654c47, type: 2}
   m_sharedMaterial: {fileID: -3648493308995296924, guid: 9447f0baefdcf8b46aec0d0dda654c47, type: 2}
@@ -6427,6 +6427,7 @@ MonoBehaviour:
   StageInfo: {fileID: 1735134947}
   currentStage: 0
   enemies: []
+  DeadEnemies: []
   testPrefab: {fileID: 8089544567011819449, guid: 2b47fa43f1338d44e954412967332fee, type: 3}
   bosstestPrefab: {fileID: 8089544567011819449, guid: 4f9884a7ba25d5744a1c67b61f28cac7, type: 3}
   enemySpawner: {fileID: 1453744876}

@@ -41,9 +41,17 @@ public class AttackEventListener
 {
     public void AttackHandleEvent(object sender, AttackEventArgs e)
     {
-        for (int i = 0; i < StageMgr.Instance.enemies.Count; i++)
+
+        Enemy[] targets = new Enemy[Math.Min(GameMgr.Instance.currentTarget, StageMgr.Instance.enemies.Count)];
+
+        for (int i = 0; i < targets.Length; i++)
         {
-            StageMgr.Instance.enemies[i].OnDamage(e.value);
+            targets[i] = StageMgr.Instance.enemies[i];
+        }
+
+        for (int i = 0; i < targets.Length; i++)
+        {
+            targets[i].OnDamage(e.value);
         }
     }
 }
@@ -129,7 +137,8 @@ public class GameMgr : MonoBehaviour
     private int PlayerHpMax = 100;
     ///  
     /// </summary>
-
+    private int livingMonster = 0;
+    public int monsterSignal = 0;
 
     [SerializeField]
     private Button quit;
@@ -207,10 +216,30 @@ public class GameMgr : MonoBehaviour
         //    DiceMgr.Instance.DiceRoll(true);
         //}
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            currentTarget = 1;
+            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            currentTarget = 2;
+            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            currentTarget = 3;
+            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+
+        }
+
+
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             currentDamage = 100;
-            damageInfo.text = currentDamage.ToString();
+            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
         }
         // 테스트 코드
 
@@ -218,7 +247,10 @@ public class GameMgr : MonoBehaviour
     }
     private void PlayerAttackUpdate()
     {
-        //뭔가의 애니메이션
+        if (livingMonster == monsterSignal)
+        {
+            MonsterCheck();
+        }
     }
     private void GetRewardsUpdate()
     {
@@ -295,7 +327,7 @@ public class GameMgr : MonoBehaviour
         currentValue = value;
 
         currentDamage = DamageCheckSystem.DamageCheck(currentValue, RankList, currentRanks);
-        damageInfo.text = currentDamage.ToString();
+        damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
 
         int r = 0;
         for (int i = 0; i < scrolls.Length; i++)
@@ -326,24 +358,9 @@ public class GameMgr : MonoBehaviour
 
     public void PlayerAttackEffect()
     {
+        livingMonster = Math.Min(StageMgr.Instance.enemies.Count, currentTarget);
         CurrentStatus = TurnStatus.PlayerAttack;
         publisher.RaiseEvent(currentDamage, currentTarget); // 이벤트 발생 ondamage, 코루틴으로 해야되나
-
-        //TO-DO 스테이지 mgr 리스트에서 몬스터 받아와서 다 잡았는지 체크,
-        if (StageMgr.Instance.enemies.Count == 0)
-        {
-            if (StageMgr.Instance.currentStage == 10)
-            {
-                ui.Victory();
-                return;
-            }
-            currentStatus = TurnStatus.GetRewards;
-            ui.OnReward();
-            return;
-        }
-
-        //끝나면 몬스터 턴 
-        currentStatus = TurnStatus.MonsterDice;
     }
 
     public void MonsterEffect()
@@ -351,14 +368,14 @@ public class GameMgr : MonoBehaviour
         //이펙트 관리자가 필요할까?
         enemyDiceRoll = false;
 
-        for ( int i = 0; i < StageMgr.Instance.enemies.Count; i++ ) 
+        for (int i = 0; i < StageMgr.Instance.enemies.Count; i++)
         {
 
             PlayerHp -= enemyValue + StageMgr.Instance.enemies[i].Damage;
             PlayerHpInfo.text = PlayerHp.ToString();
             PlayerHpBarInfo.fillAmount = (float)PlayerHp / PlayerHpMax;
 
-            if(PlayerHp <= 0)
+            if (PlayerHp <= 0)
             {
                 currentStatus = TurnStatus.PlayerLose;
                 return;
@@ -367,14 +384,14 @@ public class GameMgr : MonoBehaviour
         }
 
         TurnUpdate(--currentTurn);
-        if(currentTurn < 0)
+        if (currentTurn < 0)
         {
             currentStatus = TurnStatus.PlayerLose;
             return;
         }
 
         currentStatus = TurnStatus.PlayerDice;
-        switch (currentDiceCount) 
+        switch (currentDiceCount)
         {
             case DiceCount.three:
                 DiceMgr.Instance.DiceThree();
@@ -393,13 +410,38 @@ public class GameMgr : MonoBehaviour
 
     public void ScrollsClear()
     {
-        for(int i = 0; i < 3;  i++)
+        for (int i = 0; i < 3; i++)
         {
             scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text = " ";
         }
         damageInfo.text = " ";
     }
 
+    private void MonsterCheck()
+    {
+        monsterSignal = 0;
+        if (StageMgr.Instance.enemies.Count == 0)
+        {
+            foreach (var deadEnemy in StageMgr.Instance.DeadEnemies)
+            {
+                Destroy(deadEnemy.gameObject);
+            }
+            StageMgr.Instance.DeadEnemies.Clear();
+
+            if (StageMgr.Instance.currentStage == 10)
+            {
+                ui.Victory();
+                return;
+            }
+            currentStatus = TurnStatus.GetRewards;
+            ui.OnReward();
+            return;
+        }
+        else
+        {
+            currentStatus = TurnStatus.MonsterDice;
+        }
+    }
 
     private void QuitGame()
     {
