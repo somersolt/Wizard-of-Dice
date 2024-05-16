@@ -34,6 +34,8 @@ public class DiceMgr : MonoBehaviour
     [SerializeField]
     private SpinControl[] SpinControlers = new SpinControl[5];
     private bool[] buttonToggle = new bool[5];
+    [SerializeField]
+    private Image[] buttonLock = new Image[5];
 
     public Button[] dices = new Button[constant.diceMax]; // 주사위들
     private int[] dicesValues = new int[constant.diceMax]; // 주사위 눈 결과값
@@ -145,11 +147,14 @@ public class DiceMgr : MonoBehaviour
         {
             numbersCount[i] = 0;
         }
-
         int selectedDiceCount = selectedDice.Count;
         if (starting)
         {
             selectedDiceCount = (int)GameMgr.Instance.currentDiceCount;
+            for (int i = 0; i < selectedDiceCount; i++)
+            {
+                buttonLock[i].gameObject.SetActive(false);
+            }
             rerollCount = 2;
             reRoll.GetComponentInChildren<TextMeshProUGUI>().text = "재굴림 : " + rerollCount.ToString();
         }
@@ -225,12 +230,14 @@ public class DiceMgr : MonoBehaviour
                 selectedDice.Remove(i);
                 dices[i].GetComponent<Image>().color = new Color(0x57 / 255f, 0x57 / 255f, 0x57 / 255f);
                 buttonToggle[i] = true;
+                buttonLock[i].gameObject.SetActive(true);
             }
             else if (buttonToggle[i])
             {
                 selectedDice.Add(i);
                 dices[i].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
                 buttonToggle[i] = false;
+                buttonLock[i].gameObject.SetActive(false);
             }
         }
     }
