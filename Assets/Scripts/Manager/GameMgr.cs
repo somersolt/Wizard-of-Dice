@@ -131,6 +131,9 @@ public class GameMgr : MonoBehaviour
     /// </summary>
 
 
+    [SerializeField]
+    private Button quit;
+
 
     private void Awake()
     {
@@ -143,7 +146,7 @@ public class GameMgr : MonoBehaviour
         }
         TurnUpdate(10);
         publisher.AttackEvent += listener.AttackHandleEvent;// 이벤트에 이벤트 핸들러 메서드를 추가
-
+        quit.onClick.AddListener(() => QuitGame());
     }
 
     private void Start()
@@ -395,5 +398,15 @@ public class GameMgr : MonoBehaviour
             scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text = " ";
         }
         damageInfo.text = " ";
+    }
+
+
+    private void QuitGame()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
