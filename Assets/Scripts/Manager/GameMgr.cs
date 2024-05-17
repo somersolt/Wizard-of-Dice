@@ -434,6 +434,11 @@ public class GameMgr : MonoBehaviour
                 return;
             }
             currentStatus = TurnStatus.GetRewards;
+            if (StageMgr.Instance.currentStage == 3 || StageMgr.Instance.currentStage == 6)
+            {
+                ui.GetDice();
+                return;
+            }
             ui.OnReward();
             return;
         }

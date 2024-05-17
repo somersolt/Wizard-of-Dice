@@ -31,11 +31,18 @@ public class UI : MonoBehaviour
     private SpellData[] rewardSpells = new SpellData[3];
 
     private SpellData empty = new SpellData();
+
+    [SerializeField]
+    private GameObject diceRewardPanel;
+    [SerializeField]
+    private Button diceRewardConfirm;
+
     private void Awake()
     {
         titleButton.onClick.AddListener(() => ReturnTitle());
         titleButton2.onClick.AddListener(() => ReturnTitle());
-        for(int i = 0; i < rewards.Length; i++)
+        diceRewardConfirm.onClick.AddListener(() => { diceRewardPanel.gameObject.SetActive(false); OnReward(); });
+        for (int i = 0; i < rewards.Length; i++)
         {
             spellNames[i] = rewards[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
             spellInfos[i] = rewards[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
@@ -70,6 +77,12 @@ public class UI : MonoBehaviour
         StartCoroutine(PanelSlide(rewardPanel));
 
     }
+    public void GetDice()
+    {
+        diceRewardPanel.gameObject.SetActive(true);
+        StartCoroutine (PanelSlide(diceRewardPanel));
+    }
+
     public void GameOver()
     {
         gameOverPanel.gameObject.SetActive(true);
