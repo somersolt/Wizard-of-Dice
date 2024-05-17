@@ -8,20 +8,16 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MonsterData
+public class PassiveData
 {
     //public static readonly string FormatIconPath = "Icon/Item/{0}";
     //아이콘 같은거 있으면 포함할 주소 (Resources 폴더 내 포함)
 
     public int ID { get; set; }
-    public int GRADE { get; set; }
-    public int NAME { get; set; }
-    public int HP { get; set; }
-    public int DAMAGE { get; set; }
-    public int DICE { get; set; }
-    public int MAGICBOOK_ID { get; set; }
-    public int STAGE { get; set; }
-    public int MONSTER_TYPE { get; set; }
+    public int NAME_ID { get; set; }
+    public int DESC_ID { get; set; }
+    public int VALUE { get; set; }
+    public int LEVEL { get; set; }
 
     //public string Icon { get; set; } 아이콘 path
 
@@ -29,7 +25,15 @@ public class MonsterData
     {
         get
         {
-            return DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(NAME);
+            return DataTableMgr.Get<TextTable>(DataTableIds.Passive).Get(NAME_ID);
+        }
+    }
+
+    public string GetDesc
+    {
+        get
+        {
+            return DataTableMgr.Get<TextTable>(DataTableIds.Passive).Get(DESC_ID);
         }
     }
 
@@ -43,13 +47,13 @@ public class MonsterData
 
     public override string ToString()
     {
-        return $"{ID}: {GRADE }/ {GetName} / {HP} / {DAMAGE} / {DICE} / {MAGICBOOK_ID} / {STAGE} / {MONSTER_TYPE} ";
+        return $"{ID}: {GetName} / {GetDesc} / {VALUE} / {LEVEL} ";
     }
 }
 
-public class MonsterTable : DataTable
+public class PassiveTable : DataTable
 {
-    private Dictionary<int, MonsterData> table = new Dictionary<int, MonsterData>();
+    private Dictionary<int, PassiveData> table = new Dictionary<int, PassiveData>();
 
     public List<int> AllItemIds
     {
@@ -59,7 +63,7 @@ public class MonsterTable : DataTable
         }
     }
 
-    public MonsterData Get(int id)
+    public PassiveData Get(int id)
     {
         if (!table.ContainsKey(id))
             return null;
@@ -76,7 +80,7 @@ public class MonsterTable : DataTable
         using (var reader = new StringReader(textAsset.text))
         using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            var records = csvReader.GetRecords<MonsterData>();
+            var records = csvReader.GetRecords<PassiveData>();
             foreach (var record in records)
             {
                 table.Add(record.ID, record);

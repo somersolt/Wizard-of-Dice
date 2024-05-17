@@ -13,6 +13,8 @@ public static class DataTableIds
 
     public static readonly string Monster = "MonsterTable";
 
+    public static readonly string Passive = "PassiveTable";
+
 }
 
 public static class Vars

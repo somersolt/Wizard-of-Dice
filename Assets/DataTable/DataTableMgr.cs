@@ -18,6 +18,17 @@ public static class DataTableMgr
         spellTable.Load(DataTableIds.SpellBook);
         tables.Add(DataTableIds.SpellBook, spellTable);
 
+        MonsterTable monsterTable = new MonsterTable();
+        monsterTable.Load(DataTableIds.Monster);
+        tables.Add(DataTableIds.Monster, monsterTable);
+
+        DebuffTable debuffTable = new DebuffTable();
+        debuffTable.Load(DataTableIds.Debuff);
+        tables.Add(DataTableIds.Debuff, debuffTable);
+
+        PassiveTable passiveTable = new PassiveTable();
+        passiveTable.Load(DataTableIds.Passive);
+        tables.Add(DataTableIds.Passive, passiveTable);
     }
 
 

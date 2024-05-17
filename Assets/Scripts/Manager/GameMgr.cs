@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Events;
@@ -41,7 +43,7 @@ public class AttackEventListener
 {
     public void AttackHandleEvent(object sender, AttackEventArgs e)
     {
-
+        GameMgr.Instance.Heal();
         Enemy[] targets = new Enemy[Math.Min(GameMgr.Instance.currentTarget, StageMgr.Instance.enemies.Count)];
 
         for (int i = 0; i < targets.Length; i++)
@@ -53,6 +55,7 @@ public class AttackEventListener
         {
             targets[i].OnDamage(e.value);
         }
+
     }
 }
 
@@ -121,6 +124,8 @@ public class GameMgr : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI damageInfo;
     private int currentDamage;
+    public int currentBarrier;
+    public int currentRecovery;
     public int currentTarget;
     [SerializeField]
     private Button[] scrolls = new Button[3];
@@ -132,9 +137,15 @@ public class GameMgr : MonoBehaviour
     private Image PlayerHpBarInfo;
     [SerializeField]
     private TextMeshProUGUI PlayerHpInfo;
+    [SerializeField]
+    private Image PlayerBarrierBarInfo;
+    [SerializeField]
+    private TextMeshProUGUI PlayerBarrierInfo;
 
     private int PlayerHp;
     private int PlayerHpMax = 100;
+    private int PlayerBarrier;
+    private int PlayerBarrierStart = 0;
     ///  
     /// </summary>
     private int livingMonster = 0;
@@ -147,6 +158,8 @@ public class GameMgr : MonoBehaviour
     private void Awake()
     {
         PlayerHp = PlayerHpMax;
+        PlayerBarrier = PlayerBarrierStart;
+        LifeUpdate();
         for (int i = 0; i < (int)Ranks.TwoPair; i++)
         {
             RankList[i] = 1; // 원페어, 트리플, 3스트레이트 1레벨 등록
@@ -370,10 +383,18 @@ public class GameMgr : MonoBehaviour
 
         for (int i = 0; i < StageMgr.Instance.enemies.Count; i++)
         {
-
-            PlayerHp -= enemyValue + StageMgr.Instance.enemies[i].Damage;
-            PlayerHpInfo.text = PlayerHp.ToString();
-            PlayerHpBarInfo.fillAmount = (float)PlayerHp / PlayerHpMax;
+            int enemyDamage = enemyValue + StageMgr.Instance.enemies[i].Damage;
+            if (PlayerBarrier >= enemyDamage)
+            {
+                PlayerBarrier -= enemyDamage;
+            }
+            else
+            {
+                enemyDamage -= PlayerBarrier;
+                PlayerBarrier = 0;
+                PlayerHp -= enemyDamage;
+            }
+            LifeUpdate();
 
             if (PlayerHp <= 0)
             {
@@ -446,6 +467,24 @@ public class GameMgr : MonoBehaviour
         {
             currentStatus = TurnStatus.MonsterDice;
         }
+    }
+
+    public void Heal()
+    {
+        PlayerHp += currentRecovery;
+        if (PlayerHp > PlayerHpMax)
+        {
+            PlayerHp = PlayerHpMax;
+        }
+        PlayerBarrier += currentBarrier;
+        LifeUpdate();
+    }
+    public void LifeUpdate()
+    {
+        PlayerBarrierInfo.text = PlayerBarrier.ToString();
+        PlayerBarrierBarInfo.fillAmount = (float)PlayerBarrier / PlayerHpMax;
+        PlayerHpInfo.text = PlayerHp.ToString();
+        PlayerHpBarInfo.fillAmount = (float)PlayerHp / PlayerHpMax;
     }
 
     private void QuitGame()
