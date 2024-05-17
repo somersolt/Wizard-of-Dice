@@ -55,22 +55,23 @@ public class StageMgr : MonoBehaviour
     {
         currentStage++;
         GameMgr.Instance.TurnUpdate(10);
-        if (currentStage == 4)
+        if (currentStage == 6)
         {
-            GameMgr.Instance.GetDice4Ranks();
+            //GameMgr.Instance.GetDice4Ranks();
+            //이거말고 중간보스 보상
             SetEnemy();
 
         }
-        else if (currentStage == 7)
+        else if (currentStage == 11)
         {
-            GameMgr.Instance.GetDice5Ranks();
+            //GameMgr.Instance.GetDice5Ranks();
+            //이거말고 중간보스2 보상
             SetEnemy();
 
         }
-        else if (currentStage == 3 || currentStage == 6)
+        else if (currentStage == 5 || currentStage == 10)
         {
             enemySpawner.Spawn(bosstestPrefab, (int)PosNum.Center);
-
         }
         else
         {

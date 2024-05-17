@@ -160,12 +160,19 @@ public class GameMgr : MonoBehaviour
         PlayerHp = PlayerHpMax;
         PlayerBarrier = PlayerBarrierStart;
         LifeUpdate();
-        for (int i = 0; i < (int)Ranks.TwoPair; i++)
+        RankList[0] = 1; // 원페어 등록
+
+        var onepair2 = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[0] + 1);
+        ui.rewardList.Add(onepair2);
+
+        // 상점 원페어 2레벨 등록
+        for (int i = 1; i < (int)Ranks.TwoPair; i++)
         {
-            RankList[i] = 1; // 원페어, 트리플, 3스트레이트 1레벨 등록
-            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 1);
+            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]);
+            // 상점 트리플, 3스트레이트 1레벨 등록
             ui.rewardList.Add(spells);
         }
+
         TurnUpdate(10);
         publisher.AttackEvent += listener.AttackHandleEvent;// 이벤트에 이벤트 핸들러 메서드를 추가
         quit.onClick.AddListener(() => QuitGame());
@@ -173,8 +180,8 @@ public class GameMgr : MonoBehaviour
 
     private void Start()
     {
-        currentDiceCount = DiceCount.three;
-        DiceMgr.Instance.DiceThree();
+        currentDiceCount = DiceCount.five;
+        DiceMgr.Instance.DiceFive();
         DiceMgr.Instance.DiceRoll(true);
     }
     private void Update()
@@ -303,11 +310,7 @@ public class GameMgr : MonoBehaviour
             return;
             //max level
         }
-        else if (RankList[i] == 0)
-        {
-            return;
-            //족보 미획득
-        }
+
         RankList[i] += 1;
     }
 
@@ -315,12 +318,9 @@ public class GameMgr : MonoBehaviour
     {
         for (int i = (int)Ranks.TwoPair; i < (int)Ranks.FullHouse; i++)
         {
-            RankList[i] = 1; // 투페어, 카인드4, 4스트레이트 1레벨 등록
             var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 1);
             ui.rewardList.Add(spells);
         }
-        currentDiceCount = DiceCount.four;
-
     }
     public void GetDice5Ranks()
     {
@@ -330,8 +330,6 @@ public class GameMgr : MonoBehaviour
             var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 1);
             ui.rewardList.Add(spells);
         }
-        currentDiceCount = DiceCount.five;
-
     }
 
     public void SetResult(RanksFlag ranks, int value)
@@ -360,6 +358,11 @@ public class GameMgr : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void RanksListUpdate()
+    {
+        RankCheckSystem.ranksList = RankList;
     }
 
     public void TurnUpdate(int n)
@@ -411,6 +414,9 @@ public class GameMgr : MonoBehaviour
             return;
         }
 
+        PlayerBarrier = 0;
+        LifeUpdate();
+
         currentStatus = TurnStatus.PlayerDice;
         switch (currentDiceCount)
         {
@@ -449,13 +455,13 @@ public class GameMgr : MonoBehaviour
             }
             StageMgr.Instance.DeadEnemies.Clear();
 
-            if (StageMgr.Instance.currentStage == 10)
+            if (StageMgr.Instance.currentStage == 15)
             {
                 ui.Victory();
                 return;
             }
             currentStatus = TurnStatus.GetRewards;
-            if (StageMgr.Instance.currentStage == 3 || StageMgr.Instance.currentStage == 6)
+            if (StageMgr.Instance.currentStage == 5 || StageMgr.Instance.currentStage == 10)
             {
                 ui.GetDice();
                 return;

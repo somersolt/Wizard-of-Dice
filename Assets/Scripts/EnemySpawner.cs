@@ -9,7 +9,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void Spawn(Enemy enemy, int num)
     {
-      var Enemy = Instantiate(enemy.gameObject, Pos[num].transform.position, Quaternion.Euler(0, 180, 0)).GetComponent<Enemy>();
+      var Enemy = Instantiate(enemy.gameObject, Pos[num].transform.position, enemy.gameObject.transform.rotation).GetComponent<Enemy>();
       StageMgr.Instance.enemies.Add(Enemy);
     }
 }

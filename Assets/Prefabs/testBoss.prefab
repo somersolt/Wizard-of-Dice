@@ -674,8 +674,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0569e5627b84a4441b31fbb52bb74368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   MaxHp: 60
   Damage: 3
+  onDead: 0
   HpBar: {fileID: 773204728855277402}
   Life: {fileID: 6992809453289808001}
 --- !u!1 &5634288883854140248

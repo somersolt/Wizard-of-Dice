@@ -80,7 +80,7 @@ public class UI : MonoBehaviour
     public void GetDice()
     {
         diceRewardPanel.gameObject.SetActive(true);
-        StartCoroutine (PanelSlide(diceRewardPanel));
+        StartCoroutine(PanelSlide(diceRewardPanel));
     }
 
     public void GameOver()
@@ -99,14 +99,18 @@ public class UI : MonoBehaviour
 
     public void GetSpell(SpellData spellData, int index)
     {
-        if( spellData == empty) { return; }
+        if (spellData == empty) { return; }
         for (int i = 0; i < rewardSpells.Length; i++)
         {
-            if(i == index)
+            if (i == index)
             {
                 if (spellData.LEVEL != 3 && spellData.LEVEL != 0)
                 {
                     rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(spellData.ID + 1));
+                    if (spellData.LEVEL == 1)
+                    {
+                        NextRanks(spellData);
+                    }
                 }
                 continue;
             }
@@ -121,11 +125,11 @@ public class UI : MonoBehaviour
             GameMgr.Instance.SetRankList((spellData.ID % 100) / 10 - 1);
         }
 
+        GameMgr.Instance.RanksListUpdate();
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         // TO-DO 족보가 아니면 상시 마법서 획득 메소드 만들기
-        rewardPanel.gameObject.SetActive(false) ;
+        rewardPanel.gameObject.SetActive(false);
         StageMgr.Instance.NextStage();
-
     }
 
     private IEnumerator PanelSlide(GameObject panel)
@@ -138,10 +142,40 @@ public class UI : MonoBehaviour
 
         while (time < duration)
         {
-            panel.transform.position = Vector3.Lerp(panel.transform.position, startpos, time/duration);
+            panel.transform.position = Vector3.Lerp(panel.transform.position, startpos, time / duration);
             time += Time.deltaTime;
             yield return null;
         }
         panel.transform.position = startpos;
+    }
+
+    private void NextRanks(SpellData spellData)
+    {
+        if (spellData.ID == (int)RanksIds.OnePair)
+        {
+            rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get((int)RanksIds.Straight3));
+            rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get((int)RanksIds.Triple));
+        }
+        if (spellData.ID == (int)RanksIds.Straight3)
+        {
+            rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get((int)RanksIds.Straight4));
+        }
+        if (spellData.ID == (int)RanksIds.Straight4)
+        {
+            rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get((int)RanksIds.Straight5));
+        }
+        if (spellData.ID == (int)RanksIds.Triple)
+        {
+            rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get((int)RanksIds.TwoPair));
+            rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get((int)RanksIds.KindOf4));
+        }
+        if (spellData.ID == (int)RanksIds.TwoPair)
+        {
+            rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get((int)RanksIds.FullHouse));
+        }
+        if (spellData.ID == (int)RanksIds.KindOf4)
+        {
+            rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get((int)RanksIds.KindOf5));
+        }
     }
 }

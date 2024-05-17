@@ -31,6 +31,10 @@ public static class DamageCheckSystem
         int target = 1;
         for (int i = 0; i < ranks.Length; i++)
         {
+            if (ranks[i] == 0)
+            {
+                continue;
+            }
             RanksFlag currentFlag = (RanksFlag)(1 << i);
             if ((checkedlist & currentFlag) != 0)
             {

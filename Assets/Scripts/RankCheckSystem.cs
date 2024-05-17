@@ -7,25 +7,26 @@ using UnityEngine;
 public static class RankCheckSystem
 {
     private static int[] diceNumberCount = new int[6];
+    public static int[] ranksList = new int[9];
     private static RanksFlag ranksCheckList = 0; //랭크 체크 후 9개 족보 활성화 여부 저장
 
     public static RanksFlag RankCheck(int[] list)
     {
         ClearList();
         Array.Copy(list, diceNumberCount, list.Length);
-
-        switch (GameMgr.Instance.currentDiceCount)
-        {
-            case GameMgr.DiceCount.three:
-                RankCheck3();
-                break;
-            case GameMgr.DiceCount.four:
-                RankCheck4();
-                break;
-            case GameMgr.DiceCount.five:
-                RankCheck5();
-                break;
-        }
+        RankCheck5();
+        //switch (GameMgr.Instance.currentDiceCount)
+        //{
+        //    case GameMgr.DiceCount.three:
+        //        RankCheck3();
+        //        break;
+        //    case GameMgr.DiceCount.four:
+        //        RankCheck4();
+        //        break;
+        //    case GameMgr.DiceCount.five:
+        //        RankCheck5();
+        //        break;
+        //}
 
         return ranksCheckList;
     }
@@ -132,7 +133,7 @@ public static class RankCheckSystem
                     {
                         continue;
                     }
-                    if (diceNumberCount[j] >= 2)
+                    if (diceNumberCount[j] >= 2 && ranksList[(int)Ranks.TwoPair] != 0)
                     {
                         ranksCheckList |= RanksFlag.TwoPair;
                     }
@@ -153,12 +154,15 @@ public static class RankCheckSystem
                     {
                         continue;
                     }
-                    if (diceNumberCount[j] >= 2)
+                    if (diceNumberCount[j] >= 2 && ranksList[(int)Ranks.FullHouse] != 0)
                     {
                         ranksCheckList |= RanksFlag.FullHouse;
                     }
                 }
-                ranksCheckList |= RanksFlag.Triple;
+                if (ranksList[(int)Ranks.Triple] != 0)
+                {
+                    ranksCheckList |= RanksFlag.Triple;
+                }
             }
         } // 트리플, 풀하우스 체크
 
@@ -167,8 +171,10 @@ public static class RankCheckSystem
         {
             if (diceNumberCount[i] >= 1 && diceNumberCount[i + 1] >= 1 && diceNumberCount[i + 2] >= 1)
             {
-                ranksCheckList |= RanksFlag.Straight3;
-
+                if (ranksList[(int)Ranks.Straight3] != 0)
+                {
+                    ranksCheckList |= RanksFlag.Straight3;
+                }
             }
         } // 스트레이트 3 체크
 
@@ -178,7 +184,10 @@ public static class RankCheckSystem
             if (diceNumberCount[i] >= 1 && diceNumberCount[i + 1] >= 1 && diceNumberCount[i + 2] >= 1
                 && diceNumberCount[i + 3] >= 1)
             {
-                ranksCheckList |= RanksFlag.Straight4;
+                if (ranksList[(int)Ranks.Straight4] != 0)
+                {
+                    ranksCheckList |= RanksFlag.Straight4;
+                }
             }
         } // 스트레이트 4 체크
 
@@ -187,7 +196,10 @@ public static class RankCheckSystem
             if (diceNumberCount[i] >= 1 && diceNumberCount[i + 1] >= 1 && diceNumberCount[i + 2] >= 1
                 && diceNumberCount[i + 3] >= 1 && diceNumberCount[i + 4] >= 1)
             {
-                ranksCheckList |= RanksFlag.Straight5;
+                if (ranksList[(int)Ranks.Straight5] != 0)
+                {
+                    ranksCheckList |= RanksFlag.Straight5;
+                }
             }
         } // 스트레이트 5 체크
 
@@ -196,7 +208,10 @@ public static class RankCheckSystem
         {
             if (diceNumberCount[i] >= 4)
             {
-                ranksCheckList |= RanksFlag.KindOf4;
+                if (ranksList[(int)Ranks.KindOf4] != 0)
+                {
+                    ranksCheckList |= RanksFlag.KindOf4;
+                }
             }
         } // 카인드 4 체크
 
@@ -204,7 +219,10 @@ public static class RankCheckSystem
         {
             if (diceNumberCount[i] == 5)
             {
-                ranksCheckList |= RanksFlag.KindOf5;
+                if (ranksList[(int)Ranks.KindOf5] != 0)
+                {
+                    ranksCheckList |= RanksFlag.KindOf5;
+                }
             }
         } // 카인드 5 체크
 
