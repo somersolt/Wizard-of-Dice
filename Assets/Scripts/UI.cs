@@ -37,7 +37,7 @@ public class UI : MonoBehaviour
         titleButton2.onClick.AddListener(() => ReturnTitle());
         for(int i = 0; i < rewards.Length; i++)
         {
-            spellNames[i] = rewards[i].transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
+            spellNames[i] = rewards[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
             spellInfos[i] = rewards[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
             spellLevels[i] = rewards[i].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
             int index = i;
@@ -67,6 +67,7 @@ public class UI : MonoBehaviour
             }
         }
         rewardPanel.gameObject.SetActive(true);
+        StartCoroutine(PanelSlide(rewardPanel));
 
     }
     public void GameOver()
@@ -111,5 +112,23 @@ public class UI : MonoBehaviour
         // TO-DO 족보가 아니면 상시 마법서 획득 메소드 만들기
         rewardPanel.gameObject.SetActive(false) ;
         StageMgr.Instance.NextStage();
+
+    }
+
+    private IEnumerator PanelSlide(GameObject panel)
+    {
+        float duration = 0.3f;
+        float time = 0f;
+        Vector3 startpos = panel.transform.position;
+
+        panel.transform.position = new Vector3(1000, startpos.y, startpos.z);
+
+        while (time < duration)
+        {
+            panel.transform.position = Vector3.Lerp(panel.transform.position, startpos, time/duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        panel.transform.position = startpos;
     }
 }
