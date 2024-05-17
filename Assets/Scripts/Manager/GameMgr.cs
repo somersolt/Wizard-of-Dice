@@ -175,7 +175,7 @@ public class GameMgr : MonoBehaviour
 
         TurnUpdate(10);
         publisher.AttackEvent += listener.AttackHandleEvent;// 이벤트에 이벤트 핸들러 메서드를 추가
-        quit.onClick.AddListener(() => QuitGame());
+        quit.onClick.AddListener(() => pauseGame());
     }
 
     private void Start()
@@ -492,8 +492,13 @@ public class GameMgr : MonoBehaviour
         PlayerHpInfo.text = PlayerHp.ToString();
         PlayerHpBarInfo.fillAmount = (float)PlayerHp / PlayerHpMax;
     }
+    private void pauseGame()
+    {
+        Time.timeScale = 0;
+        ui.PausePanel.gameObject.SetActive(true);
+    }
 
-    private void QuitGame()
+    public void QuitGame()
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;

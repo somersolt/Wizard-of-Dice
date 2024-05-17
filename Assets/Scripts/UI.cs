@@ -29,7 +29,6 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] spellLevels = new TextMeshProUGUI[3];
 
     private SpellData[] rewardSpells = new SpellData[3];
-
     private SpellData empty = new SpellData();
 
     [SerializeField]
@@ -37,11 +36,28 @@ public class UI : MonoBehaviour
     [SerializeField]
     private Button diceRewardConfirm;
 
+    public GameObject PausePanel;
+    [SerializeField]
+    private Button ReturnButton;
+    [SerializeField]
+    private Button QuitGame;
+    [SerializeField]
+    private GameObject QuitPanel;
+    [SerializeField]
+    private Button QuitYes;
+    [SerializeField]
+    private Button QuitNo;
+
     private void Awake()
     {
         titleButton.onClick.AddListener(() => ReturnTitle());
         titleButton2.onClick.AddListener(() => ReturnTitle());
         diceRewardConfirm.onClick.AddListener(() => { diceRewardPanel.gameObject.SetActive(false); OnReward(); });
+        ReturnButton.onClick.AddListener(() => { PausePanel.gameObject.SetActive(false); Time.timeScale = 1; });
+        QuitGame.onClick.AddListener(() => { QuitPanel.gameObject.SetActive(true); });
+        QuitYes.onClick.AddListener(() => GameMgr.Instance.QuitGame());
+        QuitNo.onClick.AddListener(() => { QuitPanel.gameObject.SetActive(false); });
+
         for (int i = 0; i < rewards.Length; i++)
         {
             spellNames[i] = rewards[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
@@ -178,4 +194,6 @@ public class UI : MonoBehaviour
             rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get((int)RanksIds.KindOf5));
         }
     }
+
+
 }

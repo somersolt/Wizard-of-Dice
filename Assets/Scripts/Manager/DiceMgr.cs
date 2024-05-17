@@ -116,12 +116,13 @@ public class DiceMgr : MonoBehaviour
         }
         else
         {
-            if (selectedDice.Count == 0)
+
+            if (selectedDice.Count == 0 || Time.timeScale == 0)
             {
                 reRoll.interactable = false;
             }
 
-            if (selectedDice.Count != 0 && rerollCount > 0)
+            if (selectedDice.Count != 0 && rerollCount > 0 && Time.timeScale != 0)
             {
                 for (int i = 0; i < constant.diceMax; i++)
                 {
@@ -133,7 +134,15 @@ public class DiceMgr : MonoBehaviour
                 }
                 reRoll.interactable = true;
             }
-            confirm.interactable = true;
+
+            if (Time.timeScale != 0)
+            {
+                confirm.interactable = true;
+            }
+            else if(Time.timeScale == 0)
+            { 
+                confirm.interactable = false;
+            }
         }
     }
 
