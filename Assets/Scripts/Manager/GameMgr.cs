@@ -208,45 +208,45 @@ public class GameMgr : MonoBehaviour
     private void PlayerDiceUpdate()
     {
 
-        //if (Input.GetKeyDown(KeyCode.Alpha1))
-        //{
-        //    currentDiceCount = DiceCount.three;
-        //    DiceMgr.Instance.DiceThree();
-        //    DiceMgr.Instance.DiceRoll(true);
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha2))
-        //{
-        //    GetDice4Ranks();
-        //    DiceMgr.Instance.DiceFour();
-        //    DiceMgr.Instance.DiceRoll(true);
-
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha3))
-        //{
-        //    GetDice4Ranks();
-        //    GetDice5Ranks();
-        //    DiceMgr.Instance.DiceFive();
-        //    DiceMgr.Instance.DiceRoll(true);
-        //}
-
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            currentTarget = 1;
-            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
-
+            currentDiceCount = DiceCount.three;
+            DiceMgr.Instance.DiceThree();
+            DiceMgr.Instance.DiceRoll(true);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            currentTarget = 2;
-            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+            GetDice4Ranks();
+            DiceMgr.Instance.DiceFour();
+            DiceMgr.Instance.DiceRoll(true);
 
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            currentTarget = 3;
-            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
-
+            GetDice4Ranks();
+            GetDice5Ranks();
+            DiceMgr.Instance.DiceFive();
+            DiceMgr.Instance.DiceRoll(true);
         }
+
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //    currentTarget = 1;
+        //    damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    currentTarget = 2;
+        //    damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+
+        //}
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    currentTarget = 3;
+        //    damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+
+        //}
 
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
