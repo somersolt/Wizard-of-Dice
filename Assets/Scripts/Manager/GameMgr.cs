@@ -110,6 +110,9 @@ public class GameMgr : MonoBehaviour
     /// </summary>
     /// 주사위 , 마법서 관련 필드
 
+    public Canvas canvas;
+    public Message messagePrefab;
+    public GameObject messagePos;
     public enum DiceCount
     {
         three = 3,
@@ -123,7 +126,7 @@ public class GameMgr : MonoBehaviour
     private int currentValue;
     [SerializeField]
     private TextMeshProUGUI damageInfo;
-    private int currentDamage;
+    public int currentDamage;
     public int currentBarrier;
     public int currentRecovery;
     public int currentTarget;
@@ -150,6 +153,8 @@ public class GameMgr : MonoBehaviour
     /// </summary>
     private int livingMonster = 0;
     public int monsterSignal = 0;
+
+    private bool onMonsterAttack = false;
 
     [SerializeField]
     private Button quit;
@@ -286,7 +291,49 @@ public class GameMgr : MonoBehaviour
     }
     private void MonsterAttackUpdate()
     {
+        if (!onMonsterAttack)
+        {
+            onMonsterAttack = true;
+            StartCoroutine(MonsterEffect());
+        }
+        if (PlayerHp <= 0)
+        {
+            currentStatus = TurnStatus.PlayerLose;
+            return;
+            //플레이어 사망 체크
+        }
 
+        if (monsterSignal == StageMgr.Instance.enemies.Count)
+        {
+            monsterSignal = 0;
+            TurnUpdate(--currentTurn);
+            if (currentTurn < 0)
+            {
+                currentStatus = TurnStatus.PlayerLose;
+                return;
+            }
+
+            PlayerBarrier = 0;
+            LifeUpdate();
+
+            currentStatus = TurnStatus.PlayerDice;
+            onMonsterAttack = false;
+            switch (currentDiceCount)
+            {
+                case DiceCount.three:
+                    DiceMgr.Instance.DiceThree();
+                    DiceMgr.Instance.DiceRoll(true);
+                    break;
+                case DiceCount.four:
+                    DiceMgr.Instance.DiceFour();
+                    DiceMgr.Instance.DiceRoll(true);
+                    break;
+                case DiceCount.five:
+                    DiceMgr.Instance.DiceFive();
+                    DiceMgr.Instance.DiceRoll(true);
+                    break;
+            }
+        }
     }
     private void PlayerLoseUpdate()
     {
@@ -379,59 +426,15 @@ public class GameMgr : MonoBehaviour
         publisher.RaiseEvent(currentDamage, currentTarget); // 이벤트 발생 ondamage, 코루틴으로 해야되나
     }
 
-    public void MonsterEffect()
+    IEnumerator MonsterEffect()
     {
         //이펙트 관리자가 필요할까?
         enemyDiceRoll = false;
-
+        monsterSignal = 0;
         for (int i = 0; i < StageMgr.Instance.enemies.Count; i++)
         {
-            int enemyDamage = enemyValue + StageMgr.Instance.enemies[i].Damage;
-            if (PlayerBarrier >= enemyDamage)
-            {
-                PlayerBarrier -= enemyDamage;
-            }
-            else
-            {
-                enemyDamage -= PlayerBarrier;
-                PlayerBarrier = 0;
-                PlayerHp -= enemyDamage;
-            }
-            LifeUpdate();
-
-            if (PlayerHp <= 0)
-            {
-                currentStatus = TurnStatus.PlayerLose;
-                return;
-                //플레이어 사망 체크
-            }
-        }
-
-        TurnUpdate(--currentTurn);
-        if (currentTurn < 0)
-        {
-            currentStatus = TurnStatus.PlayerLose;
-            return;
-        }
-
-        PlayerBarrier = 0;
-        LifeUpdate();
-
-        currentStatus = TurnStatus.PlayerDice;
-        switch (currentDiceCount)
-        {
-            case DiceCount.three:
-                DiceMgr.Instance.DiceThree();
-                DiceMgr.Instance.DiceRoll(true);
-                break;
-            case DiceCount.four:
-                DiceMgr.Instance.DiceFour();
-                DiceMgr.Instance.DiceRoll(true);
-                break;
-            case DiceCount.five:
-                DiceMgr.Instance.DiceFive();
-                DiceMgr.Instance.DiceRoll(true);
-                break;
+            StageMgr.Instance.enemies[i].animator.SetTrigger("Attack");
+            yield return new WaitForSeconds(0.3f);
         }
     }
 
@@ -473,6 +476,32 @@ public class GameMgr : MonoBehaviour
         {
             currentStatus = TurnStatus.MonsterDice;
         }
+    }
+
+    public void PlayerOndamage(int enemyDamage)
+    {
+        if (PlayerBarrier >= enemyDamage)
+        {
+            PlayerBarrier -= enemyDamage;
+
+            var DamageMessage = Instantiate(messagePrefab, canvas.transform);
+            DamageMessage.Setup(enemyDamage, Color.blue);
+            DamageMessage.GetComponent<RectTransform>().anchoredPosition =
+                messagePos.GetComponent<RectTransform>().anchoredPosition;
+
+
+        }
+        else
+        {
+            enemyDamage -= PlayerBarrier;
+            PlayerBarrier = 0;
+            PlayerHp -= enemyDamage;
+            var DamageMessage = Instantiate(messagePrefab, canvas.transform);
+            DamageMessage.Setup(enemyDamage, Color.red);
+            DamageMessage.GetComponent<RectTransform>().anchoredPosition =
+                 messagePos.GetComponent<RectTransform>().anchoredPosition;
+        }
+        LifeUpdate();
     }
 
     public void Heal()

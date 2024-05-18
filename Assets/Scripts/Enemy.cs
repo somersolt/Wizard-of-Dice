@@ -8,6 +8,8 @@ using UnityEngine.UI;
 public class Enemy : MonoBehaviour
 {
     public Animator animator;
+    public Canvas canvas;
+    public Message damagePrefab;
     public int MaxHp = 100;
     public int Damage = 3;
     int Hp;
@@ -18,10 +20,14 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI Life;
 
+    [SerializeField]
+    private TextMeshProUGUI DamageInfo;
+
     private void Awake()
     {
         Hp = MaxHp;
         Life.text = Hp.ToString();
+        DamageInfo.text = Damage.ToString();
 
         animator = GetComponent<Animator>();
     }
@@ -29,6 +35,8 @@ public class Enemy : MonoBehaviour
     public void OnDamage(int d)
     {
         Hp -= d;
+        var DamageMessage = Instantiate(damagePrefab, canvas.transform);
+        DamageMessage.Setup(GameMgr.Instance.currentDamage, Color.red, true);
         if ( Hp <= 0 )
         {
             animator.SetTrigger("onDead");
@@ -40,9 +48,16 @@ public class Enemy : MonoBehaviour
         }
 
         animator.SetTrigger("GetHit");
-
         HpBar.fillAmount = (float)Hp / MaxHp;
         Life.text = Hp.ToString();
+    }
+
+
+    public void OnAttack()
+    {
+        int enemyDamage = GameMgr.Instance.enemyValue + Damage;
+        GameMgr.Instance.PlayerOndamage(enemyDamage);
+        GameMgr.Instance.monsterSignal++;
     }
 
     public void Die()

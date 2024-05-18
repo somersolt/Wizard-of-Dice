@@ -287,7 +287,7 @@ public class DiceMgr : MonoBehaviour
     {
         enemyValue = UnityEngine.Random.Range(1, 7);
         GameMgr.Instance.enemyValue = enemyValue;
-        Action enemySpincallback = () => { GameMgr.Instance.MonsterEffect(); };
+        Action enemySpincallback = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack ;};
         enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], () => enemySpincallback());
     }
 }
