@@ -5,6 +5,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using System.Text;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.ShortcutManagement;
@@ -123,6 +124,10 @@ public class GameMgr : MonoBehaviour
     public DiceCount currentDiceCount;
     int[] RankList = new int[(int)Ranks.count]; // 플레이어의 족보 리스트
     private RanksFlag currentRanks; //현재 주사위로 나온 족보
+
+    [SerializeField]
+    private TextMeshProUGUI[] ranksInfo = new TextMeshProUGUI[9];
+
     private int currentValue;
     [SerializeField]
     private TextMeshProUGUI damageInfo;
@@ -162,10 +167,15 @@ public class GameMgr : MonoBehaviour
 
     private void Awake()
     {
+        for(int i = 0; i < ranksInfo.Length; i++)
+        {
+            ranksInfo[i].text = string.Empty;
+        }
         PlayerHp = PlayerHpMax;
         PlayerBarrier = PlayerBarrierStart;
         LifeUpdate();
         RankList[0] = 1; // 원페어 등록
+        RanksListUpdate();
 
         var onepair2 = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[0] + 1);
         ui.rewardList.Add(onepair2);
@@ -386,7 +396,7 @@ public class GameMgr : MonoBehaviour
 
         currentDamage = DamageCheckSystem.DamageCheck(currentValue, RankList, currentRanks);
         damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
-
+        /*
         int r = 0;
         for (int i = 0; i < scrolls.Length; i++)
         {
@@ -405,11 +415,33 @@ public class GameMgr : MonoBehaviour
                 }
             }
         }
+        */ // 스크롤 순서대로 띄워주던 코드
+
+
+        for (int i = 0; i < ranksInfo.Length; i++)
+        {
+            RanksFlag currentFlag = (RanksFlag)(1 << i);
+            if ((currentRanks & currentFlag) != 0)
+            {
+                ranksInfo[i].color = Color.red;
+            }
+        }
     }
 
     public void RanksListUpdate()
     {
         RankCheckSystem.ranksList = RankList;
+        for(int i = 0; i < ranksInfo.Length; i++)
+        {
+            if (RankList[i] != 0)
+            {
+            StringBuilder newText = new StringBuilder();
+            newText.Append(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]).GetName);
+            newText.Append("- Lv ");
+            newText.Append(RankList[i]);
+            ranksInfo[i].text = newText.ToString(); 
+            }
+        }
     }
 
     public void TurnUpdate(int n)
@@ -440,11 +472,17 @@ public class GameMgr : MonoBehaviour
 
     public void ScrollsClear()
     {
+        /*
         for (int i = 0; i < 3; i++)
         {
             scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text = " ";
         }
         damageInfo.text = " ";
+        */ // 마법서 스크롤 띄우던거
+        for (int i = 0; i < ranksInfo.Length; i++)
+        {
+            ranksInfo[i].color = Color.gray;
+        }
     }
 
     private void MonsterCheck()
