@@ -14,21 +14,33 @@ public static class RankCheckSystem
     {
         ClearList();
         Array.Copy(list, diceNumberCount, list.Length);
-        RankCheck5();
-        //switch (GameMgr.Instance.currentDiceCount)
-        //{
-        //    case GameMgr.DiceCount.three:
-        //        RankCheck3();
-        //        break;
-        //    case GameMgr.DiceCount.four:
-        //        RankCheck4();
-        //        break;
-        //    case GameMgr.DiceCount.five:
-        //        RankCheck5();
-        //        break;
-        //}
+        switch (GameMgr.Instance.currentDiceCount)
+        {
+            case GameMgr.DiceCount.two:
+                RankCheck2();
+                break;
+            case GameMgr.DiceCount.three:
+                RankCheck3();
+                break;
+            case GameMgr.DiceCount.four:
+                RankCheck4();
+                break;
+            case GameMgr.DiceCount.five:
+                RankCheck5();
+                break;
+        }
 
         return ranksCheckList;
+    }
+    private static void RankCheck2()
+    {
+        for (int i = 0; i < diceNumberCount.Length; i++)
+        {
+            if (diceNumberCount[i] >= 2)
+            {
+                ranksCheckList |= RanksFlag.OnePair;
+            }
+        } // 원페어 체크
     }
 
     private static void RankCheck3()

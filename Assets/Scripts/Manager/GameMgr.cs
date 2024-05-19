@@ -82,6 +82,7 @@ public class GameMgr : MonoBehaviour
 
     }    // 싱글톤 패턴
 
+    public Tutorial tutorial;
     public UI ui;
 
     public enum TurnStatus
@@ -116,6 +117,7 @@ public class GameMgr : MonoBehaviour
     public GameObject messagePos;
     public enum DiceCount
     {
+        two = 2,
         three = 3,
         four = 4,
         five = 5,
@@ -167,7 +169,16 @@ public class GameMgr : MonoBehaviour
 
     private void Awake()
     {
-        for(int i = 0; i < ranksInfo.Length; i++)
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        for (int i = 0; i < ranksInfo.Length; i++)
         {
             ranksInfo[i].text = string.Empty;
         }
@@ -193,11 +204,11 @@ public class GameMgr : MonoBehaviour
         quit.onClick.AddListener(() => pauseGame());
     }
 
+
     private void Start()
     {
-        currentDiceCount = DiceCount.five;
-        DiceMgr.Instance.DiceFive();
-        DiceMgr.Instance.DiceRoll(true);
+        currentDiceCount = DiceCount.two;
+        DiceMgr.Instance.DiceTwo();
     }
     private void Update()
     {
@@ -224,8 +235,6 @@ public class GameMgr : MonoBehaviour
         }
 
     }
-
-
 
     private void PlayerDiceUpdate()
     {
@@ -330,6 +339,10 @@ public class GameMgr : MonoBehaviour
             onMonsterAttack = false;
             switch (currentDiceCount)
             {
+                case DiceCount.two:
+                    DiceMgr.Instance.DiceTwo();
+                    DiceMgr.Instance.DiceRoll(true);
+                    break;
                 case DiceCount.three:
                     DiceMgr.Instance.DiceThree();
                     DiceMgr.Instance.DiceRoll(true);
@@ -349,7 +362,6 @@ public class GameMgr : MonoBehaviour
     {
         ui.GameOver();
     }
-
 
 
 
@@ -455,7 +467,7 @@ public class GameMgr : MonoBehaviour
     {
         livingMonster = Math.Min(StageMgr.Instance.enemies.Count, currentTarget);
         CurrentStatus = TurnStatus.PlayerAttack;
-        publisher.RaiseEvent(currentDamage, currentTarget); // 이벤트 발생 ondamage, 코루틴으로 해야되나
+        publisher.RaiseEvent(currentDamage, currentTarget);
     }
 
     IEnumerator MonsterEffect()
@@ -502,7 +514,7 @@ public class GameMgr : MonoBehaviour
                 return;
             }
             currentStatus = TurnStatus.GetRewards;
-            if (StageMgr.Instance.currentStage == 5 || StageMgr.Instance.currentStage == 10)
+            if (StageMgr.Instance.TutorialStage == StageMgr.Instance.currentStage)
             {
                 ui.GetDice();
                 return;

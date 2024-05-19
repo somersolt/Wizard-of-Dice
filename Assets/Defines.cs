@@ -23,6 +23,10 @@ public static class Vars
     public static readonly int BuildVersion = 1;
 
 }
+public static class UsedColor
+{
+    public static readonly Color usedColor = new Color(214/255f, 214/255f, 214/255f , 0);
+}
 
 public static class constant
 {
@@ -86,4 +90,11 @@ public enum RanksFlag : short
     FullHouse = 1 << 6,
     Straight5 = 1 << 7,
     KindOf5 = 1 << 8,
+}
+
+public enum GameMode
+{
+    Tutorial2 = -1,
+    Tutorial = 0,
+    Default = 1,
 }

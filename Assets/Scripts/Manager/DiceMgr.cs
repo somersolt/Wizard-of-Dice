@@ -48,6 +48,11 @@ public class DiceMgr : MonoBehaviour
 
     private RanksFlag checkedRanksList; // 랭크 체크 후 9개 족보 활성화 여부 저장
 
+    public int[] manipulList = new int[constant.diceMax]; // 주사위 조작용 리스트
+
+    public bool tutorialControl;
+    public int tutorialControlMode = 0;
+
     [SerializeField]
     private Button reRoll; // 재굴림
     [SerializeField]
@@ -66,6 +71,14 @@ public class DiceMgr : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
 
         for (int i = 0; i < constant.diceNumberMax; i++)
         {
@@ -105,48 +118,93 @@ public class DiceMgr : MonoBehaviour
             GameMgr.Instance.SetResult(checkedRanksList, totalValue);
         }
 
-        if (onDiceRoll)
+        if (!tutorialControl)
         {
-            for (int i = 0; i < constant.diceMax; i++)
-            {
-                dices[i].interactable = false;
-            }
-            confirm.interactable = false;
-            reRoll.interactable = false;
-        }
-        else
-        {
-
-            if (selectedDice.Count == 0 || Time.timeScale == 0)
-            {
-                reRoll.interactable = false;
-            }
-
-            if (selectedDice.Count != 0 && rerollCount > 0 && Time.timeScale != 0)
+            if (onDiceRoll)
             {
                 for (int i = 0; i < constant.diceMax; i++)
                 {
-                    if (buttonToggle[i] == false)
-                    {
-                        dices[i].interactable = true;
-                    }
-
+                    dices[i].interactable = false;
                 }
-                reRoll.interactable = true;
-            }
-
-            if (Time.timeScale != 0)
-            {
-                confirm.interactable = true;
-            }
-            else if(Time.timeScale == 0)
-            { 
                 confirm.interactable = false;
+                reRoll.interactable = false;
+            }
+            else
+            {
+
+                if (selectedDice.Count == 0 || Time.timeScale == 0)
+                {
+                    reRoll.interactable = false;
+                }
+
+                if (selectedDice.Count != 0 && rerollCount > 0 && Time.timeScale != 0)
+                {
+                    for (int i = 0; i < constant.diceMax; i++)
+                    {
+                        if (buttonToggle[i] == false)
+                        {
+                            dices[i].interactable = true;
+                        }
+
+                    }
+                    reRoll.interactable = true;
+                }
+
+                if (Time.timeScale != 0)
+                {
+                    confirm.interactable = true;
+                }
+                else if (Time.timeScale == 0)
+                {
+                    confirm.interactable = false;
+                }
+            }
+        }
+        else if (tutorialControl)
+        {
+            dices[0].interactable = false;
+            dices[1].interactable = false;
+            switch (tutorialControlMode)
+            {
+                case 0:
+                    confirm.interactable = false;
+                    reRoll.interactable = false;
+                    break;
+                case 1:
+                    confirm.interactable = false;
+                    reRoll.interactable = true;
+                    break;
+                case 2:
+                    confirm.interactable = true;
+                    reRoll.interactable = false;
+                    break;
             }
         }
     }
 
-    public void DiceRoll(bool starting = false)
+    public void TutorialButtonControl(bool control)
+    {
+        reRoll.onClick.RemoveAllListeners();
+        if (control)
+        {
+            reRoll.onClick.AddListener(() =>
+            {
+                IncrementTutorialTextCount();
+                DiceRoll(false, GameMode.Tutorial2);
+            });
+            confirm.onClick.AddListener(() => IncrementTutorialTextCount());
+        }
+        else
+        {
+            reRoll.onClick.AddListener(() => DiceRoll());
+            confirm.onClick.RemoveListener(() => IncrementTutorialTextCount());
+        }
+    }
+    private void IncrementTutorialTextCount()
+    {
+        GameMgr.Instance.tutorial.textCount++;
+    }
+    public void DiceRoll(bool starting = false, GameMode mode = GameMode.Default)
     {
         GameMgr.Instance.ScrollsClear();
         onDiceRoll = true;
@@ -181,7 +239,42 @@ public class DiceMgr : MonoBehaviour
                 countToResult++;
             };
 
-            StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback));
+            Action<int> tutorialCallback = (diceIndex) =>
+            {
+                dices[diceIndex].GetComponentInChildren<TextMeshProUGUI>().text = dicesValues[diceIndex].ToString();
+                countToResult++;
+                GameMgr.Instance.tutorial.eventCount++;
+            };
+
+            if (mode == GameMode.Default)
+            {
+                if (manipulList[i] != 0)
+                {
+                    StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback));
+                }
+                else
+                {
+                    StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback, manipulList[i]));
+                }
+                // 주사위 조작 코드
+            }
+            else if (mode == GameMode.Tutorial)
+            {
+                switch (i)
+                {
+                    case 0:
+                        StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 4));
+                        break;
+                    case 1:
+                        StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 6));
+                        break;
+                }
+            }
+            else if (mode == GameMode.Tutorial2)
+            {
+                StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 4));
+            }
+
             dices[selectedDice[i]].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
             buttonToggle[selectedDice[i]] = false;
         }
@@ -193,8 +286,13 @@ public class DiceMgr : MonoBehaviour
 
     }
 
-    private IEnumerator SelectDiceRoll(int index, bool starting, Action<int> callback)
+    private IEnumerator SelectDiceRoll(int index, bool starting, Action<int> callback, int manipul = 0)
     {
+        if (GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.two && (index == 2 || index == 3 || index == 4))
+        {
+            dicesValues[index] = 0;
+            yield break;
+        }
         if (GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.three && (index == 3 || index == 4))
         {
             dicesValues[index] = 0;
@@ -207,11 +305,22 @@ public class DiceMgr : MonoBehaviour
         }
         dices[index].GetComponentInChildren<TextMeshProUGUI>().text = string.Empty;
         dices[index].interactable = false;
-        dicesValues[index] = diceNumbers[UnityEngine.Random.Range(0, diceNumbers.Count)];
+        if (manipul == 0)
+        {
+            dicesValues[index] = diceNumbers[UnityEngine.Random.Range(0, diceNumbers.Count)];
+        }
+        else
+        {
+            dicesValues[index] = manipul; // 주사위 조작 코드
+        }
+
         if (starting)
         {
             switch (GameMgr.Instance.currentDiceCount)
             {
+                case GameMgr.DiceCount.two:
+                    SpinControlers[index].DiceSpin(30 + index * 24, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
+                    break;
                 case GameMgr.DiceCount.three:
                     SpinControlers[index].DiceSpin(30 + index * 16, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
                     break;
@@ -251,8 +360,21 @@ public class DiceMgr : MonoBehaviour
         }
     }
 
+    public void DiceTwo()
+    {
+        dices[2].gameObject.SetActive(false);
+        dices[3].gameObject.SetActive(false);
+        dices[4].gameObject.SetActive(false);
+        selectedDice.Clear();
+        for (int i = 0; i < 2; i++)
+        {
+            selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
+        }
+    }
+
     public void DiceThree()
     {
+        dices[2].gameObject.SetActive(true);
         dices[3].gameObject.SetActive(false);
         dices[4].gameObject.SetActive(false);
         selectedDice.Clear();
@@ -263,6 +385,7 @@ public class DiceMgr : MonoBehaviour
     }
     public void DiceFour()
     {
+        dices[2].gameObject.SetActive(true);
         dices[3].gameObject.SetActive(true);
         dices[4].gameObject.SetActive(false);
         selectedDice.Clear();
@@ -273,6 +396,7 @@ public class DiceMgr : MonoBehaviour
     }
     public void DiceFive()
     {
+        dices[2].gameObject.SetActive(true);
         dices[3].gameObject.SetActive(true);
         dices[4].gameObject.SetActive(true);
         selectedDice.Clear();
@@ -287,7 +411,7 @@ public class DiceMgr : MonoBehaviour
     {
         enemyValue = UnityEngine.Random.Range(1, 7);
         GameMgr.Instance.enemyValue = enemyValue;
-        Action enemySpincallback = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack ;};
+        Action enemySpincallback = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
         enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], () => enemySpincallback());
     }
 }

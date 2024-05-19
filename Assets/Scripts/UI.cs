@@ -52,10 +52,10 @@ public class UI : MonoBehaviour
     {
         titleButton.onClick.AddListener(() => ReturnTitle());
         titleButton2.onClick.AddListener(() => ReturnTitle());
-        diceRewardConfirm.onClick.AddListener(() => { diceRewardPanel.gameObject.SetActive(false); OnReward(); });
+        diceRewardConfirm.onClick.AddListener(() => { diceRewardPanel.gameObject.SetActive(false); StageMgr.Instance.NextStage(); });
         ReturnButton.onClick.AddListener(() => { PausePanel.gameObject.SetActive(false); Time.timeScale = 1; });
         QuitGame.onClick.AddListener(() => { QuitPanel.gameObject.SetActive(true); });
-        QuitYes.onClick.AddListener(() => GameMgr.Instance.QuitGame());
+        QuitYes.onClick.AddListener(() => { Time.timeScale = 1; SceneManager.LoadScene("Title");}) ;
         QuitNo.onClick.AddListener(() => { QuitPanel.gameObject.SetActive(false); });
 
         for (int i = 0; i < rewards.Length; i++)

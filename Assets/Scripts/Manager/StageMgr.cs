@@ -40,14 +40,30 @@ public class StageMgr : MonoBehaviour
 
     public List<Enemy> enemies = new List<Enemy>();
     public List<Enemy> DeadEnemies = new List<Enemy>();
+    public Enemy tutorialEnemy; // TO-DO 테스트 적
     public Enemy testPrefab; // TO-DO 테스트 적
     public Enemy bosstestPrefab; // TO-DO 테스트 적
+
+
+    public int TutorialStage = 0;
+    public HashSet<int> BonusStages = new HashSet<int> {0};
 
     public EnemySpawner enemySpawner;
     private void Awake()
     {
-        currentStage = 1;
-        SetEnemy();
+                if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+
+        currentStage = 0;
+        enemySpawner.Spawn(tutorialEnemy, (int)PosNum.Center);
+        StageInfo.text = $"Tutorial";
+
     }
 
 
@@ -55,7 +71,12 @@ public class StageMgr : MonoBehaviour
     {
         currentStage++;
         GameMgr.Instance.TurnUpdate(10);
-        if (currentStage == 6)
+        if(currentStage == 1)
+        {
+            GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.three;
+            SetEnemy();
+        }
+        else if (currentStage == 6)
         {
             //GameMgr.Instance.GetDice4Ranks();
             //이거말고 중간보스 보상
