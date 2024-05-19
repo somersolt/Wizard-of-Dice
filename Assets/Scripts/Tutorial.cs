@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static GameMgr;
 
 public class Tutorial : MonoBehaviour
 {
@@ -31,7 +32,8 @@ public class Tutorial : MonoBehaviour
     [SerializeField]
     private Image ranks;
 
-    private Coroutine tutoCorutine;
+    private List<Coroutine> tutoCorutines = new List<Coroutine>(); // 코루틴관리자
+
     bool eventTrigger;
     public int eventCount = 0;
     private TutorialStep currentStep;
@@ -83,7 +85,11 @@ public class Tutorial : MonoBehaviour
         switch (currentStep)
         {
             case TutorialStep.Welcome:
-                DiceMgr.Instance.onDiceRoll = true;
+                if (!eventTrigger)
+                {
+                    DiceMgr.Instance.onDiceRoll = true;
+                    eventTrigger = true;
+                }
                 tutorialText.text = "Wizard Of Dice에 오신것을 \n 환영합니다!";
                 break;
             case TutorialStep.Introduction:
@@ -94,7 +100,8 @@ public class Tutorial : MonoBehaviour
                 if (!eventTrigger)
                 {
                     eventTrigger = true;
-                    tutoCorutine = StartCoroutine(DiceColorCycle());
+                    Coroutine coroutine = StartCoroutine(DiceColorCycle());
+                    tutoCorutines.Add(coroutine);
                 }
                 break;
             case TutorialStep.RollDicePrompt:
@@ -102,7 +109,6 @@ public class Tutorial : MonoBehaviour
                 DiceMgr.Instance.onDiceRoll = true;
                 break;
             case TutorialStep.RollDice:
-                StopCoroutine(tutoCorutine);
                 if (!eventTrigger)
                 {
                     dices.CrossFadeColor(UsedColor.usedColor, 1, true, true);
@@ -122,11 +128,12 @@ public class Tutorial : MonoBehaviour
                 if (!eventTrigger)
                 {
                     eventTrigger = true;
-                    tutoCorutine = StartCoroutine(DamageColorCycle());
+                    Coroutine coroutine = StartCoroutine(DamageColorCycle());
+                    tutoCorutines.Add(coroutine);
+
                 }
                 break;
             case TutorialStep.RerollDicePrompt:
-                StopCoroutine(tutoCorutine);
                 if (!eventTrigger)
                 {
                     damage.CrossFadeColor(Color.white, 1, true, true);
@@ -173,12 +180,12 @@ public class Tutorial : MonoBehaviour
                 if (!eventTrigger)
                 {
                     eventTrigger = true;
-                    tutoCorutine = StartCoroutine(RanksColorCycle());
+                    Coroutine coroutine = StartCoroutine(RanksColorCycle());
+                    tutoCorutines.Add(coroutine);
                 }
                 break;
             case TutorialStep.ShowMagicCombination:
                 tutorialText.text = "주사위 눈이 특정 마법의 조건에 맞으면 \n 당신의 마법력이 강화됩니다!";
-                StopCoroutine(tutoCorutine);
                 if (!eventTrigger)
                 {
                     ranks.CrossFadeColor(Color.white, 1, true, true);
@@ -245,7 +252,7 @@ public class Tutorial : MonoBehaviour
 
     public IEnumerator DiceColorCycle()
     {
-        while (true)
+        while (currentStep == TutorialStep.ShowDice)
         {
             dices.CrossFadeColor(new Color(113 / 255f, 255 / 255f, 0 / 255f), 1, true, true);
             yield return new WaitForSecondsRealtime(1);
@@ -257,7 +264,7 @@ public class Tutorial : MonoBehaviour
 
     public IEnumerator DamageColorCycle()
     {
-        while (true)
+        while (currentStep == TutorialStep.ShowMagicPower)
         {
             damage.CrossFadeColor(new Color(113 / 255f, 255 / 255f, 0 / 255f), 1, true, true);
             yield return new WaitForSecondsRealtime(1);
@@ -268,7 +275,7 @@ public class Tutorial : MonoBehaviour
     }
     public IEnumerator RanksColorCycle()
     {
-        while (true)
+        while (currentStep == TutorialStep.ShowMagicDescription)
         {
             ranks.CrossFadeColor(new Color(113 / 255f, 255 / 255f, 0 / 255f), 1, true, true);
             yield return new WaitForSecondsRealtime(1);
@@ -280,29 +287,34 @@ public class Tutorial : MonoBehaviour
 
     private void TutorialSkip()
     {
-        if (tutoCorutine != null)
-        {
-            StopCoroutine(tutoCorutine);
-        }
-        dices.CrossFadeColor(UsedColor.usedColor, 1, true, true);
-        damage.CrossFadeColor(Color.white, 1, true, true);
-        ranks.CrossFadeColor(Color.white, 1, true, true);
+        currentStep = TutorialStep.EndTutorial;
         textCount = -1;
-        eventTrigger = false; 
+        eventTrigger = false;
         eventCount = 0;
+        DiceMgr.Instance.StopAllActiveCoroutines();
+
+        dices.color = UsedColor.usedColor;
+        damage.color = UsedColor.whiteColor;
+        ranks.color = UsedColor.whiteColor;
+
         DiceMgr.Instance.tutorialControl = false;
-        GameMgr.Instance.tutorialMode = false;
+        Instance.tutorialMode = false;
+        //DiceMgr.Instance.onDiceRoll = false;
         tutorialPanel.gameObject.SetActive(false);
         skipButton.gameObject.SetActive(false);
         skipPanel.gameObject.SetActive(false);
 
         DiceMgr.Instance.TutorialButtonControl(false);
         DiceMgr.Instance.manipulList[1] = 0;
+        //DiceMgr.Instance.selectedDice.Clear();
 
         Destroy(StageMgr.Instance.enemies[0].gameObject);
         StageMgr.Instance.enemies.Clear();
-        GameMgr.Instance.ui.GetDice();
-
+        //DiceMgr.Instance.InfoClear();
+        //Instance.currentDiceCount = DiceCount.three;
+        //DiceMgr.Instance.DiceThree();
+        //DiceMgr.Instance.DiceRoll();
+        Instance.ui.GetDice();
 
     }
 

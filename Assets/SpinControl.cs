@@ -27,12 +27,13 @@ public class SpinControl : MonoBehaviour
     private float stopsecond;
     private Vector3 spinAmount = new Vector3(50, 0, 50);
     private Action spinCallback;
-
+    public Coroutine coroutine;
     public void DiceSpin(int count, Vector3 Pos, Action callback = null)
     {
         spinCount = count;
         spinCallback = callback;
-        StartCoroutine(Spin(Pos));
+        coroutine = StartCoroutine(Spin(Pos));
+        DiceMgr.Instance.coroutineList.Add(this);
     }
 
     IEnumerator Spin(Vector3 Pos)

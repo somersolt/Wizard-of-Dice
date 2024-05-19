@@ -44,7 +44,7 @@ public class DiceMgr : MonoBehaviour
 
     private List<int> diceNumbers = new List<int>(); // 주사위 눈 1~6 리스트 (변동가능)
 
-    private List<int> selectedDice = new List<int>();
+    public List<int> selectedDice = new List<int>();
 
     private RanksFlag checkedRanksList; // 랭크 체크 후 9개 족보 활성화 여부 저장
 
@@ -58,7 +58,7 @@ public class DiceMgr : MonoBehaviour
     [SerializeField]
     private Button confirm; // 확정
 
-    private int countToResult;
+    public int countToResult;
     private int rerollCount = 1;
     private bool onResult;
 
@@ -68,6 +68,11 @@ public class DiceMgr : MonoBehaviour
     [SerializeField]
     private SpinControl enemyDice;
     public int enemyValue;
+
+
+    public List<Coroutine> activeCoroutines = new List<Coroutine>(); // 코루틴관리자
+    public List<SpinControl> coroutineList = new List<SpinControl>(); // 코루틴관리자2
+
 
     private void Awake()
     {
@@ -92,6 +97,24 @@ public class DiceMgr : MonoBehaviour
         }
         reRoll.onClick.AddListener(() => DiceRoll());
         confirm.onClick.AddListener(() => { GameMgr.Instance.PlayerAttackEffect(); onDiceRoll = true; });
+    }
+
+    public void InfoClear()
+    {
+        selectedDice.Clear();
+        onResult = false;
+        onDiceRoll = false;
+        totalValue = 0;
+        for (int i = 0; i < (int)GameMgr.Instance.currentDiceCount; i++)
+        {
+            totalValue += dicesValues[i];
+            //buttonToggle[i] = false; // 전부 고정 푸는 코드
+            if (buttonToggle[i] == false)
+            {
+                dices[i].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
+                selectedDice.Add(i);
+            }
+        }
     }
 
     private void Update()
@@ -263,16 +286,20 @@ public class DiceMgr : MonoBehaviour
                 switch (i)
                 {
                     case 0:
-                        StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 4));
+                        Coroutine newcoroutine= StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 4));
+                        activeCoroutines.Add(newcoroutine);
                         break;
                     case 1:
-                        StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 6));
+                        Coroutine newcoroutine2 = StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 6));
+                        activeCoroutines.Add(newcoroutine2);
+
                         break;
                 }
             }
             else if (mode == GameMode.Tutorial2)
             {
-                StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 4));
+                Coroutine newcoroutine = StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 4));
+                activeCoroutines.Add(newcoroutine);
             }
 
             dices[selectedDice[i]].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
@@ -414,4 +441,20 @@ public class DiceMgr : MonoBehaviour
         Action enemySpincallback = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
         enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], () => enemySpincallback());
     }
+
+
+    public void StopAllActiveCoroutines()
+    {
+        foreach (SpinControl coroutine in coroutineList)
+        {
+            coroutine.StopCoroutine(coroutine.coroutine);
+        }
+        coroutineList.Clear();
+        foreach (Coroutine coroutine in activeCoroutines)
+        {
+            StopCoroutine(coroutine);
+        }
+        activeCoroutines.Clear();
+    }
+
 }
