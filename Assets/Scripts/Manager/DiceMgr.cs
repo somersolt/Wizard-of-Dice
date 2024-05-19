@@ -91,8 +91,7 @@ public class DiceMgr : MonoBehaviour
             dices[index].onClick.AddListener(() => ButtonSelect(index));  // 버튼 세팅
         }
         reRoll.onClick.AddListener(() => DiceRoll());
-        confirm.onClick.AddListener(() => GameMgr.Instance.PlayerAttackEffect());
-        confirm.onClick.AddListener(() => { onDiceRoll = true; });
+        confirm.onClick.AddListener(() => { GameMgr.Instance.PlayerAttackEffect(); onDiceRoll = true; });
     }
 
     private void Update()
@@ -185,6 +184,7 @@ public class DiceMgr : MonoBehaviour
     public void TutorialButtonControl(bool control)
     {
         reRoll.onClick.RemoveAllListeners();
+        confirm.onClick.RemoveAllListeners();
         if (control)
         {
             reRoll.onClick.AddListener(() =>
@@ -192,17 +192,17 @@ public class DiceMgr : MonoBehaviour
                 IncrementTutorialTextCount();
                 DiceRoll(false, GameMode.Tutorial2);
             });
-            confirm.onClick.AddListener(() => IncrementTutorialTextCount());
+            confirm.onClick.AddListener(() => { IncrementTutorialTextCount(); GameMgr.Instance.PlayerAttackEffect(); onDiceRoll = true; });
         }
         else
         {
             reRoll.onClick.AddListener(() => DiceRoll());
-            confirm.onClick.RemoveListener(() => IncrementTutorialTextCount());
+            confirm.onClick.AddListener(() => { GameMgr.Instance.PlayerAttackEffect(); onDiceRoll = true; });
         }
     }
     private void IncrementTutorialTextCount()
     {
-        GameMgr.Instance.tutorial.textCount++;
+        GameMgr.Instance.tutorial.NextStep();
     }
     public void DiceRoll(bool starting = false, GameMode mode = GameMode.Default)
     {

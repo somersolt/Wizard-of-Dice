@@ -73,6 +73,8 @@ public class StageMgr : MonoBehaviour
         GameMgr.Instance.TurnUpdate(10);
         if(currentStage == 1)
         {
+            GameMgr.Instance.tutorial.skipButton.gameObject.SetActive(false);
+            GameMgr.Instance.LifeMax();
             GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.three;
             SetEnemy();
         }

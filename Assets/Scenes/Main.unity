@@ -1811,14 +1811,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.6039216}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5039,7 +5039,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 358.63, y: -143.02151}
+  m_AnchoredPosition: {x: 358.63, y: -240.91}
   m_SizeDelta: {x: -717.25, y: -286.0442}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &485898960
@@ -5483,6 +5483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tutorial: {fileID: 878964856}
+  tutorialMode: 0
   ui: {fileID: 395071574}
   currentTurn: 1
   turnInfo: {fileID: 339694776}
@@ -9893,9 +9894,11 @@ MonoBehaviour:
   skipButton: {fileID: 1049972575}
   skipYes: {fileID: 89738643}
   skipNo: {fileID: 243095857}
+  textCount: 0
   dices: {fileID: 168756487}
   damage: {fileID: 1048402006}
   ranks: {fileID: 976115395}
+  eventCount: 0
 --- !u!1 &893039071
 GameObject:
   m_ObjectHideFlags: 0
@@ -11616,7 +11619,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -963}
+  m_AnchoredPosition: {x: 0, y: -945.82}
   m_SizeDelta: {x: 279.3909, y: 126.6174}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1049972575
@@ -15299,6 +15302,9 @@ MonoBehaviour:
   - {fileID: 1653741739}
   - {fileID: 1496331219}
   - {fileID: 2016538085}
+  manipulList: 0000000000000000000000000000000000000000
+  tutorialControl: 0
+  tutorialControlMode: 0
   reRoll: {fileID: 893039073}
   confirm: {fileID: 1904706002}
   enemyDice: {fileID: 2043972377}

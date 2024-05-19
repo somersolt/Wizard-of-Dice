@@ -83,6 +83,7 @@ public class GameMgr : MonoBehaviour
     }    // ΩÃ±€≈Ê ∆–≈œ
 
     public Tutorial tutorial;
+    public bool tutorialMode;
     public UI ui;
 
     public enum TurnStatus
@@ -337,6 +338,13 @@ public class GameMgr : MonoBehaviour
 
             currentStatus = TurnStatus.PlayerDice;
             onMonsterAttack = false;
+
+            if (tutorialMode)
+            {
+                tutorial.eventCount++;
+                return;
+            }
+
             switch (currentDiceCount)
             {
                 case DiceCount.two:
@@ -564,6 +572,13 @@ public class GameMgr : MonoBehaviour
         PlayerBarrier += currentBarrier;
         LifeUpdate();
     }
+
+    public void LifeMax()
+    {
+        PlayerHp = PlayerHpMax;
+        LifeUpdate();
+    }
+
     public void LifeUpdate()
     {
         PlayerBarrierInfo.text = PlayerBarrier.ToString();
