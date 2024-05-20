@@ -40,6 +40,7 @@ public class Tutorial : MonoBehaviour
 
     private enum TutorialStep
     {
+        None = -1,
         Welcome = 0,
         Introduction,
         ShowDice,
@@ -287,7 +288,7 @@ public class Tutorial : MonoBehaviour
 
     private void TutorialSkip()
     {
-        currentStep = TutorialStep.EndTutorial;
+        currentStep = TutorialStep.None;
         textCount = -1;
         eventTrigger = false;
         eventCount = 0;

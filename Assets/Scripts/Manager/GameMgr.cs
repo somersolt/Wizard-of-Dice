@@ -248,24 +248,28 @@ public class GameMgr : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            GetDice4Ranks();
+            //GetDice4Ranks();
+            currentDiceCount = DiceCount.four;
             DiceMgr.Instance.DiceFour();
             DiceMgr.Instance.DiceRoll(true);
 
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            GetDice4Ranks();
-            GetDice5Ranks();
+            //GetDice4Ranks();
+            //GetDice5Ranks();
+            currentDiceCount = DiceCount.five;
             DiceMgr.Instance.DiceFive();
             DiceMgr.Instance.DiceRoll(true);
         }
-        //if (Input.GetKeyDown(KeyCode.Z))
-        //{
-        //    DiceMgr.Instance.manipulList[0] = 1;
-        //    DiceMgr.Instance.manipulList[1] = 2;
-        //    DiceMgr.Instance.manipulList[2] = 3;
-        //}
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            DiceMgr.Instance.manipulList[0] = 1;
+            DiceMgr.Instance.manipulList[1] = 2;
+            DiceMgr.Instance.manipulList[2] = 3;
+        }
+
+
         //if (Input.GetKeyDown(KeyCode.Alpha1))
         //{
         //    currentTarget = 1;

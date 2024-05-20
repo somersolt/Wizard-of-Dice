@@ -25,7 +25,7 @@ public static class Vars
 }
 public static class UsedColor
 {
-    public static readonly Color usedColor = new Color(214/255f, 214/255f, 214/255f , 1);
+    public static readonly Color usedColor = new Color(214/255f, 214/255f, 214/255f , 0);
     public static readonly Color whiteColor = new Color(255/255f, 255/255f, 255/255f , 1);
 }
 

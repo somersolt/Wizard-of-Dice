@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1734,7 +1734,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8392157, g: 0.83921576, b: 0.83921576, a: 0.80784315}
+  m_Color: {r: 0.8392157, g: 0.83921576, b: 0.83921576, a: 0.8156863}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -15302,13 +15302,16 @@ MonoBehaviour:
   - {fileID: 1653741739}
   - {fileID: 1496331219}
   - {fileID: 2016538085}
+  selectedDice: 
   manipulList: 0000000000000000000000000000000000000000
   tutorialControl: 0
   tutorialControlMode: 0
   reRoll: {fileID: 893039073}
   confirm: {fileID: 1904706002}
+  countToResult: 0
   enemyDice: {fileID: 2043972377}
   enemyValue: 0
+  coroutineList: []
 --- !u!1 &1623392014
 GameObject:
   m_ObjectHideFlags: 0

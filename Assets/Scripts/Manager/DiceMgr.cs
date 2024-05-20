@@ -119,6 +119,7 @@ public class DiceMgr : MonoBehaviour
 
     private void Update()
     {
+        //Debug.Log(countToResult + " " + selectedDice.Count);
         if (countToResult == selectedDice.Count && onResult)
         {
             checkedRanksList = RankCheckSystem.RankCheck(numbersCount);
@@ -254,6 +255,8 @@ public class DiceMgr : MonoBehaviour
             reRoll.GetComponentInChildren<TextMeshProUGUI>().text = "재굴림 : " + rerollCount.ToString();
         }
 
+
+
         for (int i = 0; i < selectedDiceCount; i++)
         {
             Action<int> spinCallback = (diceIndex) =>
@@ -271,13 +274,13 @@ public class DiceMgr : MonoBehaviour
 
             if (mode == GameMode.Default)
             {
-                if (manipulList[i] != 0)
+                if (manipulList[i] == 0)
                 {
                     StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback));
                 }
                 else
                 {
-                    StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback, manipulList[i]));
+                    StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback, manipulList[selectedDice[i]]));
                 }
                 // 주사위 조작 코드
             }
