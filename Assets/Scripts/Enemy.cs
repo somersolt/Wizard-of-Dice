@@ -30,6 +30,8 @@ public class Enemy : MonoBehaviour
         DamageInfo.text = Damage.ToString();
 
         animator = GetComponent<Animator>();
+        canvas.sortingLayerName = "UI";
+        canvas.sortingOrder = 10;
     }
 
     public void OnDamage(int d)
@@ -37,6 +39,7 @@ public class Enemy : MonoBehaviour
         Hp -= d;
         var DamageMessage = Instantiate(damagePrefab, canvas.transform);
         DamageMessage.Setup(GameMgr.Instance.currentDamage, Color.red, true);
+
         if ( Hp <= 0 )
         {
             animator.SetTrigger("onDead");
