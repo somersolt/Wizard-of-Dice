@@ -262,12 +262,12 @@ public class GameMgr : MonoBehaviour
         //    DiceMgr.Instance.DiceFive();
         //    DiceMgr.Instance.DiceRoll(true);
         //}
-        //if (Input.GetKeyDown(KeyCode.Z))
-        //{
-        //    DiceMgr.Instance.manipulList[0] = 1;
-        //    DiceMgr.Instance.manipulList[1] = 2;
-        //    DiceMgr.Instance.manipulList[2] = 3;
-        //}
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            DiceMgr.Instance.manipulList[0] = 1;
+            DiceMgr.Instance.manipulList[1] = 2;
+            DiceMgr.Instance.manipulList[2] = 3;
+        }
 
 
         if (Input.GetKeyDown(KeyCode.Alpha1))

@@ -4759,6 +4759,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 418215130}
   m_CullTransparentMesh: 1
+--- !u!1001 &422760599
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 455940810}
+    m_Modifications:
+    - target: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 102.95448
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.701727
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 8.246322
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9071911966566427817, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+      propertyPath: m_Name
+      value: Space_Forest
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
 --- !u!1 &438277640
 GameObject:
   m_ObjectHideFlags: 0
@@ -4923,6 +4980,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1137386458}
+  - {fileID: 889024642}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &483629541
@@ -9983,6 +10041,11 @@ MonoBehaviour:
   damage: {fileID: 1048402006}
   ranks: {fileID: 976115395}
   eventCount: 0
+--- !u!4 &889024642 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8551833708452050451, guid: b59d0ae955ad5994f937e8ed893b172c, type: 3}
+  m_PrefabInstance: {fileID: 422760599}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &893039071
 GameObject:
   m_ObjectHideFlags: 0
@@ -12358,7 +12421,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1137386458}
   - component: {fileID: 1137386457}
-  - component: {fileID: 1137386456}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -12366,26 +12428,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!154 &1137386456
-TerrainCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1137386455}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_TerrainData: {fileID: 15600000, guid: 9fd0999bcdb5b874882e73d08ff0d45d, type: 2}
-  m_EnableTreeColliders: 1
 --- !u!218 &1137386457
 Terrain:
   m_ObjectHideFlags: 0
@@ -13567,7 +13609,7 @@ MonoBehaviour:
   enemies: []
   DeadEnemies: []
   tutorialEnemy: {fileID: 5945258373864545318, guid: 6938401e80717bb4cba69782b41896ce, type: 3}
-  testPrefab: {fileID: 6305160278588049776, guid: 2e3234d5d404ac04a9f0831c618bc46f, type: 3}
+  testPrefab: {fileID: 7410958851871832311, guid: 406e3f00440a4ca47b76ff82b08c12ce, type: 3}
   bosstestPrefab: {fileID: 3373397451360921200, guid: fc90dd2e8bda9ea42a8d383e3128fc4d, type: 3}
   TutorialStage: 0
   enemySpawner: {fileID: 1453744876}

@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
         Life.text = Hp.ToString();
         DamageInfo.text = Damage.ToString();
 
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         canvas.sortingLayerName = "UI";
         canvas.sortingOrder = 10;
     }

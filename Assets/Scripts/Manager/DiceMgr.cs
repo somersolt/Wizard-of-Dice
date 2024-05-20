@@ -274,7 +274,7 @@ public class DiceMgr : MonoBehaviour
 
             if (mode == GameMode.Default)
             {
-                if (manipulList[i] == 0)
+                if (manipulList[selectedDice[i]] == 0)
                 {
                     StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback));
                 }
