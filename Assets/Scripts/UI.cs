@@ -28,7 +28,7 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] spellInfos = new TextMeshProUGUI[3];
     private TextMeshProUGUI[] spellLevels = new TextMeshProUGUI[3];
 
-    private SpellData[] rewardSpells = new SpellData[3];
+    private SpellData[] rewardSpells = new SpellData[2];
     private SpellData empty = new SpellData();
 
     [SerializeField]
@@ -58,19 +58,25 @@ public class UI : MonoBehaviour
         QuitYes.onClick.AddListener(() => { Time.timeScale = 1; SceneManager.LoadScene("Title");}) ;
         QuitNo.onClick.AddListener(() => { QuitPanel.gameObject.SetActive(false); });
 
-        for (int i = 0; i < rewards.Length; i++)
+        for (int i = 0; i < rewards.Length - 1; i++)
         {
             spellNames[i] = rewards[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
             spellInfos[i] = rewards[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
             spellLevels[i] = rewards[i].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
             int index = i;
             rewards[i].onClick.AddListener(() => { GetSpell(rewardSpells[index], index); });
-        }
+        } // 족보 보상 1~2칸
+
+        spellNames[2] = rewards[2].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
+        spellInfos[2] = rewards[2].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
+        spellLevels[2] = rewards[2].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
+        rewards[2].onClick.AddListener(() => { /*GetStatus */}); // 족보보상 3번째 칸
+
     }
 
     public void OnReward()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 2; i++)
         {
             int a = Random.Range(0, rewardList.Count);
             if (rewardList.Count != 0)
@@ -89,6 +95,12 @@ public class UI : MonoBehaviour
                 spellLevels[i].text = " ";
             }
         }
+
+        spellNames[2].text = "공격력 up";
+        spellInfos[2].text = "주사위 눈금 총합 + 3";
+        spellLevels[2].text = " ";
+
+
         rewardPanel.gameObject.SetActive(true);
         StartCoroutine(PanelSlide(rewardPanel));
 
@@ -120,7 +132,7 @@ public class UI : MonoBehaviour
         {
             if (i == index)
             {
-                if (spellData.LEVEL != 3 && spellData.LEVEL != 0)
+                if (spellData.LEVEL != 2 && spellData.LEVEL != 0)
                 {
                     rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(spellData.ID + 1));
                     if (spellData.LEVEL == 1)
