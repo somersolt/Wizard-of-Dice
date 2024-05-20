@@ -1184,7 +1184,7 @@ GameObject:
   - component: {fileID: 9106868699887989410}
   - component: {fileID: 1391843310272498239}
   m_Layer: 0
-  m_Name: SpiderPBR
+  m_Name: 2022
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1246,9 +1246,11 @@ MonoBehaviour:
   damagePrefab: {fileID: -3240762228831540081, guid: 78d7276ea5204664bae6fa851686e892, type: 3}
   MaxHp: 100
   Damage: 3
+  Name: 
   onDead: 0
   HpBar: {fileID: 3978578892074074961}
   Life: {fileID: 6666644067658661012}
+  NameInfo: {fileID: 772724005949665812}
   DamageInfo: {fileID: 4325318471618491888}
 --- !u!1 &8977943768411860154
 GameObject:
@@ -1484,6 +1486,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+--- !u!114 &772724005949665812 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2936938606565288248, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+  m_PrefabInstance: {fileID: 2484683495616518956}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3978578892074074961 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1535056864449845373, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}

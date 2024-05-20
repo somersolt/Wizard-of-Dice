@@ -25195,7 +25195,7 @@ GameObject:
   - component: {fileID: 5131095899580855145}
   - component: {fileID: 363990391729319698}
   m_Layer: 0
-  m_Name: Golem Fire
+  m_Name: 2045
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25235,9 +25235,11 @@ MonoBehaviour:
   damagePrefab: {fileID: -3240762228831540081, guid: 78d7276ea5204664bae6fa851686e892, type: 3}
   MaxHp: 100
   Damage: 3
+  Name: 
   onDead: 0
   HpBar: {fileID: 9011016178287785521}
   Life: {fileID: 1639277698982808052}
+  NameInfo: {fileID: 4648290371881568116}
   DamageInfo: {fileID: 8520196070948733072}
 --- !u!95 &363990391729319698
 Animator:
@@ -25365,6 +25367,17 @@ Canvas:
 --- !u!114 &1639277698982808052 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9151300204056405944, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+  m_PrefabInstance: {fileID: 7512023338565955148}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4648290371881568116 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2936938606565288248, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
   m_PrefabInstance: {fileID: 7512023338565955148}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

@@ -37,12 +37,14 @@ public class StageMgr : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI StageInfo;
     public int currentStage;
+    public int currentField;
 
     public List<Enemy> enemies = new List<Enemy>();
     public List<Enemy> DeadEnemies = new List<Enemy>();
+    public List<int> keyList = new List<int>();
     public Enemy tutorialEnemy; // TO-DO 테스트 적
-    public Enemy testPrefab; // TO-DO 테스트 적
-    public Enemy bosstestPrefab; // TO-DO 테스트 적
+    //public Enemy testPrefab; // TO-DO 테스트 적
+    //public Enemy bosstestPrefab; // TO-DO 테스트 적
 
 
     public int TutorialStage = 0;
@@ -51,7 +53,7 @@ public class StageMgr : MonoBehaviour
     public EnemySpawner enemySpawner;
     private void Awake()
     {
-                if (instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -59,8 +61,8 @@ public class StageMgr : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
         currentStage = 0;
+        currentField = 1;
         enemySpawner.Spawn(tutorialEnemy, (int)PosNum.Center);
         StageInfo.text = $"Tutorial";
 
@@ -70,37 +72,29 @@ public class StageMgr : MonoBehaviour
     public void NextStage()
     {
         currentStage++;
+        if(currentStage == 6)
+        {
+            currentStage = 1;
+            currentField++;
+        }
         GameMgr.Instance.TurnUpdate(10);
-        if(currentStage == 1)
+        if(currentStage == 1 && currentField == 1)
         {
             GameMgr.Instance.tutorial.skipButton.gameObject.SetActive(false);
             GameMgr.Instance.LifeMax();
             GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.three;
             SetEnemy();
         }
-        else if (currentStage == 6)
+        else if (currentStage == 4)
         {
-            //GameMgr.Instance.GetDice4Ranks();
-            //이거말고 중간보스 보상
-            SetEnemy();
-
-        }
-        else if (currentStage == 11)
-        {
-            //GameMgr.Instance.GetDice5Ranks();
-            //이거말고 중간보스2 보상
-            SetEnemy();
-
-        }
-        else if (currentStage == 5 || currentStage == 10)
-        {
-            enemySpawner.Spawn(bosstestPrefab, (int)PosNum.Center);
+            GameMgr.Instance.ui.OnReward(); // TO-DO 상점
+            return;
         }
         else
         {
             SetEnemy();
         }
-        StageInfo.text = $"Stage {currentStage}";
+        StageInfo.text = $"Stage {currentField} - {currentStage}";
 
         switch (GameMgr.Instance.currentDiceCount)
         {
@@ -121,23 +115,55 @@ public class StageMgr : MonoBehaviour
 
     private void SetEnemy()
     {
-        int enemyCount = UnityEngine.Random.Range(0, 3);
-        switch (enemyCount)
+        MonsterData enemyData = new MonsterData();
+        keyList = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).AllItemIds;
+        foreach(int i in keyList)
         {
-            case 0:
-                enemySpawner.Spawn(testPrefab, (int)PosNum.Center);
-                break;
-            case 1:
-                enemySpawner.Spawn(testPrefab, (int)PosNum.Left);
-                enemySpawner.Spawn(testPrefab, (int)PosNum.Right);
-                break;
-            case 2:
-                enemySpawner.Spawn(testPrefab, (int)PosNum.Left);
-                enemySpawner.Spawn(testPrefab, (int)PosNum.Center);
-                enemySpawner.Spawn(testPrefab, (int)PosNum.Right);
-                break;
-        }
+            if (i / 1000 == 2)
+            {
+                if (i % 100 / 10 == currentField && i % 10 == currentStage && currentStage != 5)
+                {
+                    enemyData = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).Get(i);
 
+                    var enemy = Resources.Load<Enemy>(string.Format("Prefabs/Monsters/{0}", enemyData.ID)).GetComponent<Enemy>();
+                    var count = enemyData.MONSTER_COUNT;
+                    switch (count)
+                    {
+                        case 1:
+                            enemySpawner.Spawn(enemy, (int)PosNum.Center , enemyData);
+                            break;
+                        case 2:
+                            enemySpawner.Spawn(enemy, (int)PosNum.Left, enemyData);
+                            enemySpawner.Spawn(enemy, (int)PosNum.Right, enemyData);
+                            break;
+                        case 3:
+                            enemySpawner.Spawn(enemy, (int)PosNum.Left, enemyData);
+                            enemySpawner.Spawn(enemy, (int)PosNum.Center, enemyData);
+                            enemySpawner.Spawn(enemy, (int)PosNum.Right, enemyData);
+                            break;
+                    }
+
+                    return;
+                }
+            }
+            else if ( i / 1000 == 3 && currentStage == 5)
+            {
+                if (i % 100 / 10 == currentField)
+                {
+                    var BossEnemyData = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).Get(i);
+                    enemyData = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).Get(i - 1000);
+
+                    var Boss = Resources.Load<Enemy>(string.Format("Prefabs/Monsters/{0}", BossEnemyData.ID));
+                    var enemy = Resources.Load<Enemy>(string.Format("Prefabs/Monsters/{0}", enemyData.ID));
+                    enemySpawner.Spawn(enemy, (int)PosNum.Left, enemyData);
+                    enemySpawner.Spawn(Boss, (int)PosNum.Center, BossEnemyData);
+                    enemySpawner.Spawn(enemy, (int)PosNum.Right, enemyData);
+
+                    return;
+                }
+            }
+        }
+        Debug.Log("적 데이터 없음"); //TO-DO 삭제
     }
 
 

@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 209225054639983859}
   - component: {fileID: 1127377846878706134}
   m_Layer: 0
-  m_Name: MonsterPlantPBR
+  m_Name: 2025
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -298,9 +298,11 @@ MonoBehaviour:
   damagePrefab: {fileID: -3240762228831540081, guid: 78d7276ea5204664bae6fa851686e892, type: 3}
   MaxHp: 100
   Damage: 3
+  Name: 
   onDead: 0
   HpBar: {fileID: 6659698615531085839}
   Life: {fileID: 4025775523066486730}
+  NameInfo: {fileID: 7053627216225014090}
   DamageInfo: {fileID: 6295010612448859822}
 --- !u!1 &2141365536968245290
 GameObject:
@@ -1954,5 +1956,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7053627216225014090 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2936938606565288248, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+  m_PrefabInstance: {fileID: 5269667375924050034}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

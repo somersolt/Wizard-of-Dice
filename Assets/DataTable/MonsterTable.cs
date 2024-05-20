@@ -18,10 +18,8 @@ public class MonsterData
     public int NAME { get; set; }
     public int HP { get; set; }
     public int DAMAGE { get; set; }
-    public int DICE { get; set; }
-    public int MAGICBOOK_ID { get; set; }
     public int STAGE { get; set; }
-    public int MONSTER_TYPE { get; set; }
+    public int MONSTER_COUNT { get; set; }
 
     //public string Icon { get; set; } æ∆¿Ãƒ‹ path
 
@@ -43,7 +41,7 @@ public class MonsterData
 
     public override string ToString()
     {
-        return $"{ID}: {GRADE }/ {GetName} / {HP} / {DAMAGE} / {DICE} / {MAGICBOOK_ID} / {STAGE} / {MONSTER_TYPE} ";
+        return $"{ID}: {GRADE }/ {GetName} / {HP} / {DAMAGE} / {STAGE} / {MONSTER_COUNT} ";
     }
 }
 

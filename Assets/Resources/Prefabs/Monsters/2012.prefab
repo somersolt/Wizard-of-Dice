@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 5945258373864545318}
   - component: {fileID: 2878946676268584996}
   m_Layer: 0
-  m_Name: Slime_Soldier
+  m_Name: 2012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,9 +116,11 @@ MonoBehaviour:
   damagePrefab: {fileID: -3240762228831540081, guid: 78d7276ea5204664bae6fa851686e892, type: 3}
   MaxHp: 100
   Damage: 3
+  Name: 
   onDead: 0
   HpBar: {fileID: 2459725543592314223}
   Life: {fileID: 5300981130205690538}
+  NameInfo: {fileID: 2282541430502913066}
   DamageInfo: {fileID: 2959688549579256782}
 --- !u!95 &2878946676268584996
 Animator:
@@ -460,6 +462,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+--- !u!114 &2282541430502913066 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2936938606565288248, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+  m_PrefabInstance: {fileID: 3994461200238288146}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2459725543592314223 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1535056864449845373, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}

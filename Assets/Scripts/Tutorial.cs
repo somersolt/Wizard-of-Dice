@@ -61,6 +61,7 @@ public class Tutorial : MonoBehaviour
         ShowAttackOrder,
         ExplainMagicVariations,
         ShowMagicCombinationExplanation,
+        TurnExplanation,
         FinalAttackPrompt,
         EndTutorial
     }
@@ -231,6 +232,9 @@ public class Tutorial : MonoBehaviour
                 break;
             case TutorialStep.ShowMagicCombinationExplanation:
                 tutorialText.text = "여러분이 가진 마법들과 주사위의 \n 조건이 맞다면, 마법이 전부 합쳐집니다! \n 마법력이 전부 합쳐지는것은 물론이고, \n 광역 마법이 될 수도 있지요.";
+                break;
+            case TutorialStep.TurnExplanation:
+                tutorialText.text = "스테이지를 하나씩 클리어 할때마다 \n 보상의 기회가 주어집니다. \n 다만, 스테이지 왼쪽의 10턴이 지나면 패배하니 \n 조심하시길 바랍니다.";
                 break;
             case TutorialStep.FinalAttackPrompt:
                 tutorialText.text = "자, 그럼 이제 눈앞의 적을 쓰러트려 보세요! \n 멋진 보상이 기다리고 있답니다.";

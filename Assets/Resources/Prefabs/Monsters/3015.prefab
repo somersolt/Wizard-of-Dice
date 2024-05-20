@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 3373397451360921200}
   - component: {fileID: -4946148220136942073}
   m_Layer: 0
-  m_Name: Slime_King
+  m_Name: 3015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,9 +150,11 @@ MonoBehaviour:
   damagePrefab: {fileID: -3240762228831540081, guid: 78d7276ea5204664bae6fa851686e892, type: 3}
   MaxHp: 100
   Damage: 3
+  Name: 
   onDead: 0
   HpBar: {fileID: 4077010028669559733}
   Life: {fileID: 5991509460487429232}
+  NameInfo: {fileID: 368159420111606512}
   DamageInfo: {fileID: 3721149025231951124}
 --- !u!95 &-4946148220136942073
 Animator:
@@ -543,6 +545,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+--- !u!114 &368159420111606512 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2936938606565288248, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+  m_PrefabInstance: {fileID: 3303932458436869064}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &3711330504281877760 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}

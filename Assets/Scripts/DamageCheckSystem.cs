@@ -24,7 +24,7 @@ public static class DamageCheckSystem
 
     public static int DamageCheck(int value, int[] ranks, RanksFlag checkedlist)
     {
-        int sum = 0;
+        int sum = GameMgr.Instance.curruntBonusStat;
         int multiple = 0;
         int barrier = 0;
         int recovery = 0;

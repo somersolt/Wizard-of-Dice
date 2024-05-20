@@ -10,8 +10,9 @@ public class Enemy : MonoBehaviour
     public Animator animator;
     public Canvas canvas;
     public Message damagePrefab;
-    public int MaxHp = 100;
-    public int Damage = 3;
+    public int MaxHp;
+    public int Damage;
+    public string Name;
     int Hp;
     public bool onDead = false;
     [SerializeField]
@@ -21,17 +22,38 @@ public class Enemy : MonoBehaviour
     private TextMeshProUGUI Life;
 
     [SerializeField]
+    private TextMeshProUGUI NameInfo;
+
+    [SerializeField]
     private TextMeshProUGUI DamageInfo;
 
     private void Awake()
     {
-        Hp = MaxHp;
-        Life.text = Hp.ToString();
-        DamageInfo.text = Damage.ToString();
-
         animator = GetComponentInChildren<Animator>();
         canvas.sortingLayerName = "UI";
         canvas.sortingOrder = 10;
+    }
+    
+    // TO-DO 테이블에 추가 요청
+
+    public void TutoSet()
+    {
+        Hp = MaxHp;
+        Life.text = Hp.ToString();
+        DamageInfo.text = Damage.ToString();
+    }
+    
+
+    public void Set(MonsterData data)
+    {
+        Name = data.GetName;
+        Damage = data.DAMAGE;
+        MaxHp = data.HP;
+
+        Hp = MaxHp;
+        NameInfo.text = Name;
+        Life.text = Hp.ToString();
+        DamageInfo.text = Damage.ToString();
     }
 
     public void OnDamage(int d)

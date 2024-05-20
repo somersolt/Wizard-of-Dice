@@ -128,6 +128,8 @@ public class GameMgr : MonoBehaviour
     int[] RankList = new int[(int)Ranks.count]; // 플레이어의 족보 리스트
     private RanksFlag currentRanks; //현재 주사위로 나온 족보
 
+    public int curruntBonusStat; // 추가 스탯 . 이거까지 저장해야됨
+
     [SerializeField]
     private TextMeshProUGUI[] ranksInfo = new TextMeshProUGUI[9];
 
@@ -138,6 +140,7 @@ public class GameMgr : MonoBehaviour
     public int currentBarrier;
     public int currentRecovery;
     public int currentTarget;
+    
     [SerializeField]
     private Button[] scrolls = new Button[3];
     [SerializeField]
@@ -292,7 +295,7 @@ public class GameMgr : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            currentDamage = 100;
+            currentDamage = 300;
             damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
         }
         // 테스트 코드
