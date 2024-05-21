@@ -107,6 +107,7 @@ public class StageMgr : MonoBehaviour
             GameMgr.Instance.ui.OnDiceReward();
             return;
         }
+
         else
         {
             SetEnemy();

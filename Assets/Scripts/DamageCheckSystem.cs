@@ -29,6 +29,11 @@ public static class DamageCheckSystem
         int barrier = 0;
         int recovery = 0;
         int target = 1;
+
+        if (GameMgr.Instance.artifact.playersArtifacts[6] == 1) //7번 유물
+        {
+            sum += DiceMgr.Instance.numbersCount[0] * GameMgr.Instance.artifact.Value6;
+        }
         for (int i = 0; i < ranks.Length; i++)
         {
             if (ranks[i] == 0)
@@ -46,6 +51,12 @@ public static class DamageCheckSystem
                 target = Math.Max(target, spelldata.TARGET);
             }
         }
+
+        if (GameMgr.Instance.artifact.playersArtifacts[4] == 1 && GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.three)
+        {
+            multiple += GameMgr.Instance.artifact.Value4; // 유물 5번
+        }
+
 
         GameMgr.Instance.currentTarget = target;
         GameMgr.Instance.currentBarrier = barrier;

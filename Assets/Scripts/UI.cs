@@ -45,6 +45,14 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] maxSpellInfos = new TextMeshProUGUI[9];
     private TextMeshProUGUI[] maxSpellLevels = new TextMeshProUGUI[9];
 
+    [SerializeField]
+    private GameObject artifactRewardPanel;
+    [SerializeField]
+    private Button[] artifacts = new Button[3];
+    private ArtifactData[] artifactDatas = new ArtifactData[3];
+    private TextMeshProUGUI[] artifactsNames = new TextMeshProUGUI[3];
+    private TextMeshProUGUI[] artifactsInfos = new TextMeshProUGUI[3];
+
     public GameObject PausePanel;
     [SerializeField]
     private Button ReturnButton;
@@ -104,16 +112,22 @@ public class UI : MonoBehaviour
                 StageMgr.Instance.NextStage();
             });
             maxSpells[i].gameObject.SetActive(false);
-        }
+        } //초월 강화
+
+        for (int i = 0; i < artifacts.Length; i++)
+        {
+            artifactsNames[i] = artifacts[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
+            artifactsInfos[i] = artifacts[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
+        } // 유물 보상
     }
 
-    public void OnReward()
+    public void OnReward(int mode = 0)
     {
         RewardClear();
         for (int i = 0; i < 2; i++)
         {
             int index = i;
-            rewards[i].onClick.AddListener(() => { GetSpell(rewardSpells[index], index); });
+            rewards[i].onClick.AddListener(() => { GetSpell(rewardSpells[index], index, mode); });
             int a = Random.Range(0, rewardList.Count);
             if (rewardList.Count != 0)
             {
@@ -199,7 +213,7 @@ public class UI : MonoBehaviour
             GetStatus(20, "DiceReward");
         });
 
-        spellNames[1].text = "기본기 숙련";
+        spellNames[1].text = "마나 증량";
         spellInfos[1].text = "주사위 개수를 늘리지 않고 마법력 20 증가 \n 주사위 눈금 총합에 20을 더합니다.";
         spellLevels[1].text = " + 20 ";
 
@@ -220,16 +234,47 @@ public class UI : MonoBehaviour
 
                 break;
             }
+            else
+            {
+                spellNames[2].text = "초월 마법";
+                spellInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 강화된 마법이 없어 초월할 수 없습니다.";
+                spellLevels[2].text = " ";
+            }
         }
 
 
-        spellNames[2].text = "초월 마법";
-        spellInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 강화된 마법이 없어 초월할 수 없습니다.";
-        spellLevels[2].text = " ";
+
 
         rewardPanel.gameObject.SetActive(true);
         StartCoroutine(PanelSlide(rewardPanel));
     }
+
+
+    public void OnArtifactReward()
+    {
+        ArtifactRewardClear();
+        for (int i = 0; i < 3; i++)
+        {
+            int index = i;
+            artifacts[i].onClick.AddListener(() => { GetArifact(artifactDatas[index], index); });
+            int a = Random.Range(0, GameMgr.Instance.artifact.artifacts.Count);
+            if (GameMgr.Instance.artifact.artifacts.Count != 0)
+            {
+                artifactDatas[i] = GameMgr.Instance.artifact.artifacts[a];
+                artifactsNames[i].text = artifactDatas[i].NAME;
+                artifactsInfos[i].text = artifactDatas[i].DESC;
+                GameMgr.Instance.artifact.artifacts.Remove(GameMgr.Instance.artifact.artifacts[a]);
+            }
+            else if (GameMgr.Instance.artifact.artifacts.Count == 0)
+            {
+                Debug.Log("오류");
+            }
+        }
+
+        artifactRewardPanel.gameObject.SetActive(true);
+        StartCoroutine(PanelSlide(artifactRewardPanel));
+    }
+
 
 
     public void GetDice()
@@ -252,7 +297,7 @@ public class UI : MonoBehaviour
         SceneManager.LoadScene("Title");
     }
 
-    public void GetSpell(SpellData spellData, int index)
+    public void GetSpell(SpellData spellData, int index, int mode = 0)
     {
         if (spellData == empty) { return; }
         for (int i = 0; i < rewardSpells.Length; i++)
@@ -287,7 +332,14 @@ public class UI : MonoBehaviour
         GameMgr.Instance.RanksListUpdate();
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         rewardPanel.gameObject.SetActive(false);
-        StageMgr.Instance.NextStage();
+        if(mode == 0) 
+        {
+            StageMgr.Instance.NextStage();
+        }
+        else
+        { 
+            OnReward(mode - 1);
+        }
     }
 
     public void GetStatus(int value, string mode = default)
@@ -310,6 +362,32 @@ public class UI : MonoBehaviour
     }
 
 
+    private void GetArifact(ArtifactData artifactData, int index)
+    {
+        if (artifactData == null) { return; }
+        for (int i = 0; i < artifacts.Length; i++)
+        {
+            if (i == index)
+            {
+                artifactData.ONARTIFACT = true;
+                GameMgr.Instance.artifact.playersArtifacts[artifactData.ID]++;
+                continue;
+            }
+
+            if (i != index)
+            {
+                GameMgr.Instance.artifact.artifacts.Add(artifactDatas[i]);
+            }
+        }
+        GetArtifactEffect(artifactData.ID);
+        GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
+        artifactRewardPanel.gameObject.SetActive(false);
+        if(artifactData.ID != 3)
+        {
+            StageMgr.Instance.NextStage();
+        }
+    }
+
     private IEnumerator PanelSlide(GameObject panel)
     {
         float duration = 0.3f;
@@ -327,6 +405,40 @@ public class UI : MonoBehaviour
         panel.transform.position = startpos;
     }
 
+    private void GetArtifactEffect(int Id)
+    {
+       switch(Id)
+        {
+            case 0:
+                break;
+            case 1:
+                DiceMgr.Instance.Artifact2();
+                break;
+            case 2:
+                DiceMgr.Instance.manipulList[0] = 1;
+                DiceMgr.Instance.manipulList[1] = 2;
+                DiceMgr.Instance.manipulList[2] = 3;
+                break;
+            case 3:
+                OnReward(GameMgr.Instance.artifact.Value3 - 1);
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                GameMgr.Instance.MaxLifeSet(GameMgr.Instance.artifact.Value9);
+                GameMgr.Instance.LifeMax();
+                break;
+        }
+    }
+
     private void RewardClear()
     {
         rewards[0].onClick.RemoveAllListeners();
@@ -334,6 +446,12 @@ public class UI : MonoBehaviour
         rewards[2].onClick.RemoveAllListeners();
         newTexts[0].gameObject.SetActive(false);
         newTexts[1].gameObject.SetActive(false);
+    }
+    private void ArtifactRewardClear()
+    {
+        artifacts[0].onClick.RemoveAllListeners();
+        artifacts[1].onClick.RemoveAllListeners();
+        artifacts[2].onClick.RemoveAllListeners();
     }
     private void NextRanks(SpellData spellData)
     {

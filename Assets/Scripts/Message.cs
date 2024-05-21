@@ -40,4 +40,11 @@ public class Message : MonoBehaviour
         text.text = damage.ToString();
         text.color = color;
     }
+
+    public void Setup(string message, Color color, bool setWorld = false)
+    {
+        onWorld = setWorld;
+        text.text = message;
+        text.color = color;
+    }
 }

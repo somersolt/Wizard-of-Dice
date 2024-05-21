@@ -77,6 +77,24 @@ public class Enemy : MonoBehaviour
         Life.text = Hp.ToString();
     }
 
+    public void OnTicDamage(int d)
+    {
+        Hp -= d;
+        var DamageMessage = Instantiate(damagePrefab, canvas.transform);
+        DamageMessage.Setup(GameMgr.Instance.curruntBonusStat, Color.red, true);
+        if (Hp <= 0)
+        {
+            animator.SetTrigger("onDead");
+            onDead = true;
+            Hp = 0;
+            HpBar.fillAmount = (float)Hp / MaxHp;
+            Life.text = Hp.ToString();
+            return;
+        }
+        animator.SetTrigger("GetHit");
+        HpBar.fillAmount = (float)Hp / MaxHp;
+        Life.text = Hp.ToString();
+    }
 
     public void OnAttack()
     {

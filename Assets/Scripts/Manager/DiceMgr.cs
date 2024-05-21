@@ -40,7 +40,7 @@ public class DiceMgr : MonoBehaviour
     public Button[] dices = new Button[constant.diceMax]; // 주사위들
     private int[] dicesValues = new int[constant.diceMax]; // 주사위 눈 결과값
 
-    private int[] numbersCount = new int[constant.diceNumberMax]; // 랭크 체크 list
+    public int[] numbersCount = new int[constant.diceNumberMax]; // 랭크 체크 list
 
     private List<int> diceNumbers = new List<int>(); // 주사위 눈 1~6 리스트 (변동가능)
 
@@ -119,7 +119,6 @@ public class DiceMgr : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log(countToResult + " " + selectedDice.Count);
         if (countToResult == selectedDice.Count && onResult)
         {
             checkedRanksList = RankCheckSystem.RankCheck(numbersCount);
@@ -246,7 +245,15 @@ public class DiceMgr : MonoBehaviour
             {
                 buttonLock[i].gameObject.SetActive(false);
             }
-            rerollCount = 2;
+
+            if (GameMgr.Instance.artifact.playersArtifacts[8] == 1)//9번 유물
+            {
+                rerollCount = GameMgr.Instance.artifact.Value8 + 2;
+            }
+            else
+            {
+                rerollCount = 2;
+            }
             reRoll.GetComponentInChildren<TextMeshProUGUI>().text = "재굴림 : " + rerollCount.ToString();
         }
         else
@@ -274,15 +281,22 @@ public class DiceMgr : MonoBehaviour
 
             if (mode == GameMode.Default)
             {
-                if (manipulList[selectedDice[i]] == 0)
+                if (starting)
                 {
-                    StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback));
+                    if (manipulList[selectedDice[i]] == 0)
+                    {
+                        StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback));
+                    }
+                    else
+                    {
+                        StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback, manipulList[selectedDice[i]]));
+                    }
+                    // 주사위 조작 코드
                 }
                 else
                 {
-                    StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback, manipulList[selectedDice[i]]));
+                    StartCoroutine(SelectDiceRoll(selectedDice[i], starting, spinCallback));
                 }
-                // 주사위 조작 코드
             }
             else if (mode == GameMode.Tutorial)
             {
@@ -445,6 +459,12 @@ public class DiceMgr : MonoBehaviour
         enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], () => enemySpincallback());
     }
 
+    public void Artifact2()
+    {
+        diceNumbers.Remove(3);
+        diceNumbers.Remove(4);
+        diceNumbers.Remove(5);
+    }
 
     public void StopAllActiveCoroutines()
     {
