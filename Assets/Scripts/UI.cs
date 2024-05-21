@@ -37,6 +37,14 @@ public class UI : MonoBehaviour
     [SerializeField]
     private Button diceRewardConfirm;
 
+    [SerializeField]
+    private GameObject maxSpellRewardPanel;
+    [SerializeField]
+    private Button[] maxSpells = new Button[9];
+    private TextMeshProUGUI[] maxSpellNames = new TextMeshProUGUI[9];
+    private TextMeshProUGUI[] maxSpellInfos = new TextMeshProUGUI[9];
+    private TextMeshProUGUI[] maxSpellLevels = new TextMeshProUGUI[9];
+
     public GameObject PausePanel;
     [SerializeField]
     private Button ReturnButton;
@@ -77,6 +85,25 @@ public class UI : MonoBehaviour
         spellLevels[2] = rewards[2].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
         // 족보보상 3번째 칸
 
+        for (int i = 0; i < 9; i++)
+        {
+            int index = i;
+            maxSpellNames[i] = maxSpells[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
+            maxSpellInfos[i] = maxSpells[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
+            maxSpellLevels[i] = maxSpells[i].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
+            var maxSpell = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 2);
+            maxSpellNames[i].text = maxSpell.GetName;
+            maxSpellInfos[i].text = maxSpell.GetDesc;
+            maxSpellLevels[i].text = "초월" + maxSpell.LEVEL;
+            maxSpells[i].onClick.AddListener(() =>
+            {
+                GameMgr.Instance.SetRankList(index);
+                maxSpellRewardPanel.gameObject.SetActive(false);
+                maxSpells[i].gameObject.SetActive(false);
+                StageMgr.Instance.NextStage();
+            });
+            maxSpells[i].gameObject.SetActive(false);
+        }
     }
 
     public void OnReward()
@@ -175,14 +202,28 @@ public class UI : MonoBehaviour
         spellInfos[1].text = "주사위 개수를 늘리지 않고 마법력 20 증가 \n 주사위 눈금 총합에 20을 더합니다.";
         spellLevels[1].text = " + 20 ";
 
-
-        rewards[1].onClick.AddListener(() =>
+        foreach (var ranks in GameMgr.Instance.GetRankList())
         {
-            //TO-DO 마법서 초월
-        });
+            if (ranks == 2)
+            {
+                rewards[2].onClick.AddListener(() =>
+                {
+                    rewardPanel.gameObject.SetActive(false);
+                    maxSpellRewardPanel.gameObject.SetActive(true);
+                    StartCoroutine(PanelSlide(maxSpellRewardPanel));
+                });
+
+                spellNames[2].text = "초월 마법";
+                spellInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 초월 마법은 강한 위력과 특수 효과가 추가됩니다.";
+                spellLevels[2].text = " ";
+
+                break;
+            }
+        }
+
 
         spellNames[2].text = "초월 마법";
-        spellInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 초월 마법은 강한 위력과 특수 효과가 추가됩니다.";
+        spellInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 강화된 마법이 없어 초월할 수 없습니다.";
         spellLevels[2].text = " ";
 
         rewardPanel.gameObject.SetActive(true);
@@ -236,6 +277,10 @@ public class UI : MonoBehaviour
         if (rewardSpells[index].LEVEL != 0)
         {
             GameMgr.Instance.SetRankList((spellData.ID % 100) / 10 - 1);
+            if (rewardSpells[index].LEVEL == 2)
+            {
+                maxSpells[(spellData.ID % 100) / 10 - 1].gameObject.SetActive(true);
+            }
         }
 
         GameMgr.Instance.RanksListUpdate();
