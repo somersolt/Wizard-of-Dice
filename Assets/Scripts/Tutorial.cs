@@ -210,7 +210,7 @@ public class Tutorial : MonoBehaviour
                 {
                     tutorialText.text = " ";
                     eventTrigger = true;
-                    tutorialPanel.gameObject.transform.position += new Vector3(0, -1000, 0);
+                    tutorialPanel.gameObject.transform.position += new Vector3(0, -1200, 0);
                     GameMgr.Instance.tutorialMode = true;
                 }
                 if (eventCount == 1)

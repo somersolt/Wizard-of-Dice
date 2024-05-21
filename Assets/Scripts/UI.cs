@@ -33,7 +33,7 @@ public class UI : MonoBehaviour
     private SpellData empty = new SpellData();
 
     [SerializeField]
-    private GameObject diceRewardPanel;
+    private GameObject getDicePanel;
     [SerializeField]
     private Button diceRewardConfirm;
 
@@ -44,6 +44,13 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] maxSpellNames = new TextMeshProUGUI[9];
     private TextMeshProUGUI[] maxSpellInfos = new TextMeshProUGUI[9];
     private TextMeshProUGUI[] maxSpellLevels = new TextMeshProUGUI[9];
+
+    [SerializeField]
+    private GameObject diceRewardPanel;
+    [SerializeField]
+    private Button[] diceRewards = new Button[3];
+    private TextMeshProUGUI[] diceRewardNames = new TextMeshProUGUI[3];
+    private TextMeshProUGUI[] diceRewardInfos = new TextMeshProUGUI[3];
 
     [SerializeField]
     private GameObject artifactRewardPanel;
@@ -71,7 +78,7 @@ public class UI : MonoBehaviour
         titleButton2.onClick.AddListener(() => ReturnTitle());
         diceRewardConfirm.onClick.AddListener(() =>
         {
-            diceRewardPanel.gameObject.SetActive(false);
+            getDicePanel.gameObject.SetActive(false);
             GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
             StageMgr.Instance.NextStage();
         });
@@ -102,7 +109,7 @@ public class UI : MonoBehaviour
             var maxSpell = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 2);
             maxSpellNames[i].text = maxSpell.GetName;
             maxSpellInfos[i].text = maxSpell.GetDesc;
-            maxSpellLevels[i].text = "초월" + maxSpell.LEVEL;
+            maxSpellLevels[i].text = "초월";
             maxSpells[i].onClick.AddListener(() =>
             {
                 GameMgr.Instance.SetRankList(index);
@@ -113,6 +120,12 @@ public class UI : MonoBehaviour
             });
             maxSpells[i].gameObject.SetActive(false);
         } //초월 강화
+
+        for (int i = 0; i < diceRewards.Length; i++)
+        {
+            diceRewardNames[i] = diceRewards[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
+            diceRewardInfos[i] = diceRewards[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
+        } // 상점 보상
 
         for (int i = 0; i < artifacts.Length; i++)
         {
@@ -170,83 +183,73 @@ public class UI : MonoBehaviour
 
     public void OnDiceReward()
     {
-        RewardClear();
+        DiceRewardClear();
 
         switch (GameMgr.Instance.currentDiceCount)
         {
             case GameMgr.DiceCount.three:
-                rewards[0].onClick.AddListener(() =>
+                diceRewards[0].onClick.AddListener(() =>
                 {
                     GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.four;
                     GameMgr.Instance.GetDice4Ranks();
-                    rewardPanel.gameObject.SetActive(false);
+                    diceRewardPanel.gameObject.SetActive(false);
                     GetDice();
                 });
 
-                spellNames[0].text = "주사위 개수 추가";
-                spellInfos[0].text = "매 턴 굴릴 수 있는 주사위를 4개로 증가 \n 상점에 4주사위 마법서가 등장합니다.";
-                spellLevels[0].text = " ";
+                diceRewardNames[0].text = "주사위 개수 추가";
+                diceRewardInfos[0].text = "매 턴 굴릴 수 있는 주사위를 4개로 증가 \n 상점에 4주사위 마법서가 등장합니다.";
                 break;
             case GameMgr.DiceCount.four:
-                rewards[0].onClick.AddListener(() =>
+                diceRewards[0].onClick.AddListener(() =>
                 {
                     GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.five;
                     GameMgr.Instance.GetDice5Ranks();
-                    rewardPanel.gameObject.SetActive(false);
+                    diceRewardPanel.gameObject.SetActive(false);
                     GetDice();
                 });
 
-                spellNames[0].text = "주사위 개수 추가";
-                spellInfos[0].text = "매 턴 굴릴 수 있는 주사위를 5개로 증가 \n 상점에 5주사위 마법서가 등장합니다.";
-                spellLevels[0].text = " ";
+                diceRewardNames[0].text = "주사위 개수 추가";
+                diceRewardInfos[0].text = "매 턴 굴릴 수 있는 주사위를 5개로 증가 \n 상점에 5주사위 마법서가 등장합니다.";
                 break;
             case GameMgr.DiceCount.five:
 
-                spellNames[0].text = "한계 도달";
-                spellInfos[0].text = "더 이상 주사위를 늘릴 수 없습니다.";
-                spellLevels[0].text = " ";
+                diceRewardNames[0].text = "한계 도달";
+                diceRewardInfos[0].text = "더 이상 주사위를 늘릴 수 없습니다.";
                 break;
         }
 
-        rewards[1].onClick.AddListener(() =>
+        diceRewards[1].onClick.AddListener(() =>
         {
             GetStatus(20, "DiceReward");
         });
 
-        spellNames[1].text = "마나 증량";
-        spellInfos[1].text = "주사위 개수를 늘리지 않고 마법력 20 증가 \n 주사위 눈금 총합에 20을 더합니다.";
-        spellLevels[1].text = " + 20 ";
+        diceRewardNames[1].text = "마나 증량";
+        diceRewardInfos[1].text = "주사위 개수를 늘리지 않고 마법력 20 증가 \n 주사위 눈금 총합에 20을 더합니다.";
 
         foreach (var ranks in GameMgr.Instance.GetRankList())
         {
             if (ranks == 2)
             {
-                rewards[2].onClick.AddListener(() =>
+                diceRewards[2].onClick.AddListener(() =>
                 {
-                    rewardPanel.gameObject.SetActive(false);
+                    diceRewardPanel.gameObject.SetActive(false);
                     maxSpellRewardPanel.gameObject.SetActive(true);
                     StartCoroutine(PanelSlide(maxSpellRewardPanel));
                 });
 
-                spellNames[2].text = "초월 마법";
-                spellInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 초월 마법은 강한 위력과 특수 효과가 추가됩니다.";
-                spellLevels[2].text = " ";
-
+                diceRewardNames[2].text = "초월 마법";
+                diceRewardInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 초월 마법은 강한 위력과 특수 효과가 추가됩니다.";
                 break;
             }
             else
             {
-                spellNames[2].text = "초월 마법";
-                spellInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 강화된 마법이 없어 초월할 수 없습니다.";
-                spellLevels[2].text = " ";
+                diceRewardNames[2].text = "초월 마법";
+                diceRewardInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 강화된 마법이 없어 초월할 수 없습니다.";
             }
         }
 
-
-
-
-        rewardPanel.gameObject.SetActive(true);
-        StartCoroutine(PanelSlide(rewardPanel));
+        diceRewardPanel.gameObject.SetActive(true);
+        StartCoroutine(PanelSlide(diceRewardPanel));
     }
 
 
@@ -279,8 +282,8 @@ public class UI : MonoBehaviour
 
     public void GetDice()
     {
-        diceRewardPanel.gameObject.SetActive(true);
-        StartCoroutine(PanelSlide(diceRewardPanel));
+        getDicePanel.gameObject.SetActive(true);
+        StartCoroutine(PanelSlide(getDicePanel));
     }
 
     public void GameOver()
@@ -332,12 +335,12 @@ public class UI : MonoBehaviour
         GameMgr.Instance.RanksListUpdate();
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         rewardPanel.gameObject.SetActive(false);
-        if(mode == 0) 
+        if (mode == 0)
         {
             StageMgr.Instance.NextStage();
         }
         else
-        { 
+        {
             OnReward(mode - 1);
         }
     }
@@ -357,7 +360,15 @@ public class UI : MonoBehaviour
 
         GameMgr.Instance.curruntBonusStat += value;
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
-        rewardPanel.gameObject.SetActive(false);
+
+        if (mode == default)
+        { 
+            rewardPanel.gameObject.SetActive(false); 
+        }
+        else
+        {
+            diceRewardPanel.gameObject.SetActive(false);
+        }
         StageMgr.Instance.NextStage();
     }
 
@@ -382,7 +393,7 @@ public class UI : MonoBehaviour
         GetArtifactEffect(artifactData.ID);
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         artifactRewardPanel.gameObject.SetActive(false);
-        if(artifactData.ID != 3)
+        if (artifactData.ID != 3)
         {
             StageMgr.Instance.NextStage();
         }
@@ -407,7 +418,7 @@ public class UI : MonoBehaviour
 
     private void GetArtifactEffect(int Id)
     {
-       switch(Id)
+        switch (Id)
         {
             case 0:
                 break;
@@ -446,6 +457,13 @@ public class UI : MonoBehaviour
         rewards[2].onClick.RemoveAllListeners();
         newTexts[0].gameObject.SetActive(false);
         newTexts[1].gameObject.SetActive(false);
+    }
+
+    private void DiceRewardClear()
+    {
+        diceRewards[0].onClick.RemoveAllListeners();
+        diceRewards[1].onClick.RemoveAllListeners();
+        diceRewards[2].onClick.RemoveAllListeners();
     }
     private void ArtifactRewardClear()
     {
