@@ -17,7 +17,6 @@ public class PassiveData
     public int NAME_ID { get; set; }
     public int DESC_ID { get; set; }
     public int VALUE { get; set; }
-    public int LEVEL { get; set; }
 
     //public string Icon { get; set; } æ∆¿Ãƒ‹ path
 
@@ -47,7 +46,7 @@ public class PassiveData
 
     public override string ToString()
     {
-        return $"{ID}: {GetName} / {GetDesc} / {VALUE} / {LEVEL} ";
+        return $"{ID}: {GetName} / {GetDesc} / {VALUE} ";
     }
 }
 
