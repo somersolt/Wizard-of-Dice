@@ -48,7 +48,8 @@ public class StageMgr : MonoBehaviour
 
 
     public int TutorialStage = 0;
-    public HashSet<int> BonusStages = new HashSet<int> { 0 };
+    public int latStage = 5;
+    public int lastField = 4;
 
     public EnemySpawner enemySpawner;
     private void Awake()
@@ -91,12 +92,6 @@ public class StageMgr : MonoBehaviour
 
                 case 4:
                     break;
-
-                case 5:
-                    GameMgr.Instance.ui.Victory();
-                    StageInfo.text = "Victory!!";
-                    return;
-
             }
         }
         GameMgr.Instance.TurnUpdate(10);
@@ -109,7 +104,7 @@ public class StageMgr : MonoBehaviour
         }
         else if (currentStage == 4)
         {
-            GameMgr.Instance.ui.OnReward(); // TO-DO ªÛ¡°
+            GameMgr.Instance.ui.OnDiceReward();
             return;
         }
         else

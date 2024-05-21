@@ -407,7 +407,8 @@ public class GameMgr : MonoBehaviour
     {
         for (int i = (int)Ranks.TwoPair; i < (int)Ranks.FullHouse; i++)
         {
-            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 1);
+            // 투페어 4스트레이트, 카인드4 1레벨 등록
+            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]);
             ui.rewardList.Add(spells);
         }
     }
@@ -415,8 +416,8 @@ public class GameMgr : MonoBehaviour
     {
         for (int i = (int)Ranks.FullHouse; i < (int)Ranks.count; i++)
         {
-            RankList[i] = 1; // 풀하우스 5스트레이트, 카인드5 1레벨 등록
-            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 1);
+            // 풀하우스 5스트레이트, 카인드5 1레벨 등록
+            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]);
             ui.rewardList.Add(spells);
         }
     }
@@ -469,8 +470,19 @@ public class GameMgr : MonoBehaviour
             {
             StringBuilder newText = new StringBuilder();
             newText.Append(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]).GetName);
-            newText.Append("- Lv ");
-            newText.Append(RankList[i]);
+
+            switch(RankList[i])
+                {
+                    case 1:
+                        newText.Append("- 일반");
+                        break;
+                    case 2:
+                        newText.Append("- 강화");
+                        break;
+                    case 3:
+                        newText.Append("- 초월");
+                        break;
+                }
             ranksInfo[i].text = newText.ToString(); 
             }
         }
@@ -528,7 +540,7 @@ public class GameMgr : MonoBehaviour
             }
             StageMgr.Instance.DeadEnemies.Clear();
 
-            if (StageMgr.Instance.currentStage == 15)
+            if (StageMgr.Instance.currentStage == StageMgr.Instance.latStage && StageMgr.Instance.currentField == StageMgr.Instance.lastField)
             {
                 ui.Victory();
                 return;

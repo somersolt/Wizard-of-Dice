@@ -27,6 +27,7 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] spellNames = new TextMeshProUGUI[3];
     private TextMeshProUGUI[] spellInfos = new TextMeshProUGUI[3];
     private TextMeshProUGUI[] spellLevels = new TextMeshProUGUI[3];
+    private TextMeshProUGUI[] newTexts = new TextMeshProUGUI[2];
 
     private SpellData[] rewardSpells = new SpellData[2];
     private SpellData empty = new SpellData();
@@ -52,10 +53,15 @@ public class UI : MonoBehaviour
     {
         titleButton.onClick.AddListener(() => ReturnTitle());
         titleButton2.onClick.AddListener(() => ReturnTitle());
-        diceRewardConfirm.onClick.AddListener(() => { diceRewardPanel.gameObject.SetActive(false); StageMgr.Instance.NextStage(); });
+        diceRewardConfirm.onClick.AddListener(() =>
+        {
+            diceRewardPanel.gameObject.SetActive(false);
+            GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
+            StageMgr.Instance.NextStage();
+        });
         ReturnButton.onClick.AddListener(() => { PausePanel.gameObject.SetActive(false); Time.timeScale = 1; });
         QuitGame.onClick.AddListener(() => { QuitPanel.gameObject.SetActive(true); });
-        QuitYes.onClick.AddListener(() => { Time.timeScale = 1; SceneManager.LoadScene("Title");}) ;
+        QuitYes.onClick.AddListener(() => { Time.timeScale = 1; SceneManager.LoadScene("Title"); });
         QuitNo.onClick.AddListener(() => { QuitPanel.gameObject.SetActive(false); });
 
         for (int i = 0; i < rewards.Length - 1; i++)
@@ -63,28 +69,42 @@ public class UI : MonoBehaviour
             spellNames[i] = rewards[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
             spellInfos[i] = rewards[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
             spellLevels[i] = rewards[i].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
-            int index = i;
-            rewards[i].onClick.AddListener(() => { GetSpell(rewardSpells[index], index); });
+            newTexts[i] = rewards[i].transform.Find("new").GetComponentInChildren<TextMeshProUGUI>();
         } // 족보 보상 1~2칸
 
         spellNames[2] = rewards[2].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
         spellInfos[2] = rewards[2].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
         spellLevels[2] = rewards[2].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
-        rewards[2].onClick.AddListener(() =>  GetStatus()); // 족보보상 3번째 칸
+        // 족보보상 3번째 칸
 
     }
 
     public void OnReward()
     {
+        RewardClear();
         for (int i = 0; i < 2; i++)
         {
+            int index = i;
+            rewards[i].onClick.AddListener(() => { GetSpell(rewardSpells[index], index); });
             int a = Random.Range(0, rewardList.Count);
             if (rewardList.Count != 0)
             {
                 rewardSpells[i] = rewardList[a];
                 spellNames[i].text = rewardList[a].GetName;
                 spellInfos[i].text = rewardList[a].GetDesc;
-                spellLevels[i].text = rewardList[a].LEVEL.ToString() + " 레벨";
+                switch (rewardList[a].LEVEL)
+                {
+                    case 1:
+                        spellLevels[i].text = "일반";
+                        if (i == 0)
+                        { newTexts[0].gameObject.SetActive(true); }
+                        if (i == 1)
+                        { newTexts[1].gameObject.SetActive(true); }
+                        break;
+                    case 2:
+                        spellLevels[i].text = "강화";
+                        break;
+                }
                 rewardList.Remove(rewardList[a]);
             }
             else if (rewardList.Count == 0)
@@ -99,12 +119,77 @@ public class UI : MonoBehaviour
         spellNames[2].text = "공격력 up";
         spellInfos[2].text = "주사위 눈금 총합 + 3";
         spellLevels[2].text = " ";
-
+        rewards[2].onClick.AddListener(() => GetStatus(3));
 
         rewardPanel.gameObject.SetActive(true);
         StartCoroutine(PanelSlide(rewardPanel));
-
     }
+
+
+    public void OnDiceReward()
+    {
+        RewardClear();
+
+        switch (GameMgr.Instance.currentDiceCount)
+        {
+            case GameMgr.DiceCount.three:
+                rewards[0].onClick.AddListener(() =>
+                {
+                    GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.four;
+                    GameMgr.Instance.GetDice4Ranks();
+                    rewardPanel.gameObject.SetActive(false);
+                    GetDice();
+                });
+
+                spellNames[0].text = "주사위 개수 추가";
+                spellInfos[0].text = "매 턴 굴릴 수 있는 주사위를 4개로 증가 \n 상점에 4주사위 마법서가 등장합니다.";
+                spellLevels[0].text = " ";
+                break;
+            case GameMgr.DiceCount.four:
+                rewards[0].onClick.AddListener(() =>
+                {
+                    GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.five;
+                    GameMgr.Instance.GetDice5Ranks();
+                    rewardPanel.gameObject.SetActive(false);
+                    GetDice();
+                });
+
+                spellNames[0].text = "주사위 개수 추가";
+                spellInfos[0].text = "매 턴 굴릴 수 있는 주사위를 5개로 증가 \n 상점에 5주사위 마법서가 등장합니다.";
+                spellLevels[0].text = " ";
+                break;
+            case GameMgr.DiceCount.five:
+
+                spellNames[0].text = "한계 도달";
+                spellInfos[0].text = "더 이상 주사위를 늘릴 수 없습니다.";
+                spellLevels[0].text = " ";
+                break;
+        }
+
+        rewards[1].onClick.AddListener(() =>
+        {
+            GetStatus(20, "DiceReward");
+        });
+
+        spellNames[1].text = "기본기 숙련";
+        spellInfos[1].text = "주사위 개수를 늘리지 않고 마법력 20 증가 \n 주사위 눈금 총합에 20을 더합니다.";
+        spellLevels[1].text = " + 20 ";
+
+
+        rewards[1].onClick.AddListener(() =>
+        {
+            //TO-DO 마법서 초월
+        });
+
+        spellNames[2].text = "초월 마법";
+        spellInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 초월 마법은 강한 위력과 특수 효과가 추가됩니다.";
+        spellLevels[2].text = " ";
+
+        rewardPanel.gameObject.SetActive(true);
+        StartCoroutine(PanelSlide(rewardPanel));
+    }
+
+
     public void GetDice()
     {
         diceRewardPanel.gameObject.SetActive(true);
@@ -135,10 +220,10 @@ public class UI : MonoBehaviour
                 if (spellData.LEVEL != 2 && spellData.LEVEL != 0)
                 {
                     rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(spellData.ID + 1));
-                    if (spellData.LEVEL == 1)
-                    {
-                        NextRanks(spellData);
-                    }
+                    //if (spellData.LEVEL == 1)
+                    //{
+                    //    NextRanks(spellData); // 스킬트리 방식, 폐기
+                    //}
                 }
                 continue;
             }
@@ -155,17 +240,24 @@ public class UI : MonoBehaviour
 
         GameMgr.Instance.RanksListUpdate();
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
-        // TO-DO 족보가 아니면 상시 마법서 획득 메소드 만들기
         rewardPanel.gameObject.SetActive(false);
         StageMgr.Instance.NextStage();
     }
 
-    public void GetStatus()
+    public void GetStatus(int value, string mode = default)
     {
-        rewardList.Add(rewardSpells[0]);
-        rewardList.Add(rewardSpells[1]);
+        if (mode == default)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                if (rewardSpells[i] != empty)
+                {
+                    rewardList.Add(rewardSpells[i]);
+                }
+            }
+        }
 
-        GameMgr.Instance.curruntBonusStat += 3;
+        GameMgr.Instance.curruntBonusStat += value;
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         rewardPanel.gameObject.SetActive(false);
         StageMgr.Instance.NextStage();
@@ -189,6 +281,14 @@ public class UI : MonoBehaviour
         panel.transform.position = startpos;
     }
 
+    private void RewardClear()
+    {
+        rewards[0].onClick.RemoveAllListeners();
+        rewards[1].onClick.RemoveAllListeners();
+        rewards[2].onClick.RemoveAllListeners();
+        newTexts[0].gameObject.SetActive(false);
+        newTexts[1].gameObject.SetActive(false);
+    }
     private void NextRanks(SpellData spellData)
     {
         if (spellData.ID == (int)RanksIds.OnePair)
