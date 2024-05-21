@@ -98,8 +98,9 @@ public class UI : MonoBehaviour
             maxSpells[i].onClick.AddListener(() =>
             {
                 GameMgr.Instance.SetRankList(index);
+                maxSpells[index].gameObject.SetActive(false);
                 maxSpellRewardPanel.gameObject.SetActive(false);
-                maxSpells[i].gameObject.SetActive(false);
+                GameMgr.Instance.RanksListUpdate();
                 StageMgr.Instance.NextStage();
             });
             maxSpells[i].gameObject.SetActive(false);
