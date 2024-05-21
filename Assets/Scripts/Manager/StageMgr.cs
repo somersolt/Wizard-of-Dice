@@ -48,7 +48,7 @@ public class StageMgr : MonoBehaviour
 
 
     public int TutorialStage = 0;
-    public HashSet<int> BonusStages = new HashSet<int> {0};
+    public HashSet<int> BonusStages = new HashSet<int> { 0 };
 
     public EnemySpawner enemySpawner;
     private void Awake()
@@ -72,13 +72,35 @@ public class StageMgr : MonoBehaviour
     public void NextStage()
     {
         currentStage++;
-        if(currentStage == 6)
+        if (currentStage == 6)
         {
             currentStage = 1;
             currentField++;
+
+            switch (currentField)
+            {
+                case 0:
+                case 1:
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+
+                case 4:
+                    break;
+
+                case 5:
+                    GameMgr.Instance.ui.Victory();
+                    StageInfo.text = "Victory!!";
+                    return;
+
+            }
         }
         GameMgr.Instance.TurnUpdate(10);
-        if(currentStage == 1 && currentField == 1)
+        if (currentStage == 1 && currentField == 1)
         {
             GameMgr.Instance.tutorial.skipButton.gameObject.SetActive(false);
             GameMgr.Instance.LifeMax();
@@ -117,7 +139,7 @@ public class StageMgr : MonoBehaviour
     {
         MonsterData enemyData = new MonsterData();
         keyList = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).AllItemIds;
-        foreach(int i in keyList)
+        foreach (int i in keyList)
         {
             if (i / 1000 == 2)
             {
@@ -130,7 +152,7 @@ public class StageMgr : MonoBehaviour
                     switch (count)
                     {
                         case 1:
-                            enemySpawner.Spawn(enemy, (int)PosNum.Center , enemyData);
+                            enemySpawner.Spawn(enemy, (int)PosNum.Center, enemyData);
                             break;
                         case 2:
                             enemySpawner.Spawn(enemy, (int)PosNum.Left, enemyData);
@@ -146,7 +168,7 @@ public class StageMgr : MonoBehaviour
                     return;
                 }
             }
-            else if ( i / 1000 == 3 && currentStage == 5)
+            else if (i / 1000 == 3 && currentStage == 5)
             {
                 if (i % 100 / 10 == currentField)
                 {
@@ -163,7 +185,7 @@ public class StageMgr : MonoBehaviour
                 }
             }
         }
-        Debug.Log("적 데이터 없음"); //TO-DO 삭제
+        Debug.Log("적 데이터 없음");
     }
 
 

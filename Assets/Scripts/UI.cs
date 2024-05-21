@@ -70,12 +70,7 @@ public class UI : MonoBehaviour
         spellNames[2] = rewards[2].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
         spellInfos[2] = rewards[2].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
         spellLevels[2] = rewards[2].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
-        rewards[2].onClick.AddListener(() => { 
-            /* TO-DO GetStatus */ GameMgr.Instance.curruntBonusStat += 3;
-            GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
-            rewardPanel.gameObject.SetActive(false);
-            StageMgr.Instance.NextStage();
-        }); // 족보보상 3번째 칸
+        rewards[2].onClick.AddListener(() =>  GetStatus()); // 족보보상 3번째 칸
 
     }
 
@@ -164,6 +159,18 @@ public class UI : MonoBehaviour
         rewardPanel.gameObject.SetActive(false);
         StageMgr.Instance.NextStage();
     }
+
+    public void GetStatus()
+    {
+        rewardList.Add(rewardSpells[0]);
+        rewardList.Add(rewardSpells[1]);
+
+        GameMgr.Instance.curruntBonusStat += 3;
+        GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
+        rewardPanel.gameObject.SetActive(false);
+        StageMgr.Instance.NextStage();
+    }
+
 
     private IEnumerator PanelSlide(GameObject panel)
     {

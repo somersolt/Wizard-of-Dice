@@ -243,6 +243,8 @@ public class Tutorial : MonoBehaviour
                 if (!eventTrigger)
                 {
                     eventTrigger = true;
+                    DiceMgr.Instance.manipulList[1] = 0;
+                    DiceMgr.Instance.TutorialButtonControl(false);
                     DiceMgr.Instance.tutorialControl = false;
                     GameMgr.Instance.tutorialMode = false;
                     tutorialPanel.gameObject.SetActive(false);
