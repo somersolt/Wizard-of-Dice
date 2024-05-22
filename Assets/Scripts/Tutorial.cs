@@ -38,6 +38,9 @@ public class Tutorial : MonoBehaviour
     public int eventCount = 0;
     private TutorialStep currentStep;
 
+    [SerializeField]
+    private GameObject panelPos;
+
     private enum TutorialStep
     {
         None = -1,
@@ -210,7 +213,7 @@ public class Tutorial : MonoBehaviour
                 {
                     tutorialText.text = " ";
                     eventTrigger = true;
-                    tutorialPanel.gameObject.transform.position += new Vector3(0, -1200, 0);
+                    tutorialPanel.gameObject.transform.position = panelPos.gameObject.transform.position;
                     GameMgr.Instance.tutorialMode = true;
                 }
                 if (eventCount == 1)
