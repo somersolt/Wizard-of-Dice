@@ -387,6 +387,7 @@ public class UI : MonoBehaviour
         }
 
         GameMgr.Instance.curruntBonusStat += value;
+        GameMgr.Instance.artifact.artifacts[0].Set(0, "방화광", $"매턴 모든 적에게 '기본 마법력'({GameMgr.Instance.curruntBonusStat}) 만큼의 데미지");
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
 
         if (mode == default)

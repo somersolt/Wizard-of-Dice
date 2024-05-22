@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class Enemy : MonoBehaviour
     public Animator animator;
     public Canvas canvas;
     public Message damagePrefab;
+    ParticleSystem particle;
     public int MaxHp;
     public int Damage;
     public string Name;
@@ -61,6 +63,12 @@ public class Enemy : MonoBehaviour
         Hp -= d;
         var DamageMessage = Instantiate(damagePrefab, canvas.transform);
         DamageMessage.Setup(GameMgr.Instance.currentDamage, Color.red, true);
+        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 1")), canvas.transform);
+        var main = particle.main;
+        main.loop = false;
+        particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        particle.Play();
+        Destroy(particle.gameObject, main.duration);
 
         if ( Hp <= 0 )
         {
@@ -82,6 +90,12 @@ public class Enemy : MonoBehaviour
         Hp -= d;
         var DamageMessage = Instantiate(damagePrefab, canvas.transform);
         DamageMessage.Setup(GameMgr.Instance.curruntBonusStat, Color.red, true);
+        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 13")), canvas.transform);
+        var main = particle.main;
+        main.loop = false;
+        particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        particle.Play();
+        Destroy(particle.gameObject, main.duration);
         if (Hp <= 0)
         {
             animator.SetTrigger("onDead");

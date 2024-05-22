@@ -90,7 +90,7 @@ Transform:
   m_GameObject: {fileID: 2981950110797317566}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -116,9 +116,11 @@ MonoBehaviour:
   damagePrefab: {fileID: -3240762228831540081, guid: 78d7276ea5204664bae6fa851686e892, type: 3}
   MaxHp: 40
   Damage: 1
+  Name: 
   onDead: 0
   HpBar: {fileID: 2459725543592314223}
   Life: {fileID: 5300981130205690538}
+  NameInfo: {fileID: 0}
   DamageInfo: {fileID: 2959688549579256782}
 --- !u!95 &2878946676268584996
 Animator:
