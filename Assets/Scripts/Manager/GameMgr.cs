@@ -139,6 +139,9 @@ public class GameMgr : MonoBehaviour
     private int currentValue;
     [SerializeField]
     private TextMeshProUGUI damageInfo;
+    [SerializeField]
+    private TextMeshProUGUI targetInfo;
+    public Button MagicInfo;
     public int currentDamage;
     public int currentBarrier;
     public int currentRecovery;
@@ -284,19 +287,19 @@ public class GameMgr : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             currentTarget = 1;
-            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+            targetInfo.text = currentTarget.ToString();
 
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             currentTarget = 2;
-            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+            targetInfo.text = currentTarget.ToString();
 
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             currentTarget = 3;
-            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+            targetInfo.text =currentTarget.ToString();
 
         }
 
@@ -304,7 +307,7 @@ public class GameMgr : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             currentDamage = 300;
-            damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+            damageInfo.text = currentDamage.ToString();
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
@@ -572,7 +575,11 @@ public class GameMgr : MonoBehaviour
         currentValue = value;
 
         currentDamage = DamageCheckSystem.DamageCheck(currentValue, RankList, currentRanks);
-        damageInfo.text = currentDamage.ToString() + " / " + currentTarget.ToString();
+        damageInfo.text = currentDamage.ToString();
+        targetInfo.text = currentTarget.ToString();
+
+        MagicInfo.interactable = true;
+
         /*
         int r = 0;
         for (int i = 0; i < scrolls.Length; i++)
@@ -671,6 +678,9 @@ public class GameMgr : MonoBehaviour
         {
             ranksInfo[i].color = Color.gray;
         }
+        damageInfo.text = "°ø°Ý·Â";
+        targetInfo.text = "Å¸°Ù";
+        MagicInfo.interactable = false;
     }
 
     private void MonsterCheck()

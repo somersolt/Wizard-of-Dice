@@ -43,9 +43,9 @@ public class StageMgr : MonoBehaviour
     public List<Enemy> DeadEnemies = new List<Enemy>();
     public List<int> keyList = new List<int>();
     public Enemy tutorialEnemy; // TO-DO 테스트 적
-    //public Enemy testPrefab; // TO-DO 테스트 적
-    //public Enemy bosstestPrefab; // TO-DO 테스트 적
 
+    [SerializeField]
+    private SpriteRenderer backGround;
 
     public int TutorialStage = 0;
     public int latStage = 5;
@@ -72,28 +72,17 @@ public class StageMgr : MonoBehaviour
 
     public void NextStage()
     {
+
         currentStage++;
         if (currentStage == 6)
         {
             currentStage = 1;
             currentField++;
-
-            switch (currentField)
-            {
-                case 0:
-                case 1:
-                    break;
-                case 2:
-
-                    break;
-                case 3:
-
-                    break;
-
-                case 4:
-                    break;
-            }
         }
+
+        var path = currentField.ToString() + currentStage.ToString();
+        backGround.sprite = Resources.Load<Sprite>(string.Format("Field/{0}", path));
+
         GameMgr.Instance.TurnUpdate(10);
         if (currentStage == 1 && currentField == 1)
         {
