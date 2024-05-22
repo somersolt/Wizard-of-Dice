@@ -14,21 +14,23 @@ public static class RankCheckSystem
     {
         ClearList();
         Array.Copy(list, diceNumberCount, list.Length);
-        switch (GameMgr.Instance.currentDiceCount)
-        {
-            case GameMgr.DiceCount.two:
-                RankCheck2();
-                break;
-            case GameMgr.DiceCount.three:
-                RankCheck3();
-                break;
-            case GameMgr.DiceCount.four:
-                RankCheck4();
-                break;
-            case GameMgr.DiceCount.five:
-                RankCheck5();
-                break;
-        }
+        RankCheck5();
+
+        //switch (GameMgr.Instance.currentDiceCount)
+        //{
+        //    case GameMgr.DiceCount.two:
+        //        RankCheck2();
+        //        break;
+        //    case GameMgr.DiceCount.three:
+        //        RankCheck3();
+        //        break;
+        //    case GameMgr.DiceCount.four:
+        //        RankCheck4();
+        //        break;
+        //    case GameMgr.DiceCount.five:
+        //        RankCheck5();
+        //        break;
+        //}
 
         return ranksCheckList;
     }

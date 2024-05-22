@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -30,6 +31,7 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] newTexts = new TextMeshProUGUI[2];
 
     private SpellData[] rewardSpells = new SpellData[2];
+    private Image[] examples = new Image[2];
     private SpellData empty = new SpellData();
 
     [SerializeField]
@@ -44,6 +46,8 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] maxSpellNames = new TextMeshProUGUI[9];
     private TextMeshProUGUI[] maxSpellInfos = new TextMeshProUGUI[9];
     private TextMeshProUGUI[] maxSpellLevels = new TextMeshProUGUI[9];
+    private Image[] maxSpellexamples = new Image[9];
+
 
     [SerializeField]
     private GameObject diceRewardPanel;
@@ -67,6 +71,8 @@ public class UI : MonoBehaviour
     public TextMeshProUGUI[] infoMagicnames = new TextMeshProUGUI[9];
     public TextMeshProUGUI[] infoMagicInfos = new TextMeshProUGUI[9];
     public TextMeshProUGUI[] infoMagicLevels = new TextMeshProUGUI[9];
+    private Image[] infoMagicexamples = new Image[9];
+
     [SerializeField]
     private Button magicExitButton;
 
@@ -89,6 +95,10 @@ public class UI : MonoBehaviour
     [SerializeField]
     private Button QuitNo;
 
+    public AudioSource audioSource;
+    [SerializeField]
+    private List<AudioClip> audioClips = new List<AudioClip>();
+
     private void Awake()
     {
         titleButton.onClick.AddListener(() => ReturnTitle());
@@ -107,6 +117,7 @@ public class UI : MonoBehaviour
         for (int i = 0; i < rewards.Length - 1; i++)
         {
             spellNames[i] = rewards[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
+            examples[i] = rewards[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("ex").GetComponentInChildren<Image>();
             spellInfos[i] = rewards[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
             spellLevels[i] = rewards[i].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
             newTexts[i] = rewards[i].transform.Find("new").GetComponentInChildren<TextMeshProUGUI>();
@@ -123,6 +134,9 @@ public class UI : MonoBehaviour
             maxSpellNames[i] = maxSpells[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
             maxSpellInfos[i] = maxSpells[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
             maxSpellLevels[i] = maxSpells[i].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
+            maxSpellexamples[i] = maxSpells[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("ex").GetComponentInChildren<Image>();
+            var path = (i + 1).ToString();
+            maxSpellexamples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", path)); ;
             var maxSpell = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 2);
             maxSpellNames[i].text = maxSpell.GetName;
             maxSpellInfos[i].text = maxSpell.GetDesc;
@@ -132,6 +146,7 @@ public class UI : MonoBehaviour
                 GameMgr.Instance.SetRankList(index);
                 maxSpells[index].gameObject.SetActive(false);
                 maxSpellRewardPanel.gameObject.SetActive(false);
+                GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
                 GameMgr.Instance.RanksListUpdate();
                 StageMgr.Instance.NextStage();
             });
@@ -159,11 +174,14 @@ public class UI : MonoBehaviour
             infoMagicnames[i] = infoMagics[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
             infoMagicInfos[i] = infoMagics[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
             infoMagicLevels[i] = infoMagics[i].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
+            infoMagicexamples[i] = infoMagics[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("ex").GetComponentInChildren<Image>();
+            var path = (i + 1).ToString();
+            infoMagicexamples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", path)); ;
         } //적용 마법
     }
-
     public void OnReward(int mode = 0)
     {
+        audioSource.Play();
         RewardClear();
         for (int i = 0; i < 2; i++)
         {
@@ -175,6 +193,8 @@ public class UI : MonoBehaviour
                 rewardSpells[i] = rewardList[a];
                 spellNames[i].text = rewardList[a].GetName;
                 spellInfos[i].text = rewardList[a].GetDesc;
+                var path = (rewardList[a].ID % 100 / 10).ToString();
+                examples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", path)); ;
                 switch (rewardList[a].LEVEL)
                 {
                     case 1:
@@ -211,6 +231,8 @@ public class UI : MonoBehaviour
 
     public void OnDiceReward()
     {
+
+        audioSource.Play();
         DiceRewardClear();
 
         switch (GameMgr.Instance.currentDiceCount)
@@ -283,6 +305,8 @@ public class UI : MonoBehaviour
 
     public void OnArtifactReward()
     {
+        audioSource.Play();
+
         ArtifactRewardClear();
         for (int i = 0; i < 3; i++)
         {
@@ -363,6 +387,8 @@ public class UI : MonoBehaviour
         GameMgr.Instance.RanksListUpdate();
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         rewardPanel.gameObject.SetActive(false);
+        GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
+
         if (mode == 0)
         {
             StageMgr.Instance.NextStage();
@@ -398,6 +424,7 @@ public class UI : MonoBehaviour
         {
             diceRewardPanel.gameObject.SetActive(false);
         }
+        GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
         StageMgr.Instance.NextStage();
     }
 
@@ -422,6 +449,7 @@ public class UI : MonoBehaviour
         GetArtifactEffect(artifactData.ID);
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         artifactRewardPanel.gameObject.SetActive(false);
+        GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
         if (artifactData.ID != 3)
         {
             StageMgr.Instance.NextStage();
@@ -474,6 +502,7 @@ public class UI : MonoBehaviour
                 break;
             case 9:
                 GameMgr.Instance.MaxLifeSet(GameMgr.Instance.artifact.Value9);
+                GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[5]);
                 GameMgr.Instance.LifeMax();
                 break;
         }

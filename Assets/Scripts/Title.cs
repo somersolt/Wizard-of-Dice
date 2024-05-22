@@ -17,7 +17,11 @@ public class Title : MonoBehaviour
 
     private void Awake()
     {
-        startGame.onClick.AddListener(() => { SceneManager.LoadScene("Main"); });
+        startGame.onClick.AddListener(() => { 
+            SceneManager.LoadScene("Main");
+            PlayerPrefs.SetFloat("BGM", BGM.Instance.masterVolume);
+            PlayerPrefs.SetFloat("SFX", BGM.Instance.SFXsound);
+        });
         endGame.onClick.AddListener(() => { quitGamePanel.gameObject.SetActive(true); });
         yes.onClick.AddListener(() => { QuitGame(); });
         no.onClick.AddListener(() => { quitGamePanel.gameObject.SetActive(false); });

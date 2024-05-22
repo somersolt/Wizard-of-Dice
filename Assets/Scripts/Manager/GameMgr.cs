@@ -180,7 +180,12 @@ public class GameMgr : MonoBehaviour
     [SerializeField]
     private Button quit;
 
-
+    /// <summary>
+    /// 소리 관련
+    public AudioSource audioSource;
+    public List<AudioClip> audioClips;
+    private int scrollsound = 0;
+    /// </summary>
     private void Awake()
     {
         if (instance == null)
@@ -229,6 +234,9 @@ public class GameMgr : MonoBehaviour
     }
     private void Update()
     {
+        audioSource.volume = BGM.Instance.SFXsound;
+        ui.audioSource.volume = BGM.Instance.SFXsound;
+
         switch (currentStatus)
         {
             case TurnStatus.PlayerDice:
@@ -408,12 +416,16 @@ public class GameMgr : MonoBehaviour
 
                 var DamageMessage = Instantiate(messagePrefab, canvas.transform);
                 DamageMessage.Setup("유물 사용!", Color.cyan);
+                audioSource.PlayOneShot(audioClips[1]);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                     messagePos.GetComponent<RectTransform>().anchoredPosition;
             }
             else
             {
                 currentStatus = TurnStatus.PlayerLose;
+                BGM.Instance.currentAudio.Stop();
+                audioSource.PlayOneShot(audioClips[4]);
+                
                 return;
             }
             //플레이어 사망 체크
@@ -429,6 +441,8 @@ public class GameMgr : MonoBehaviour
                 {
                     enemy.OnTicDamage(curruntBonusStat); //유물 1번
                 }
+                audioSource.PlayOneShot(audioClips[9]);
+
                 onTicWait = true;
             }
 
@@ -614,8 +628,19 @@ public class GameMgr : MonoBehaviour
             if ((currentRanks & currentFlag) != 0)
             {
                 ranksInfo[i].color = Color.red;
+                scrollsound++;
             }
         }
+
+        if(scrollsound > 0 && scrollsound < 3)
+        {
+            audioSource.PlayOneShot(audioClips[0]);
+        }
+        else if (scrollsound >= 3)
+        {
+            audioSource.PlayOneShot(audioClips[1]);
+        }
+
     }
 
     public void RanksListUpdate()
@@ -662,6 +687,11 @@ public class GameMgr : MonoBehaviour
     {
         livingMonster = Math.Min(StageMgr.Instance.enemies.Count, currentTarget);
         CurrentStatus = TurnStatus.PlayerAttack;
+        audioSource.PlayOneShot(audioClips[2]);
+        if(currentBarrier > 0 || currentRecovery > 0)
+        {
+            audioSource.PlayOneShot(audioClips[5]);
+        }
         publisher.RaiseEvent(currentDamage, currentTarget);
     }
 
@@ -702,6 +732,7 @@ public class GameMgr : MonoBehaviour
         {
             ui.infoMagics[i].gameObject.SetActive(false);
         }
+        scrollsound = 0;
     }
 
     private void MonsterCheck()
@@ -718,6 +749,7 @@ public class GameMgr : MonoBehaviour
 
             if (StageMgr.Instance.currentStage == StageMgr.Instance.latStage && StageMgr.Instance.currentField == StageMgr.Instance.lastField)
             {
+                BGM.Instance.PlayBGM(BGM.Instance.bgm[1],2);
                 ui.Victory();
                 return;
             }
@@ -749,6 +781,7 @@ public class GameMgr : MonoBehaviour
             if (dodgeNuber < artifact.Value5)
             {
                 var DamageMessage = Instantiate(messagePrefab, canvas.transform);
+                audioSource.PlayOneShot(audioClips[3]);
                 DamageMessage.Setup("Miss!", Color.magenta);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                     messagePos.GetComponent<RectTransform>().anchoredPosition;
@@ -765,6 +798,7 @@ public class GameMgr : MonoBehaviour
                         messagePos.GetComponent<RectTransform>().anchoredPosition;
                     var main = playerHitParticleS.main;
                     main.loop = false;
+                    audioSource.Play();
                     playerHitParticleS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                     playerHitParticleS.Play();
                 }
@@ -777,6 +811,7 @@ public class GameMgr : MonoBehaviour
                     DamageMessage.Setup(enemyDamage, Color.red);
                     DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                          messagePos.GetComponent<RectTransform>().anchoredPosition;
+                    audioSource.Play();
                     playerHitParticleL.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                     playerHitParticleL.Play();
                 }
@@ -793,6 +828,7 @@ public class GameMgr : MonoBehaviour
                 DamageMessage.Setup(enemyDamage, Color.blue);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                     messagePos.GetComponent<RectTransform>().anchoredPosition;
+                audioSource.Play();
                 playerHitParticleS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 playerHitParticleS.Play();
 
@@ -806,7 +842,8 @@ public class GameMgr : MonoBehaviour
                 DamageMessage.Setup(enemyDamage, Color.red);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                      messagePos.GetComponent<RectTransform>().anchoredPosition;
-                playerHitParticleL.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                audioSource.Play();
+                //playerHitParticleL.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 playerHitParticleL.Play();
             }
         }

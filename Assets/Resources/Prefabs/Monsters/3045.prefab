@@ -10529,6 +10529,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MonsterFrame
       objectReference: {fileID: 0}
+    - target: {fileID: 1872214627094814394, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.88400006
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081754777751686688, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.498
+      objectReference: {fileID: 0}
     - target: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -10608,6 +10616,14 @@ PrefabInstance:
     - target: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2405854173955441641, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.88400006
+      objectReference: {fileID: 0}
+    - target: {fileID: 7742655144544806876, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.884
       objectReference: {fileID: 0}
     - target: {fileID: 7984339301414947423, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -230,6 +230,7 @@ public class DiceMgr : MonoBehaviour
     public void DiceRoll(bool starting = false, GameMode mode = GameMode.Default)
     {
         GameMgr.Instance.ScrollsClear();
+        GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[6]);
         onDiceRoll = true;
         onResult = true;
         countToResult = 0;
@@ -401,6 +402,7 @@ public class DiceMgr : MonoBehaviour
                 buttonToggle[i] = false;
                 buttonLock[i].gameObject.SetActive(false);
             }
+            GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[7]);
         }
     }
 

@@ -1327,7 +1327,7 @@ MonoBehaviour:
   Name: 
   onDead: 0
   HpBar: {fileID: 2851860228584030517}
-  Life: {fileID: 7271187588978148478}
+  Life: {fileID: 5485871282381913840}
   NameInfo: {fileID: 1881470876905009264}
   DamageInfo: {fileID: 3216565823936198548}
 --- !u!95 &5823744523051196846
@@ -1908,9 +1908,9 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 8814384860390692627, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
   m_PrefabInstance: {fileID: 3665448310507706696}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7271187588978148478 stripped
+--- !u!114 &5485871282381913840 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6212217912436694326, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9151300204056405944, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
   m_PrefabInstance: {fileID: 3665448310507706696}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
