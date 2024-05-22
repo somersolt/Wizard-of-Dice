@@ -24,7 +24,8 @@ public static class DamageCheckSystem
 
     public static int DamageCheck(int value, int[] ranks, RanksFlag checkedlist)
     {
-        int sum = GameMgr.Instance.curruntBonusStat;
+        int totalvalue = value;
+        int sum = 0;
         int multiple = 0;
         int barrier = 0;
         int recovery = 0;
@@ -32,7 +33,7 @@ public static class DamageCheckSystem
 
         if (GameMgr.Instance.artifact.playersArtifacts[6] == 1) //7번 유물
         {
-            sum += DiceMgr.Instance.numbersCount[0] * GameMgr.Instance.artifact.Value6;
+            totalvalue += DiceMgr.Instance.numbersCount[0] * GameMgr.Instance.artifact.Value6;
         }
         for (int i = 0; i < ranks.Length; i++)
         {
@@ -58,10 +59,20 @@ public static class DamageCheckSystem
         }
 
 
+        GameMgr.Instance.ui.damages[0].text = totalvalue.ToString();
+        GameMgr.Instance.ui.damages[1].text = GameMgr.Instance.curruntBonusStat.ToString();
+        GameMgr.Instance.ui.damages[2].text = sum.ToString();
+        GameMgr.Instance.ui.damages[3].text = multiple.ToString();
+
+        sum += GameMgr.Instance.curruntBonusStat;
+
+        GameMgr.Instance.ui.damages[4].text = ((value + sum) * (100 + multiple) / 100).ToString();
+
         GameMgr.Instance.currentTarget = target;
         GameMgr.Instance.currentBarrier = barrier;
         GameMgr.Instance.currentRecovery = recovery;
-        return (value + sum) * (100 + multiple) / 100;
+
+        return (totalvalue + sum) * (100 + multiple) / 100;
 
         //( 주사위 눈금 총합 + 마법서 합연산 추가 값 ) x (100 + 마법서 곱연산 추가 값) / 100
     }

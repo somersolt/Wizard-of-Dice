@@ -39,6 +39,7 @@ public static class RankCheckSystem
             if (diceNumberCount[i] >= 2)
             {
                 ranksCheckList |= RanksFlag.OnePair;
+                GameMgr.Instance.ui.infoMagics[0].gameObject.SetActive(true);
             }
         } // 원페어 체크
     }
@@ -50,6 +51,7 @@ public static class RankCheckSystem
             if (diceNumberCount[i] >= 2)
             {
                 ranksCheckList |= RanksFlag.OnePair;
+                GameMgr.Instance.ui.infoMagics[0].gameObject.SetActive(true);
             }
         } // 원페어 체크
 
@@ -59,6 +61,8 @@ public static class RankCheckSystem
             if (diceNumberCount[i] >= 3)
             {
                 ranksCheckList |= RanksFlag.Triple;
+                GameMgr.Instance.ui.infoMagics[1].gameObject.SetActive(true);
+
             }
         } // 트리플 체크
 
@@ -67,6 +71,7 @@ public static class RankCheckSystem
             if (diceNumberCount[i] >= 1 && diceNumberCount[i + 1] >= 1 && diceNumberCount[i + 2] >= 1)
             {
                 ranksCheckList |= RanksFlag.Straight3;
+                GameMgr.Instance.ui.infoMagics[2].gameObject.SetActive(true);
 
             }
         } // 스트레이트 3 체크
@@ -89,9 +94,12 @@ public static class RankCheckSystem
                     if (diceNumberCount[j] >= 2)
                     {
                         ranksCheckList |= RanksFlag.TwoPair;
+                        GameMgr.Instance.ui.infoMagics[3].gameObject.SetActive(true);
+
                     }
                 }
                 ranksCheckList |= RanksFlag.OnePair;
+                GameMgr.Instance.ui.infoMagics[0].gameObject.SetActive(true);
             }// 원페어, 투페어 체크
         }
 
@@ -100,6 +108,8 @@ public static class RankCheckSystem
             if (diceNumberCount[i] >= 3)
             {
                 ranksCheckList |= RanksFlag.Triple;
+                GameMgr.Instance.ui.infoMagics[1].gameObject.SetActive(true);
+
             }
         } // 트리플 체크
 
@@ -108,6 +118,7 @@ public static class RankCheckSystem
             if (diceNumberCount[i] >= 1 && diceNumberCount[i + 1] >= 1 && diceNumberCount[i + 2] >= 1)
             {
                 ranksCheckList |= RanksFlag.Straight3;
+                GameMgr.Instance.ui.infoMagics[2].gameObject.SetActive(true);
 
             }
         } // 스트레이트 3 체크
@@ -119,6 +130,8 @@ public static class RankCheckSystem
                 && diceNumberCount[i + 3] >= 1)
             {
                 ranksCheckList |= RanksFlag.Straight4;
+                GameMgr.Instance.ui.infoMagics[5].gameObject.SetActive(true);
+
             }
         } // 스트레이트 4 체크
 
@@ -127,6 +140,8 @@ public static class RankCheckSystem
             if (diceNumberCount[i] >= 4)
             {
                 ranksCheckList |= RanksFlag.KindOf4;
+                GameMgr.Instance.ui.infoMagics[4].gameObject.SetActive(true);
+
             }
         } // 카인드 4 체크
 
@@ -148,9 +163,11 @@ public static class RankCheckSystem
                     if (diceNumberCount[j] >= 2 && ranksList[(int)Ranks.TwoPair] != 0)
                     {
                         ranksCheckList |= RanksFlag.TwoPair;
+                        GameMgr.Instance.ui.infoMagics[3].gameObject.SetActive(true);
                     }
                 }
                 ranksCheckList |= RanksFlag.OnePair;
+                GameMgr.Instance.ui.infoMagics[0].gameObject.SetActive(true);
 
             }
         } // 원페어, 투페어 체크
@@ -169,11 +186,14 @@ public static class RankCheckSystem
                     if (diceNumberCount[j] >= 2 && ranksList[(int)Ranks.FullHouse] != 0)
                     {
                         ranksCheckList |= RanksFlag.FullHouse;
+                        GameMgr.Instance.ui.infoMagics[6].gameObject.SetActive(true);
+
                     }
                 }
                 if (ranksList[(int)Ranks.Triple] != 0)
                 {
                     ranksCheckList |= RanksFlag.Triple;
+                    GameMgr.Instance.ui.infoMagics[1].gameObject.SetActive(true);
                 }
             }
         } // 트리플, 풀하우스 체크
@@ -186,6 +206,8 @@ public static class RankCheckSystem
                 if (ranksList[(int)Ranks.Straight3] != 0)
                 {
                     ranksCheckList |= RanksFlag.Straight3;
+                    GameMgr.Instance.ui.infoMagics[2].gameObject.SetActive(true);
+
                 }
             }
         } // 스트레이트 3 체크
@@ -199,6 +221,8 @@ public static class RankCheckSystem
                 if (ranksList[(int)Ranks.Straight4] != 0)
                 {
                     ranksCheckList |= RanksFlag.Straight4;
+                    GameMgr.Instance.ui.infoMagics[5].gameObject.SetActive(true);
+
                 }
             }
         } // 스트레이트 4 체크
@@ -211,6 +235,8 @@ public static class RankCheckSystem
                 if (ranksList[(int)Ranks.Straight5] != 0)
                 {
                     ranksCheckList |= RanksFlag.Straight5;
+                    GameMgr.Instance.ui.infoMagics[7].gameObject.SetActive(true);
+
                 }
             }
         } // 스트레이트 5 체크
@@ -223,6 +249,8 @@ public static class RankCheckSystem
                 if (ranksList[(int)Ranks.KindOf4] != 0)
                 {
                     ranksCheckList |= RanksFlag.KindOf4;
+                    GameMgr.Instance.ui.infoMagics[4].gameObject.SetActive(true);
+
                 }
             }
         } // 카인드 4 체크
@@ -234,6 +262,8 @@ public static class RankCheckSystem
                 if (ranksList[(int)Ranks.KindOf5] != 0)
                 {
                     ranksCheckList |= RanksFlag.KindOf5;
+                    GameMgr.Instance.ui.infoMagics[8].gameObject.SetActive(true);
+
                 }
             }
         } // 카인드 5 체크

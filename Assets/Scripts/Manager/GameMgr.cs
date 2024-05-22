@@ -213,6 +213,7 @@ public class GameMgr : MonoBehaviour
         TurnUpdate(10);
         publisher.AttackEvent += listener.AttackHandleEvent;// 이벤트에 이벤트 핸들러 메서드를 추가
         quit.onClick.AddListener(() => pauseGame());
+        MagicInfo.onClick.AddListener(() => { ui.magicInfoPanel.SetActive(true); });
     }
 
 
@@ -220,6 +221,8 @@ public class GameMgr : MonoBehaviour
     {
         currentDiceCount = DiceCount.two;
         DiceMgr.Instance.DiceTwo();
+        ScrollsClear();
+        RanksListUpdate();
     }
     private void Update()
     {
@@ -299,7 +302,7 @@ public class GameMgr : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             currentTarget = 3;
-            targetInfo.text =currentTarget.ToString();
+            targetInfo.text = currentTarget.ToString();
 
         }
 
@@ -400,7 +403,7 @@ public class GameMgr : MonoBehaviour
                 artifact.playersArtifacts[7] = 2;
                 PlayerHp = artifact.Value7;
 
-                var DamageMessage = Instantiate(messagePrefab, canvas.transform); 
+                var DamageMessage = Instantiate(messagePrefab, canvas.transform);
                 DamageMessage.Setup("유물 사용!", Color.cyan);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                     messagePos.GetComponent<RectTransform>().anchoredPosition;
@@ -427,11 +430,11 @@ public class GameMgr : MonoBehaviour
             }
 
             if (monsterSignal == ticCount && onTicWait)
-            { 
+            {
                 onTicWait = false;
                 MonsterCheck();
 
-                if(CurrentStatus != TurnStatus.GetRewards)
+                if (CurrentStatus != TurnStatus.GetRewards)
                 {
                     monsterSignal = 0;
 
@@ -619,19 +622,25 @@ public class GameMgr : MonoBehaviour
         {
             if (RankList[i] != 0)
             {
+                var magic = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]);
+                ui.infoMagicnames[i].text = magic.GetName;
+                ui.infoMagicInfos[i].text = magic.GetDesc;
                 StringBuilder newText = new StringBuilder();
-                newText.Append(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]).GetName);
+                newText.Append(magic.GetName);
 
                 switch (RankList[i])
                 {
                     case 1:
                         newText.Append("- 일반");
+                        ui.infoMagicLevels[i].text = "일반";
                         break;
                     case 2:
                         newText.Append("- 강화");
+                        ui.infoMagicLevels[i].text = "강화";
                         break;
                     case 3:
                         newText.Append("- 초월");
+                        ui.infoMagicLevels[i].text = "초월";
                         break;
                 }
                 ranksInfo[i].text = newText.ToString();
@@ -681,6 +690,15 @@ public class GameMgr : MonoBehaviour
         damageInfo.text = "공격력";
         targetInfo.text = "타겟";
         MagicInfo.interactable = false;
+
+        for (int i = 0; i < 5; i++)
+        {
+            ui.damages[i].text = " ";
+        }
+        for (int i = 0; i < 9; i++)
+        {
+            ui.infoMagics[i].gameObject.SetActive(false);
+        }
     }
 
     private void MonsterCheck()
@@ -754,7 +772,7 @@ public class GameMgr : MonoBehaviour
                          messagePos.GetComponent<RectTransform>().anchoredPosition;
                 }
             }
-            
+
         }
         else
         {

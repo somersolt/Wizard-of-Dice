@@ -60,6 +60,23 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] artifactsNames = new TextMeshProUGUI[3];
     private TextMeshProUGUI[] artifactsInfos = new TextMeshProUGUI[3];
 
+    public GameObject magicInfoPanel;
+    [SerializeField]
+    private Button DamageInfoButton;
+    public Image[] infoMagics = new Image[9];
+    public TextMeshProUGUI[] infoMagicnames = new TextMeshProUGUI[9];
+    public TextMeshProUGUI[] infoMagicInfos = new TextMeshProUGUI[9];
+    public TextMeshProUGUI[] infoMagicLevels = new TextMeshProUGUI[9];
+    [SerializeField]
+    private Button magicExitButton;
+
+    [SerializeField]
+    private GameObject damageInfoPanel;
+    public TextMeshProUGUI[] damages = new TextMeshProUGUI[5];
+    [SerializeField]
+    private Button damageExitButton;
+
+
     public GameObject PausePanel;
     [SerializeField]
     private Button ReturnButton;
@@ -132,6 +149,17 @@ public class UI : MonoBehaviour
             artifactsNames[i] = artifacts[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
             artifactsInfos[i] = artifacts[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
         } // 유물 보상
+
+        magicExitButton.onClick.AddListener(() => { magicInfoPanel.gameObject.SetActive(false); });
+        damageExitButton.onClick.AddListener(() => { damageInfoPanel.gameObject.SetActive(false); });
+        DamageInfoButton.onClick.AddListener(() => { magicInfoPanel.gameObject.SetActive(false); ; damageInfoPanel.gameObject.SetActive(true); });
+
+        for (int i = 0; i < 9; i++)
+        {
+            infoMagicnames[i] = infoMagics[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
+            infoMagicInfos[i] = infoMagics[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
+            infoMagicLevels[i] = infoMagics[i].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
+        } //적용 마법
     }
 
     public void OnReward(int mode = 0)
