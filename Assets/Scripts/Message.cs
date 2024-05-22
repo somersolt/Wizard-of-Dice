@@ -22,11 +22,11 @@ public class Message : MonoBehaviour
         time += Time.deltaTime;
         if (onWorld)
         {
-            gameObject.transform.position += new Vector3(0, 0.001f, 0);
+            gameObject.transform.position += new Vector3(0, 0.002f, 0);
         }
         else
         {
-            gameObject.transform.position += new Vector3(0, 1, 0);
+            gameObject.transform.position += new Vector3(0, 0.3f, 0);
         }
         if ( time > duration)
         {

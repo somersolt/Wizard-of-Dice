@@ -13,6 +13,7 @@ using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static UnityEngine.ParticleSystem;
 public class AttackEventArgs : EventArgs
 {
     public int value { get; }
@@ -119,6 +120,8 @@ public class GameMgr : MonoBehaviour
     public Canvas canvas;
     public Message messagePrefab;
     public GameObject messagePos;
+    public ParticleSystem playerHitParticleS;
+    public ParticleSystem playerHitParticleL;
     public enum DiceCount
     {
         two = 2,
@@ -760,6 +763,10 @@ public class GameMgr : MonoBehaviour
                     DamageMessage.Setup(enemyDamage, Color.blue);
                     DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                         messagePos.GetComponent<RectTransform>().anchoredPosition;
+                    var main = playerHitParticleS.main;
+                    main.loop = false;
+                    playerHitParticleS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    playerHitParticleS.Play();
                 }
                 else
                 {
@@ -770,6 +777,8 @@ public class GameMgr : MonoBehaviour
                     DamageMessage.Setup(enemyDamage, Color.red);
                     DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                          messagePos.GetComponent<RectTransform>().anchoredPosition;
+                    playerHitParticleL.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                    playerHitParticleL.Play();
                 }
             }
 
@@ -784,6 +793,9 @@ public class GameMgr : MonoBehaviour
                 DamageMessage.Setup(enemyDamage, Color.blue);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                     messagePos.GetComponent<RectTransform>().anchoredPosition;
+                playerHitParticleS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                playerHitParticleS.Play();
+
             }
             else
             {
@@ -794,6 +806,8 @@ public class GameMgr : MonoBehaviour
                 DamageMessage.Setup(enemyDamage, Color.red);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                      messagePos.GetComponent<RectTransform>().anchoredPosition;
+                playerHitParticleL.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                playerHitParticleL.Play();
             }
         }
         LifeUpdate();
