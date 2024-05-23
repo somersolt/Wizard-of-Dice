@@ -6,7 +6,7 @@ public class Artifact : MonoBehaviour
 {
     public List<ArtifactData> artifacts = new List<ArtifactData>();
     public int[] playersArtifacts = new int[10];
-    public int[] playersArtifactsNumber = new int[3] { -1, -1, -1 };
+    public int[] playersArtifactsNumber = new int[3];
 
 
     public int Value3 = 2;
@@ -57,5 +57,19 @@ public class Artifact : MonoBehaviour
         ArtifactData data10 = new ArtifactData();
         data10.Set(9, "구사일생", $"최대 체력 {Value9} 증가, 체력이 전부 회복됨");
         artifacts.Add(data10);
+
+
+        for(int i = 0; i < 3;  i++)
+        {
+            playersArtifactsNumber[i] = -1;
+        }
+    }
+
+    private void Update()
+    {
+       if(Input.GetKeyDown(KeyCode.Escape))
+        {
+           Debug.Log( playersArtifactsNumber[0]);
+        }
     }
 }

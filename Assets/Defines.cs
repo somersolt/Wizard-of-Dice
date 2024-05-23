@@ -50,7 +50,12 @@ public static class Layers
 {
     public static readonly string UI = "UI";
 }
-
+public enum RewardMode
+{
+    Normal = 0,
+    Event = 1,
+    Artifact = 2,
+}
 
 public enum Ranks
 {

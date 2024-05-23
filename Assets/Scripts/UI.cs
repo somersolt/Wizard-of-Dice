@@ -229,14 +229,14 @@ public class UI : MonoBehaviour
             a.text = " ";
         }
     }
-    public void OnReward(int mode = 0)
+    public void OnReward(RewardMode mode = RewardMode.Normal  , int count = 0)
     {
         audioSource.PlayOneShot(audioClips[0]);
         RewardClear();
         for (int i = 0; i < 2; i++)
         {
             int index = i;
-            rewards[i].onClick.AddListener(() => { GetSpell(rewardSpells[index], index, mode); });
+            rewards[i].onClick.AddListener(() => { GetSpell(rewardSpells[index], index, mode , count); });
             int a = Random.Range(0, rewardList.Count);
             if (rewardList.Count != 0)
             {
@@ -272,8 +272,14 @@ public class UI : MonoBehaviour
         spellNames[2].text = "신체 강화";
         spellInfos[2].text = $"기본 공격력 + 3 \n 주사위 개수 x 5 ({(int)GameMgr.Instance.currentDiceCount * 5}) 만큼 회복";
         spellLevels[2].text = " ";
-        rewards[2].onClick.AddListener(() => GetStatus(3));
-
+        if (mode == RewardMode.Artifact && count > 0)
+        {
+            rewards[2].onClick.AddListener(() => GetStatus(3,RewardMode.Artifact, count));
+        }
+        else
+        {
+            rewards[2].onClick.AddListener(() => GetStatus(3));
+        }
         rewardPanel.gameObject.SetActive(true);
         StartCoroutine(PanelSlide(rewardPanel));
     }
@@ -319,7 +325,7 @@ public class UI : MonoBehaviour
 
         diceRewards[1].onClick.AddListener(() =>
         {
-            GetStatus(20, "DiceReward");
+            GetStatus(20, RewardMode.Event);
         });
 
         diceRewardNames[1].text = "마나 증량";
@@ -414,7 +420,7 @@ public class UI : MonoBehaviour
         SceneManager.LoadScene("Title");
     }
 
-    public void GetSpell(SpellData spellData, int index, int mode = 0)
+    public void GetSpell(SpellData spellData, int index, RewardMode mode = RewardMode.Normal, int count = 0)
     {
         if (spellData == empty) { return; }
         for (int i = 0; i < rewardSpells.Length; i++)
@@ -451,19 +457,19 @@ public class UI : MonoBehaviour
         rewardPanel.gameObject.SetActive(false);
         GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
 
-        if (mode == 0)
+        if (mode == RewardMode.Artifact && count > 0)
         {
-            StageMgr.Instance.NextStage();
+            OnReward(RewardMode.Artifact, count - 1);
         }
         else
         {
-            OnReward(mode - 1);
+            StageMgr.Instance.NextStage();
         }
     }
 
-    public void GetStatus(int value, string mode = default)
+    public void GetStatus(int value, RewardMode mode = RewardMode.Normal, int count = 0)
     {
-        if (mode == default)
+        if (mode != RewardMode.Event)
         {
             for (int i = 0; i < 2; i++)
             {
@@ -486,7 +492,7 @@ public class UI : MonoBehaviour
         }
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
 
-        if (mode == default)
+        if (mode != RewardMode.Event)
         {
             rewardPanel.gameObject.SetActive(false);
         }
@@ -495,6 +501,11 @@ public class UI : MonoBehaviour
             diceRewardPanel.gameObject.SetActive(false);
         }
         GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
+        if(mode == RewardMode.Artifact)
+        {
+            OnReward(RewardMode.Artifact, count - 1);
+            return;
+        }
         StageMgr.Instance.NextStage();
     }
 
@@ -532,10 +543,14 @@ public class UI : MonoBehaviour
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         artifactRewardPanel.gameObject.SetActive(false);
         GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
-        if (artifactData.ID != 3)
+        if (artifactData.ID == 3)
         {
-            StageMgr.Instance.NextStage();
+            OnReward(RewardMode.Artifact
+                ,GameMgr.Instance.artifact.Value3 - 1);
+            return;
         }
+
+        StageMgr.Instance.NextStage();
     }
 
     public void ArtifactUpdate(ArtifactData artifactData, int index)
@@ -590,7 +605,6 @@ public class UI : MonoBehaviour
                 DiceMgr.Instance.manipulList[2] = 3;
                 break;
             case 3:
-                OnReward(GameMgr.Instance.artifact.Value3 - 1);
                 break;
             case 4:
                 break;
