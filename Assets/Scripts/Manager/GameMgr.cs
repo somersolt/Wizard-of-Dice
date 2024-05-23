@@ -12,6 +12,8 @@ using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 using static UnityEngine.ParticleSystem;
 public class AttackEventArgs : EventArgs
@@ -232,10 +234,18 @@ public class GameMgr : MonoBehaviour
         ScrollsClear();
         RanksListUpdate();
 
+        if(LoadData())
+        {
+            return;
+        }
+
+        StageMgr.Instance.GameStart();
         if(PlayerPrefs.GetInt("Tutorial", 0) == 1)
         {
             tutorial.TutorialSkip();
+            return;
         }
+        BGM.Instance.currentAudio.Play();
     }
     private void Update()
     {
@@ -381,7 +391,10 @@ public class GameMgr : MonoBehaviour
         }
         // 테스트 코드
 
-
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Debug.Log(ui.rewardList.Count);
+        }
 
 
     }
@@ -427,6 +440,7 @@ public class GameMgr : MonoBehaviour
             }
             else
             {
+                SaveLoadSystem.DeleteSaveData();
                 currentStatus = TurnStatus.PlayerLose;
                 BGM.Instance.currentAudio.Stop();
                 audioSource.PlayOneShot(audioClips[4]);
@@ -562,6 +576,15 @@ public class GameMgr : MonoBehaviour
         int[] copy = new int[RankList.Length];
         Array.Copy(RankList, copy, RankList.Length);
         return copy; // 배열 확인용 복사본 반환
+    }
+
+    public int GetRank(int i)
+    {
+        return RankList[i];
+    }
+    public void SetRank(int i, int j)
+    {
+        RankList[i] = j;
     }
 
     public void SetRankList(int i)
@@ -755,6 +778,7 @@ public class GameMgr : MonoBehaviour
             if (StageMgr.Instance.currentStage == StageMgr.Instance.latStage && StageMgr.Instance.currentField == StageMgr.Instance.lastField)
             {
                 BGM.Instance.PlayBGM(BGM.Instance.bgm[1],2);
+                SaveLoadSystem.DeleteSaveData();
                 ui.Victory();
                 return;
             }
@@ -872,6 +896,24 @@ public class GameMgr : MonoBehaviour
         LifeUpdate();
     }
 
+    public void SetHp(int i)
+    {
+        PlayerHp = i;
+    }
+    public void SetMaxHp(int i)
+    {
+        PlayerHpMax = i;
+    }
+
+    public int GetHp()
+    {
+        return PlayerHp;
+    }
+    public int GetMaxHp()
+    {
+        return PlayerHpMax;
+    }
+
     public void LifeUpdate()
     {
         PlayerBarrierInfo.text = PlayerBarrier.ToString();
@@ -896,6 +938,32 @@ public class GameMgr : MonoBehaviour
                 a.text = "원코인 추가(사용)";
             }
         }
+    }
+
+    private bool LoadData()
+    {
+        if(SaveLoadSystem.Load() == 0)
+        {
+            return false;
+        }
+
+        Instance.tutorialMode = false;
+        tutorial.tutorialPanel.gameObject.SetActive(false);
+        tutorial.skipButton.gameObject.SetActive(false);
+
+        LifeUpdate();
+        RanksListUpdate();
+
+        for(int i = 0; i < RankList.Length;  i++)
+        {
+            if (RankList[i] == 2)
+            {
+               ui.maxSpells[i].gameObject.SetActive(true);
+            }
+        }
+
+        StageMgr.Instance.NextStage(true);
+        return true;
     }
 
     private void pauseGame()

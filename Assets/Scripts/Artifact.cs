@@ -6,7 +6,7 @@ public class Artifact : MonoBehaviour
 {
     public List<ArtifactData> artifacts = new List<ArtifactData>();
     public int[] playersArtifacts = new int[10];
-    public int[] playersArtifactsNumber = new int[3];
+    public int[] playersArtifactsNumber = new int[3] { -1, -1, -1 };
 
 
     public int Value3 = 2;

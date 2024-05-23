@@ -11,6 +11,11 @@ public class Title : MonoBehaviour
     public Button endGame;
     public Toggle skipToggle;
     public GameObject optionPanel;
+
+    public GameObject continueGamePanel;
+    public Button continueButton;
+    public Button newGameButton;
+
     public GameObject quitGamePanel;
     public Button yes;
     public Button no;
@@ -19,15 +24,15 @@ public class Title : MonoBehaviour
 
     private void Awake()
     {
-        startGame.onClick.AddListener(() => { 
-            SceneManager.LoadScene("Main");
-            PlayerPrefs.SetFloat("BGM", BGM.Instance.masterVolume);
-            PlayerPrefs.SetFloat("SFX", BGM.Instance.SFXsound);
-        });
+        startGame.onClick.AddListener(StartGame);
         endGame.onClick.AddListener(() => { quitGamePanel.gameObject.SetActive(true); });
         option.onClick.AddListener(() => { optionPanel.gameObject.SetActive(true); });
         yes.onClick.AddListener(() => { QuitGame(); });
         no.onClick.AddListener(() => { quitGamePanel.gameObject.SetActive(false); });
+
+        continueButton.onClick.AddListener(GameScene);
+        newGameButton.onClick.AddListener(() => { PlayerPrefs.SetInt("Save", 0); GameScene(); });
+
         returnTitle.onClick.AddListener(() => { optionPanel.gameObject.SetActive(false); });
         skipToggle.isOn = PlayerPrefs.GetInt("Tutorial", 0) == 1;
         skipToggle.onValueChanged.AddListener(OnToggleValueChanged);
@@ -47,6 +52,26 @@ public class Title : MonoBehaviour
         }
     }
 
+    private void StartGame()
+    {
+
+        if (PlayerPrefs.GetInt("Save",0) == 1)
+        {
+            continueGamePanel.gameObject.SetActive(true);
+        }
+        else
+        {
+            GameScene();
+        }
+
+    }
+
+    private void GameScene()
+    {
+        PlayerPrefs.SetFloat("BGM", BGM.Instance.masterVolume);
+        PlayerPrefs.SetFloat("SFX", BGM.Instance.SFXsound);
+        SceneManager.LoadScene("Main");
+    }
 
     private void QuitGame()
     {

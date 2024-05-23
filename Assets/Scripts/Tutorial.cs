@@ -9,8 +9,7 @@ using static GameMgr;
 
 public class Tutorial : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject tutorialPanel;
+    public GameObject tutorialPanel;
     [SerializeField]
     private GameObject skipPanel;
     [SerializeField]
@@ -325,7 +324,6 @@ public class Tutorial : MonoBehaviour
         //DiceMgr.Instance.DiceThree();
         //DiceMgr.Instance.DiceRoll();
         Instance.ui.GetDice();
-
     }
 
 }

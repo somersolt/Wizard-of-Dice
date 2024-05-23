@@ -62,23 +62,29 @@ public class StageMgr : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    public void GameStart()
+    {
         currentStage = 0;
         currentField = 1;
         enemySpawner.Spawn(tutorialEnemy, (int)PosNum.Center);
         StageInfo.text = $"Tutorial";
-
     }
 
-
-    public void NextStage()
+    public void NextStage(bool LoadData = false)
     {
 
-        currentStage++;
-        if (currentStage == 6)
+        if(!LoadData)
         {
-            currentStage = 1;
-            currentField++;
+            currentStage++;
+            if (currentStage == 6)
+            {
+                currentStage = 1;
+                currentField++;
+            }
+            SaveLoadSystem.Save();
         }
+
         StageInfo.text = $"Stage {currentField} - {currentStage}";
         var path = currentField.ToString() + currentStage.ToString();
         backGround.sprite = Resources.Load<Sprite>(string.Format("Field/{0}", path));

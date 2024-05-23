@@ -3,105 +3,111 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEditor.SceneManagement;
+using System.Text;
 
 public static class SaveLoadSystem 
 {
-    public enum Mode
+    //저장할거
+    // 볼륨 - 따로함
+    // 저장 했는지 여부
+    // 현재 필드, 스테이지
+    // 보유 주사위
+    // 보유 공격력
+    // 현재 체력
+    // 최대 체력 (유물때문에)
+    // 보유 족보
+    // 보유 유물
+
+    public static void Save()
     {
-        Json,
-        Binary,
-        EncryptedBinary,
+        PlayerPrefs.SetInt("Save", 1);
+        int stage = StageMgr.Instance.currentField * 10 + StageMgr.Instance.currentStage;
+        PlayerPrefs.SetInt("Stage", stage);
+        PlayerPrefs.SetInt("Dice", (int)GameMgr.Instance.currentDiceCount);
+        PlayerPrefs.SetInt("Damage", GameMgr.Instance.curruntBonusStat);
+        PlayerPrefs.SetInt("Hp", GameMgr.Instance.GetHp());
+        PlayerPrefs.SetInt("MaxHp", GameMgr.Instance.GetMaxHp());
+
+        for ( int i = 0; i < 9 ; i++ )
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Rank");
+            sb.Append((i+1).ToString());
+            PlayerPrefs.SetInt(sb.ToString(), GameMgr.Instance.GetRank(i));
+        }
+
+        for (int i = 0; i < 9; i++)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("RankReward");
+            sb.Append((i+1).ToString());
+            if (i >= GameMgr.Instance.ui.rewardList.Count)
+            {
+                PlayerPrefs.SetInt(sb.ToString(), 0);
+            }
+            else
+            {
+                PlayerPrefs.SetInt(sb.ToString(), GameMgr.Instance.ui.rewardList[i].ID);
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Artifact");
+            sb.Append((i+1).ToString());
+            PlayerPrefs.SetInt(sb.ToString(), GameMgr.Instance.artifact.playersArtifactsNumber[i]);
+        }
+
+        PlayerPrefs.Save();
     }
 
-    public static Mode FileMode { get; set; } = Mode.Json;
-
-    public static int SaveDataVersion { get; private set; } = 1;
-
-    // 0 (자동), 1, 2, 3 ...
-    private static readonly string[] SaveFileName =
+    public static int Load()
     {
-        "SaveAuto.sav",
-        "Save1.sav",
-        "Save2.sav",
-        "Save3.sav"
-    };
-
-    static SaveLoadSystem()
-    {
-        if (!Load())
+        if (PlayerPrefs.GetInt("Save", 0) == 1)
         {
-            CurrSaveData = new SaveDataV1();
-            Save();
+            StageMgr.Instance.currentField = PlayerPrefs.GetInt("Stage", 0) / 10;
+            StageMgr.Instance.currentStage = PlayerPrefs.GetInt("Stage", 0) % 10;
+            GameMgr.Instance.currentDiceCount = (GameMgr.DiceCount)PlayerPrefs.GetInt("Dice", 2);
+            GameMgr.Instance.curruntBonusStat = PlayerPrefs.GetInt("Damage", 0);
+            GameMgr.Instance.SetHp(PlayerPrefs.GetInt("Hp", 100));
+            GameMgr.Instance.SetMaxHp(PlayerPrefs.GetInt("MaxHp", 100));
+            for (int i = 0; i < 9; i++)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Rank");
+                sb.Append((i+1).ToString());
+                GameMgr.Instance.SetRank(i,PlayerPrefs.GetInt(sb.ToString(), 0));
+            }
+
+            GameMgr.Instance.ui.rewardList.Clear();
+            for (int i = 0; i < 9; i++)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("RankReward");
+                sb.Append((i + 1).ToString());
+                int rewardID = PlayerPrefs.GetInt(sb.ToString(), 0);
+                if (rewardID != 0)
+                {
+                    GameMgr.Instance.ui.rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(rewardID));
+                }
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Artifact");
+                sb.Append((i + 1).ToString());
+                GameMgr.Instance.artifact.playersArtifactsNumber[i] = PlayerPrefs.GetInt(sb.ToString(), -1);
+            }
         }
+        return PlayerPrefs.GetInt("Save", 0);
     }
-
-    public static SaveDataV1 CurrSaveData { get; set; }
-
-    private static string SaveDirectory
+    
+    public static void DeleteSaveData()
     {
-        get
-        {
-            return $"{Application.persistentDataPath}/Save";
-        }
-    }
-
-    public static bool Save(int slot = 0)
-    {
-        if (CurrSaveData == null || slot < 0 ||  slot >= SaveFileName.Length)
-        {
-            return false;
-        }
-
-        if (!Directory.Exists(SaveDirectory))
-        {
-            Directory.CreateDirectory(SaveDirectory);
-        }
-
-        var path = Path.Combine(SaveDirectory, SaveFileName[slot]);
-        // FileMode 분기
-
-        using (var writer = new JsonTextWriter(new StreamWriter(path)))
-        {
-            var serializer = new JsonSerializer();
-            serializer.Formatting = Formatting.Indented;
-            serializer.TypeNameHandling = TypeNameHandling.All;
-            //serializer.Converters.Add(new SavePlayDataConverter()); int로만 이뤄져서 컨버터 필요없을듯
-            serializer.Serialize(writer, CurrSaveData);
-        }
-
-        return true;
-    }
-
-    public static bool Load(int slot = 0)
-    {
-        if (slot < 0 ||  slot >= SaveFileName.Length)
-        {
-            return false;
-        }
-        var path = Path.Combine(SaveDirectory, SaveFileName[slot]);
-        if (!File.Exists(path))
-        {
-            return false;
-        }
-
-        SaveData data = null;
-        using (var reader = new JsonTextReader(new StreamReader(path)))
-        {
-            var serializer = new JsonSerializer();
-            serializer.Formatting = Formatting.Indented;
-            serializer.TypeNameHandling = TypeNameHandling.All;
-            //serializer.Converters.Add(new SavePlayDataConverter()); 마찬가지
-            data = serializer.Deserialize<SaveData>(reader);
-        }
-
-        //while (data.Version < SaveDataVersion)
-        //{
-        //    data = data.VersionUp(); 버전업 메소드
-        //}
-
-        CurrSaveData = data as SaveDataV1;
-
-        return true;
+        PlayerPrefs.SetInt("Save", 0);
     }
 
 }

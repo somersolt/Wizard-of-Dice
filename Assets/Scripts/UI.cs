@@ -41,8 +41,7 @@ public class UI : MonoBehaviour
 
     [SerializeField]
     private GameObject maxSpellRewardPanel;
-    [SerializeField]
-    private Button[] maxSpells = new Button[9];
+    public Button[] maxSpells = new Button[9];
     private TextMeshProUGUI[] maxSpellNames = new TextMeshProUGUI[9];
     private TextMeshProUGUI[] maxSpellInfos = new TextMeshProUGUI[9];
     private TextMeshProUGUI[] maxSpellLevels = new TextMeshProUGUI[9];
@@ -408,7 +407,7 @@ public class UI : MonoBehaviour
         {
             if (i == index)
             {
-                if (spellData.LEVEL != 2 && spellData.LEVEL != 0)
+                if (spellData.LEVEL == 1)
                 {
                     rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(spellData.ID + 1));
                     //if (spellData.LEVEL == 1)
