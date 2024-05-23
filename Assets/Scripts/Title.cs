@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,8 +18,15 @@ public class Title : MonoBehaviour
     public Button newGameButton;
 
     public GameObject quitGamePanel;
+
     public Button yes;
     public Button no;
+
+    public GameObject storyPanel;
+    public TextMeshProUGUI storyText;
+    public Button nextStory;
+    public TextMeshProUGUI nextButtonText;
+    private int storyTextCount = 1;
 
     public Button returnTitle;
 
@@ -31,11 +39,37 @@ public class Title : MonoBehaviour
         no.onClick.AddListener(() => { quitGamePanel.gameObject.SetActive(false); });
 
         continueButton.onClick.AddListener(GameScene);
-        newGameButton.onClick.AddListener(() => { PlayerPrefs.SetInt("Save", 0); GameScene(); });
+        newGameButton.onClick.AddListener(() => { PlayerPrefs.SetInt("Save", 0); continueGamePanel.gameObject.SetActive(false);  storyPanel.gameObject.SetActive(true); });
 
         returnTitle.onClick.AddListener(() => { optionPanel.gameObject.SetActive(false); });
         skipToggle.isOn = PlayerPrefs.GetInt("Tutorial", 0) == 1;
         skipToggle.onValueChanged.AddListener(OnToggleValueChanged);
+        nextStory.onClick.AddListener(OnClickNext);
+        storyText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(30001);
+
+    }
+
+
+    private void OnClickNext()
+    {
+        storyTextCount++;
+        switch (storyTextCount)
+        {
+            case 1:
+                storyText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(30001);
+                break;
+            case 2:
+                storyText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(30002);
+                break;
+            case 3:
+                storyText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(30003);
+                break;
+            case 4:
+                storyText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(30004);
+                nextStory.onClick.AddListener(GameScene);
+                nextButtonText.text = "Ω√¿€";
+                break;
+        }
     }
 
     void OnToggleValueChanged(bool isOn)
@@ -61,7 +95,7 @@ public class Title : MonoBehaviour
         }
         else
         {
-            GameScene();
+            storyPanel.gameObject.SetActive(true);
         }
 
     }
