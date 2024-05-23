@@ -79,7 +79,7 @@ public class StageMgr : MonoBehaviour
             currentStage = 1;
             currentField++;
         }
-
+        StageInfo.text = $"Stage {currentField} - {currentStage}";
         var path = currentField.ToString() + currentStage.ToString();
         backGround.sprite = Resources.Load<Sprite>(string.Format("Field/{0}", path));
         BGM.Instance.PlayBGM(BGM.Instance.ChangeBgm(currentField, currentStage), 3);
@@ -94,15 +94,14 @@ public class StageMgr : MonoBehaviour
         }
         else if (currentStage == 4)
         {
-            GameMgr.Instance.ui.OnDiceReward();
+            GameMgr.Instance.ui.EventStage();
             return;
         }
-
         else
         {
             SetEnemy();
         }
-        StageInfo.text = $"Stage {currentField} - {currentStage}";
+        
 
         switch (GameMgr.Instance.currentDiceCount)
         {

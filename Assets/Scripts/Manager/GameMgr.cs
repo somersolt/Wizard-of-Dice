@@ -45,7 +45,7 @@ public class AttackEventListener
 {
     public void AttackHandleEvent(object sender, AttackEventArgs e)
     {
-        GameMgr.Instance.Heal();
+        GameMgr.Instance.Heal(GameMgr.Instance.currentRecovery, GameMgr.Instance.currentBarrier);
         Enemy[] targets = new Enemy[Math.Min(GameMgr.Instance.currentTarget, StageMgr.Instance.enemies.Count)];
 
         for (int i = 0; i < targets.Length; i++)
@@ -231,6 +231,11 @@ public class GameMgr : MonoBehaviour
         DiceMgr.Instance.DiceTwo();
         ScrollsClear();
         RanksListUpdate();
+
+        if(PlayerPrefs.GetInt("Tutorial", 0) == 1)
+        {
+            tutorial.TutorialSkip();
+        }
     }
     private void Update()
     {
@@ -411,7 +416,7 @@ public class GameMgr : MonoBehaviour
         {
             if (artifact.playersArtifacts[7] == 1) //8번 유물
             {
-                artifact.playersArtifacts[7] = 2;
+                UseArtifact8();
                 PlayerHp = artifact.Value7;
 
                 var DamageMessage = Instantiate(messagePrefab, canvas.transform);
@@ -850,14 +855,14 @@ public class GameMgr : MonoBehaviour
         LifeUpdate();
     }
 
-    public void Heal()
+    public void Heal(int recovery, int barrier)
     {
-        PlayerHp += currentRecovery;
+        PlayerHp += recovery;
         if (PlayerHp > PlayerHpMax)
         {
             PlayerHp = PlayerHpMax;
         }
-        PlayerBarrier += currentBarrier;
+        PlayerBarrier += barrier;
         LifeUpdate();
     }
 
@@ -879,6 +884,20 @@ public class GameMgr : MonoBehaviour
     {
         PlayerHpMax += i;
     }
+
+    public void UseArtifact8()
+    {
+        artifact.playersArtifacts[7] = 2;
+        foreach (var a in ui.artifactInfo)
+        {
+            if(a.text == "원코인 추가")
+            {
+                a.color = Color.red;
+                a.text = "원코인 추가(사용)";
+            }
+        }
+    }
+
     private void pauseGame()
     {
         Time.timeScale = 0;

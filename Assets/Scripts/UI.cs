@@ -48,7 +48,6 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] maxSpellLevels = new TextMeshProUGUI[9];
     private Image[] maxSpellexamples = new Image[9];
 
-
     [SerializeField]
     private GameObject diceRewardPanel;
     [SerializeField]
@@ -81,6 +80,33 @@ public class UI : MonoBehaviour
     public TextMeshProUGUI[] damages = new TextMeshProUGUI[5];
     [SerializeField]
     private Button damageExitButton;
+
+    public GameObject evenetPanel;
+    public GameObject evenetTextPanel;
+    [SerializeField]
+    private Button eventPanelButton;
+    [SerializeField]
+    private Button eventTextPanelButton;
+    [SerializeField]
+    private Image eventFace;
+    [SerializeField]
+    private TextMeshProUGUI eventText;
+    [SerializeField]
+    private TextMeshProUGUI eventName;
+    [SerializeField]
+    private TextMeshProUGUI rewardText;
+
+    public TextMeshProUGUI[] artifactInfo = new TextMeshProUGUI[3];
+
+
+    public GameObject playerArtifactPanel;
+    public Image[] playerArtifacts = new Image[3];
+    private TextMeshProUGUI[] playerArtifactName = new TextMeshProUGUI[3];
+    private TextMeshProUGUI[] playerArtifactInfo = new TextMeshProUGUI[3];
+    [SerializeField]
+    private Button playerArtifactButton;
+    [SerializeField]
+    private Button playerArtifactQuitButton;
 
 
     public GameObject PausePanel;
@@ -178,6 +204,29 @@ public class UI : MonoBehaviour
             var path = (i + 1).ToString();
             infoMagicexamples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", path)); ;
         } //적용 마법
+
+        for (int i = 0; i < 3; i++)
+        {
+            playerArtifactName[i] = playerArtifacts[i].transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
+            playerArtifactInfo[i] = playerArtifacts[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
+        } 
+        playerArtifacts[0].gameObject.SetActive(true);
+        playerArtifactName[0].text = "보유 유물 없음";
+        playerArtifactInfo[0].text = " ";
+        playerArtifacts[1].gameObject.SetActive(false);
+        playerArtifacts[2].gameObject.SetActive(false);//적용 유물
+
+
+        playerArtifactButton.onClick.AddListener(() => { playerArtifactPanel.gameObject.SetActive(true);});
+        playerArtifactQuitButton.onClick.AddListener(() => { playerArtifactPanel.gameObject.SetActive(false);});
+
+        eventPanelButton.onClick.AddListener(() => { evenetPanel.gameObject.SetActive(false); evenetTextPanel.gameObject.SetActive(true); });
+        eventTextPanelButton.onClick.AddListener(() => { evenetTextPanel.gameObject.SetActive(false); OnDiceReward(); });
+
+        foreach ( var a in artifactInfo)
+        {
+            a.text = " ";
+        }
     }
     public void OnReward(int mode = 0)
     {
@@ -219,8 +268,8 @@ public class UI : MonoBehaviour
             }
         }
 
-        spellNames[2].text = "공격력 up";
-        spellInfos[2].text = "주사위 눈금 총합 + 3";
+        spellNames[2].text = "신체 강화";
+        spellInfos[2].text = $"기본 공격력 + 3 \n 주사위 개수 x 5 ({(int)GameMgr.Instance.currentDiceCount * 5}) 만큼 회복";
         spellLevels[2].text = " ";
         rewards[2].onClick.AddListener(() => GetStatus(3));
 
@@ -410,15 +459,23 @@ public class UI : MonoBehaviour
                     rewardList.Add(rewardSpells[i]);
                 }
             }
+
+            GameMgr.Instance.Heal((int)GameMgr.Instance.currentDiceCount * 5, 0);
         }
 
         GameMgr.Instance.curruntBonusStat += value;
-        GameMgr.Instance.artifact.artifacts[0].Set(0, "방화광", $"매턴 모든 적에게 '기본 마법력'({GameMgr.Instance.curruntBonusStat}) 만큼의 데미지");
+        foreach (var artifact in GameMgr.Instance.artifact.artifacts)
+        {
+            if(artifact.ID == 0)
+            {
+                artifact.Set(0, "방화광", $"매턴 모든 적에게 '기본 마법력'({GameMgr.Instance.curruntBonusStat}) 만큼의 데미지");
+            }
+        }
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
 
         if (mode == default)
-        { 
-            rewardPanel.gameObject.SetActive(false); 
+        {
+            rewardPanel.gameObject.SetActive(false);
         }
         else
         {
@@ -438,6 +495,30 @@ public class UI : MonoBehaviour
             {
                 artifactData.ONARTIFACT = true;
                 GameMgr.Instance.artifact.playersArtifacts[artifactData.ID]++;
+                switch (StageMgr.Instance.currentField)
+                {
+                    case 1:
+                        GameMgr.Instance.artifact.playersArtifactsNumber[0] = artifactData.ID;
+                        playerArtifacts[0].gameObject.SetActive(true);
+                        playerArtifactName[0].text = artifactData.NAME;
+                        playerArtifactInfo[0].text = artifactData.DESC;
+                        artifactInfo[0].text = artifactData.NAME;
+                        break;
+                    case 2:
+                        GameMgr.Instance.artifact.playersArtifactsNumber[1] = artifactData.ID;
+                        playerArtifacts[1].gameObject.SetActive(true);
+                        playerArtifactName[1].text = artifactData.NAME;
+                        playerArtifactInfo[1].text = artifactData.DESC;
+                        artifactInfo[1].text = artifactData.NAME;
+                        break;
+                    case 3:
+                        GameMgr.Instance.artifact.playersArtifactsNumber[2] = artifactData.ID;
+                        playerArtifacts[2].gameObject.SetActive(true);
+                        playerArtifactName[2].text = artifactData.NAME;
+                        playerArtifactInfo[2].text = artifactData.DESC;
+                        artifactInfo[2].text = artifactData.NAME;
+                        break;
+                }
                 continue;
             }
 
@@ -559,5 +640,39 @@ public class UI : MonoBehaviour
         }
     }
 
+    public void EventStage()
+    {
+
+        switch (StageMgr.Instance.currentField)
+        {
+            case 1:
+                //eventFace = resource.Load<Sprite> ...
+                eventName.text = "떠돌이 상인";
+                eventText.text = "필요한거 있소?";
+                rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";
+                break;
+            case 2:
+                //eventFace = resource.Load<Sprite> ...
+                eventName.text = "떠돌이 상인";
+                eventText.text = "필요한거 있소?";
+                rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";
+                break;
+            case 3:
+                //eventFace = resource.Load<Sprite> ...
+                eventName.text = "떠돌이 상인";
+                eventText.text = "필요한거 있소?";
+                rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";
+                break;
+            case 4:
+                //eventFace = resource.Load<Sprite> ...
+                eventName.text = "떠돌이 상인";
+                eventText.text = "필요한거 있소?";
+                rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";
+                break;
+        }
+
+        evenetPanel.gameObject.SetActive(true);
+
+    }
 
 }

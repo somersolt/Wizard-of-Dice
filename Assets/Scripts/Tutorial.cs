@@ -295,7 +295,7 @@ public class Tutorial : MonoBehaviour
         }
     }
 
-    private void TutorialSkip()
+    public void TutorialSkip()
     {
         currentStep = TutorialStep.None;
         textCount = -1;
