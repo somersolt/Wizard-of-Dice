@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
 {
     public Animator animator;
     public Canvas canvas;
-    public Message damagePrefab;
+    public PlayerMessage damagePrefab;
     ParticleSystem particle;
     public int MaxHp;
     public int Damage;

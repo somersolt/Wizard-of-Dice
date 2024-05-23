@@ -8,7 +8,6 @@ using System.Security.Cryptography;
 using System.Text;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.Events;
@@ -120,7 +119,7 @@ public class GameMgr : MonoBehaviour
     /// 주사위 , 마법서 관련 필드
 
     public Canvas canvas;
-    public Message messagePrefab;
+    public PlayerMessage messagePrefab;
     public GameObject messagePos;
     public ParticleSystem playerHitParticleS;
     public ParticleSystem playerHitParticleL;

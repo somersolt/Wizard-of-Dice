@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using Newtonsoft.Json;
-using UnityEditor.SceneManagement;
 using System.Text;
 
 public static class SaveLoadSystem 
