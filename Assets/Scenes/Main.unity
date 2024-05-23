@@ -7592,7 +7592,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 88.473, y: -49.999985}
+  m_AnchoredPosition: {x: 88.473, y: -50}
   m_SizeDelta: {x: 176.946, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &283921986
@@ -11247,6 +11247,7 @@ MonoBehaviour:
   - {fileID: 309304182}
   - {fileID: 836891853}
   getDicePanel: {fileID: 348038058}
+  getDiceImage: {fileID: 1587743031}
   diceRewardConfirm: {fileID: 163821639}
   maxSpellRewardPanel: {fileID: 211748140}
   maxSpells:
@@ -11346,7 +11347,9 @@ MonoBehaviour:
   QuitYes: {fileID: 1051854488}
   QuitNo: {fileID: 1696649302}
   audioSource: {fileID: 395071575}
-  audioClips: []
+  audioClips:
+  - {fileID: 8300000, guid: e1e89998bfcd6844f9141a05c8f53869, type: 3}
+  - {fileID: 8300000, guid: 50d82657609964245be41da118678791, type: 3}
 --- !u!82 &395071575
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11357,7 +11360,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e1e89998bfcd6844f9141a05c8f53869, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -11942,8 +11945,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 306.0876, y: 70.5332}
+  m_AnchoredPosition: {x: -0.00050835, y: -0.0011158}
+  m_SizeDelta: {x: 576.95, y: 123.95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &419621466
 MonoBehaviour:
@@ -32561,8 +32564,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.493, y: -4.493}
-  m_SizeDelta: {x: 453.6, y: 296.118}
+  m_AnchoredPosition: {x: -0.447, y: 1.98}
+  m_SizeDelta: {x: 487.583, y: 309.064}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1218424252
 MonoBehaviour:
