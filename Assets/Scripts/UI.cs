@@ -485,7 +485,7 @@ public class UI : MonoBehaviour
     }
 
 
-    private void GetArifact(ArtifactData artifactData, int index)
+    public void GetArifact(ArtifactData artifactData, int index)
     {
         if (artifactData == null) { return; }
         for (int i = 0; i < artifacts.Length; i++)
@@ -497,25 +497,13 @@ public class UI : MonoBehaviour
                 switch (StageMgr.Instance.currentField)
                 {
                     case 1:
-                        GameMgr.Instance.artifact.playersArtifactsNumber[0] = artifactData.ID;
-                        playerArtifacts[0].gameObject.SetActive(true);
-                        playerArtifactName[0].text = artifactData.NAME;
-                        playerArtifactInfo[0].text = artifactData.DESC;
-                        artifactInfo[0].text = artifactData.NAME;
+                        ArtifactUpdate(artifactData, 0);
                         break;
                     case 2:
-                        GameMgr.Instance.artifact.playersArtifactsNumber[1] = artifactData.ID;
-                        playerArtifacts[1].gameObject.SetActive(true);
-                        playerArtifactName[1].text = artifactData.NAME;
-                        playerArtifactInfo[1].text = artifactData.DESC;
-                        artifactInfo[1].text = artifactData.NAME;
+                        ArtifactUpdate(artifactData, 1);
                         break;
                     case 3:
-                        GameMgr.Instance.artifact.playersArtifactsNumber[2] = artifactData.ID;
-                        playerArtifacts[2].gameObject.SetActive(true);
-                        playerArtifactName[2].text = artifactData.NAME;
-                        playerArtifactInfo[2].text = artifactData.DESC;
-                        artifactInfo[2].text = artifactData.NAME;
+                        ArtifactUpdate(artifactData, 2);
                         break;
                 }
                 continue;
@@ -534,6 +522,15 @@ public class UI : MonoBehaviour
         {
             StageMgr.Instance.NextStage();
         }
+    }
+
+    public void ArtifactUpdate(ArtifactData artifactData, int index)
+    {
+        GameMgr.Instance.artifact.playersArtifactsNumber[index] = artifactData.ID;
+        playerArtifacts[index].gameObject.SetActive(true);
+        playerArtifactName[index].text = artifactData.NAME;
+        playerArtifactInfo[index].text = artifactData.DESC;
+        artifactInfo[index].text = artifactData.NAME;
     }
 
     private IEnumerator PanelSlide(GameObject panel)
@@ -645,7 +642,7 @@ public class UI : MonoBehaviour
         switch (StageMgr.Instance.currentField)
         {
             case 1:
-                //eventFace = resource.Load<Sprite> ...
+                eventFace.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "merchant"));
                 eventName.text = "떠돌이 상인";
                 eventText.text = "필요한거 있소?";
                 rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";
@@ -663,7 +660,7 @@ public class UI : MonoBehaviour
                 rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";
                 break;
             case 4:
-                //eventFace = resource.Load<Sprite> ...
+                eventFace.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "merchant"));
                 eventName.text = "떠돌이 상인";
                 eventText.text = "필요한거 있소?";
                 rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";

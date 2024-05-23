@@ -960,7 +960,20 @@ public class GameMgr : MonoBehaviour
             {
                ui.maxSpells[i].gameObject.SetActive(true);
             }
+        } // 마법서 보상 목록
+
+        if(artifact.playersArtifactsNumber[0] != -1)
+        {
+            foreach (var a in artifact.artifacts)
+            {
+                if(a.ID == artifact.playersArtifactsNumber[0])
+                {
+                     //ui.ArtifactUpdate(artifactData, 0);
+                }
+            }    
+
         }
+
 
         StageMgr.Instance.NextStage(true);
         return true;
