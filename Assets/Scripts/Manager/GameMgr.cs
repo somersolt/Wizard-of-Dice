@@ -968,16 +968,67 @@ public class GameMgr : MonoBehaviour
             {
                 if(a.ID == artifact.playersArtifactsNumber[0])
                 {
-                     //ui.ArtifactUpdate(artifactData, 0);
+                    artifact.artifacts.Remove(a);
+                    ui.ArtifactUpdate(a, 0);
+                    LoadArtifactCheck(a.ID);
+                    break;
                 }
-            }    
+            }
 
+            if (artifact.playersArtifactsNumber[1] != -1)
+            {
+                foreach (var a in artifact.artifacts)
+                {
+                    if (a.ID == artifact.playersArtifactsNumber[1])
+                    {
+                        artifact.artifacts.Remove(a);
+                        ui.ArtifactUpdate(a, 1);
+                        LoadArtifactCheck(a.ID);
+                        break;
+                    }
+                }
+                if (artifact.playersArtifactsNumber[2] != -1)
+                {
+                    foreach (var a in artifact.artifacts)
+                    {
+                        if (a.ID == artifact.playersArtifactsNumber[2])
+                        {
+                            artifact.artifacts.Remove(a);
+                            ui.ArtifactUpdate(a, 2);
+                            LoadArtifactCheck(a.ID);
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
+        foreach (var a in artifact.playersArtifacts)
+        {
+            if (a == 2)
+            {
+                UseArtifact8();
+            }
+        }
 
         StageMgr.Instance.NextStage(true);
         return true;
     }
+
+    private void LoadArtifactCheck(int id)
+    {
+        if (id == 1)
+        {
+            DiceMgr.Instance.Artifact2();
+        }
+        else if (id == 2)
+        {
+            DiceMgr.Instance.manipulList[0] = 1;
+            DiceMgr.Instance.manipulList[1] = 2;
+            DiceMgr.Instance.manipulList[2] = 3;
+        }
+    }
+
 
     private void pauseGame()
     {

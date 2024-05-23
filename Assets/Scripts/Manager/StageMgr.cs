@@ -85,6 +85,8 @@ public class StageMgr : MonoBehaviour
             SaveLoadSystem.Save();
         }
 
+        GameMgr.Instance.ui.ArtifactInfoUpdate();
+
         StageInfo.text = $"Stage {currentField} - {currentStage}";
         var path = currentField.ToString() + currentStage.ToString();
         backGround.sprite = Resources.Load<Sprite>(string.Format("Field/{0}", path));

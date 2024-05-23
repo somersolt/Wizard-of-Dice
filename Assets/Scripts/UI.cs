@@ -37,6 +37,8 @@ public class UI : MonoBehaviour
     [SerializeField]
     private GameObject getDicePanel;
     [SerializeField]
+    private Image getDiceImage;
+    [SerializeField]
     private Button diceRewardConfirm;
 
     [SerializeField]
@@ -229,7 +231,7 @@ public class UI : MonoBehaviour
     }
     public void OnReward(int mode = 0)
     {
-        audioSource.Play();
+        audioSource.PlayOneShot(audioClips[0]);
         RewardClear();
         for (int i = 0; i < 2; i++)
         {
@@ -279,8 +281,7 @@ public class UI : MonoBehaviour
 
     public void OnDiceReward()
     {
-
-        audioSource.Play();
+        audioSource.PlayOneShot(audioClips[0]);
         DiceRewardClear();
 
         switch (GameMgr.Instance.currentDiceCount)
@@ -353,8 +354,7 @@ public class UI : MonoBehaviour
 
     public void OnArtifactReward()
     {
-        audioSource.Play();
-
+        audioSource.PlayOneShot(audioClips[0]);
         ArtifactRewardClear();
         for (int i = 0; i < 3; i++)
         {
@@ -382,6 +382,20 @@ public class UI : MonoBehaviour
 
     public void GetDice()
     {
+        audioSource.PlayOneShot(audioClips[1]);
+
+        switch (GameMgr.Instance.currentDiceCount)
+        {
+            case GameMgr.DiceCount.two:
+                getDiceImage.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Got_Dice_2to3"));
+                break;
+            case GameMgr.DiceCount.four:
+                getDiceImage.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Got_Dice_3to4"));
+                break;
+            case GameMgr.DiceCount.five:
+                getDiceImage.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Got_Dice_4to5"));
+                break;
+        }
         getDicePanel.gameObject.SetActive(true);
         StartCoroutine(PanelSlide(getDicePanel));
     }
@@ -533,6 +547,17 @@ public class UI : MonoBehaviour
         artifactInfo[index].text = artifactData.NAME;
     }
 
+    public void ArtifactInfoUpdate()
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            if (playerArtifactName[i].text == "방화광")
+            {
+                playerArtifactInfo[i].text = $"매턴 모든 적에게 '기본 마법력'({GameMgr.Instance.curruntBonusStat}) 만큼의 데미지";
+            }
+        }
+    }
+
     private IEnumerator PanelSlide(GameObject panel)
     {
         float duration = 0.3f;
@@ -643,27 +668,27 @@ public class UI : MonoBehaviour
         {
             case 1:
                 eventFace.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "merchant"));
-                eventName.text = "떠돌이 상인";
-                eventText.text = "필요한거 있소?";
-                rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";
+                eventName.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(40001);
+                eventText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(50001);
+                rewardText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(60001);
                 break;
             case 2:
-                //eventFace = resource.Load<Sprite> ...
-                eventName.text = "떠돌이 상인";
-                eventText.text = "필요한거 있소?";
-                rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";
+                eventFace.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "devil"));
+                eventName.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(40002);
+                eventText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(50002);
+                rewardText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(60002);
                 break;
             case 3:
-                //eventFace = resource.Load<Sprite> ...
-                eventName.text = "떠돌이 상인";
-                eventText.text = "필요한거 있소?";
-                rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";
+                eventFace.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "stone"));
+                eventName.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(40003);
+                eventText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(50003);
+                rewardText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(60003);
                 break;
             case 4:
                 eventFace.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "merchant"));
-                eventName.text = "떠돌이 상인";
-                eventText.text = "필요한거 있소?";
-                rewardText.text = "왜 이런곳에 있냐고? 신경쓰지 말게.";
+                eventName.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(40004);
+                eventText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(50004);
+                rewardText.text = DataTableMgr.Get<TextTable>(DataTableIds.Text).Get(60004);
                 break;
         }
 

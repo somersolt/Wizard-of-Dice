@@ -11246,6 +11246,7 @@ MonoBehaviour:
   - {fileID: 309304182}
   - {fileID: 836891853}
   getDicePanel: {fileID: 348038058}
+  getDiceImage: {fileID: 1587743031}
   diceRewardConfirm: {fileID: 163821639}
   maxSpellRewardPanel: {fileID: 211748140}
   maxSpells:
@@ -11345,7 +11346,9 @@ MonoBehaviour:
   QuitYes: {fileID: 1051854488}
   QuitNo: {fileID: 1696649302}
   audioSource: {fileID: 395071575}
-  audioClips: []
+  audioClips:
+  - {fileID: 8300000, guid: e1e89998bfcd6844f9141a05c8f53869, type: 3}
+  - {fileID: 8300000, guid: 50d82657609964245be41da118678791, type: 3}
 --- !u!82 &395071575
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11356,7 +11359,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e1e89998bfcd6844f9141a05c8f53869, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

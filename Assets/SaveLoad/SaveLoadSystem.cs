@@ -60,6 +60,14 @@ public static class SaveLoadSystem
             PlayerPrefs.SetInt(sb.ToString(), GameMgr.Instance.artifact.playersArtifactsNumber[i]);
         }
 
+        for (int i = 0; i < 10; i++)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("ArtifactLevel");
+            sb.Append((i + 1).ToString());
+            PlayerPrefs.SetInt(sb.ToString(), GameMgr.Instance.artifact.playersArtifacts[i]);
+        }
+
         PlayerPrefs.Save();
     }
 
@@ -101,6 +109,15 @@ public static class SaveLoadSystem
                 sb.Append((i + 1).ToString());
                 GameMgr.Instance.artifact.playersArtifactsNumber[i] = PlayerPrefs.GetInt(sb.ToString(), -1);
             }
+
+            for (int i = 0; i < 10; i++)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("ArtifactLevel");
+                sb.Append((i + 1).ToString());
+                GameMgr.Instance.artifact.playersArtifacts[i] = PlayerPrefs.GetInt(sb.ToString(), 0);
+            }
+
         }
         return PlayerPrefs.GetInt("Save", 0);
     }
