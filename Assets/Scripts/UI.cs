@@ -184,7 +184,7 @@ public class UI : MonoBehaviour
         {
             diceRewardNames[i] = diceRewards[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
             diceRewardInfos[i] = diceRewards[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
-        } // 상점 보상
+        } // 보스 보상
 
         for (int i = 0; i < artifacts.Length; i++)
         {

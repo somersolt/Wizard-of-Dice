@@ -677,7 +677,7 @@ public class GameMgr : MonoBehaviour
         {
             if (RankList[i] != 0)
             {
-                var magic = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]);
+                var magic = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + RankList[i] - 1);
                 ui.infoMagicnames[i].text = magic.GetName;
                 ui.infoMagicInfos[i].text = magic.GetDesc;
                 StringBuilder newText = new StringBuilder();
@@ -784,6 +784,7 @@ public class GameMgr : MonoBehaviour
             currentStatus = TurnStatus.GetRewards;
             if (StageMgr.Instance.TutorialStage == StageMgr.Instance.currentStage)
             {
+                PlayerPrefs.SetInt("Tutorial", 1);
                 ui.GetDice();
                 return;
             }
@@ -808,7 +809,7 @@ public class GameMgr : MonoBehaviour
             dodgeNuber = UnityEngine.Random.Range(0, 100);
             if (dodgeNuber < artifact.Value5)
             {
-                var DamageMessage = Instantiate(messagePrefab, canvas.transform);
+                var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
                 audioSource.PlayOneShot(audioClips[3]);
                 DamageMessage.Setup("Miss!", Color.magenta);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
@@ -820,7 +821,7 @@ public class GameMgr : MonoBehaviour
                 {
                     PlayerBarrier -= enemyDamage;
 
-                    var DamageMessage = Instantiate(messagePrefab, canvas.transform);
+                    var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
                     DamageMessage.Setup(enemyDamage, Color.blue);
                     DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                         messagePos.GetComponent<RectTransform>().anchoredPosition;
@@ -835,7 +836,7 @@ public class GameMgr : MonoBehaviour
                     enemyDamage -= PlayerBarrier;
                     PlayerBarrier = 0;
                     PlayerHp -= enemyDamage;
-                    var DamageMessage = Instantiate(messagePrefab, canvas.transform);
+                    var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
                     DamageMessage.Setup(enemyDamage, Color.red);
                     DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                          messagePos.GetComponent<RectTransform>().anchoredPosition;
@@ -852,7 +853,7 @@ public class GameMgr : MonoBehaviour
             {
                 PlayerBarrier -= enemyDamage;
 
-                var DamageMessage = Instantiate(messagePrefab, canvas.transform);
+                var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
                 DamageMessage.Setup(enemyDamage, Color.blue);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                     messagePos.GetComponent<RectTransform>().anchoredPosition;
@@ -866,7 +867,7 @@ public class GameMgr : MonoBehaviour
                 enemyDamage -= PlayerBarrier;
                 PlayerBarrier = 0;
                 PlayerHp -= enemyDamage;
-                var DamageMessage = Instantiate(messagePrefab, canvas.transform);
+                var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
                 DamageMessage.Setup(enemyDamage, Color.red);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                      messagePos.GetComponent<RectTransform>().anchoredPosition;

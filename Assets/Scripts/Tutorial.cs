@@ -319,6 +319,7 @@ public class Tutorial : MonoBehaviour
 
         Destroy(StageMgr.Instance.enemies[0].gameObject);
         StageMgr.Instance.enemies.Clear();
+        PlayerPrefs.SetInt("Tutorial", 1);
         //DiceMgr.Instance.InfoClear();
         //Instance.currentDiceCount = DiceCount.three;
         //DiceMgr.Instance.DiceThree();

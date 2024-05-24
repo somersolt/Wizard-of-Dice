@@ -65,6 +65,8 @@ public class BGM : MonoBehaviour
         {
             SFXsound = SFXsoundBar.value;
             masterVolume = BGMsoundBar.value;
+            PlayerPrefs.SetFloat("BGM", masterVolume);
+            PlayerPrefs.SetFloat("SFX", SFXsound);
             UpdateVolume();
         }
     }
