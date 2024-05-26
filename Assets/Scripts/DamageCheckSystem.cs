@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using UnityEngine;
 
 public static class DamageCheckSystem
 {
@@ -33,7 +30,7 @@ public static class DamageCheckSystem
 
         if (GameMgr.Instance.artifact.playersArtifacts[6] == 1) //7번 유물
         {
-            totalvalue += DiceMgr.Instance.numbersCount[0] * GameMgr.Instance.artifact.Value6;
+            totalvalue += DiceMgr.Instance.numbersCount[0] * GameMgr.Instance.artifact.valueData.Value6;
         }
         for (int i = 0; i < ranks.Length; i++)
         {
@@ -55,14 +52,14 @@ public static class DamageCheckSystem
 
         if (GameMgr.Instance.artifact.playersArtifacts[4] == 1 && GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.three)
         {
-            multiple += GameMgr.Instance.artifact.Value4; // 유물 5번
+            multiple += GameMgr.Instance.artifact.valueData.Value4; // 유물 5번
         }
 
 
         GameMgr.Instance.ui.damages[0].text = totalvalue.ToString();
         GameMgr.Instance.ui.damages[1].text = GameMgr.Instance.curruntBonusStat.ToString();
         GameMgr.Instance.ui.damages[2].text = sum.ToString();
-        GameMgr.Instance.ui.damages[3].text = multiple.ToString();
+        GameMgr.Instance.ui.damages[3].text = multiple.ToString() + '%';
 
         sum += GameMgr.Instance.curruntBonusStat;
 

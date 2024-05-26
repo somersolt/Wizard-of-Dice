@@ -249,7 +249,7 @@ public class DiceMgr : MonoBehaviour
 
             if (GameMgr.Instance.artifact.playersArtifacts[8] == 1)//9¹ø À¯¹°
             {
-                rerollCount = GameMgr.Instance.artifact.Value8 + 2;
+                rerollCount = GameMgr.Instance.artifact.valueData.Value8 + 2;
             }
             else
             {

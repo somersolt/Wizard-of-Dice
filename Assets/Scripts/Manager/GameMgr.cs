@@ -1,20 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using System.Text;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
-using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
-using static UnityEngine.ParticleSystem;
 public class AttackEventArgs : EventArgs
 {
     public int value { get; }
@@ -175,6 +165,7 @@ public class GameMgr : MonoBehaviour
     private int livingMonster = 0;
     private int ticCount = 0;
     public int monsterSignal = 0;
+    public int bossSignal = 0;
 
     private bool onMonsterAttack = false;
 
@@ -399,6 +390,11 @@ public class GameMgr : MonoBehaviour
     }
     private void PlayerAttackUpdate()
     {
+        if(bossSignal == 1)
+        {
+            MonsterCheck();
+            return;
+        }
         if (livingMonster == monsterSignal)
         {
             MonsterCheck();
@@ -429,7 +425,7 @@ public class GameMgr : MonoBehaviour
             if (artifact.playersArtifacts[7] == 1) //8번 유물
             {
                 UseArtifact8();
-                PlayerHp = artifact.Value7;
+                PlayerHp = artifact.valueData.Value7;
 
                 var DamageMessage = Instantiate(messagePrefab, canvas.transform);
                 DamageMessage.Setup("유물 사용!", Color.cyan);
@@ -462,6 +458,13 @@ public class GameMgr : MonoBehaviour
                 audioSource.PlayOneShot(audioClips[9]);
 
                 onTicWait = true;
+            }
+
+            if (bossSignal == 1)
+            {
+                onTicWait = false;
+                MonsterCheck();
+                return;
             }
 
             if (monsterSignal == ticCount && onTicWait)
@@ -765,6 +768,20 @@ public class GameMgr : MonoBehaviour
     private void MonsterCheck()
     {
         monsterSignal = 0;
+        if(bossSignal==1)
+        {
+            List<Enemy> indicesToRemove = new List<Enemy>();
+            foreach (var e in StageMgr.Instance.enemies)
+            {
+                indicesToRemove.Add(e);
+            }
+            foreach (var e in indicesToRemove)
+            {
+                e.Die();
+            }
+
+            bossSignal = 0;
+        }
         if (StageMgr.Instance.enemies.Count == 0)
         {
             onMonsterAttack = false;
@@ -807,7 +824,7 @@ public class GameMgr : MonoBehaviour
         if (artifact.playersArtifacts[5] == 1)
         {
             dodgeNuber = UnityEngine.Random.Range(0, 100);
-            if (dodgeNuber < artifact.Value5)
+            if (dodgeNuber < artifact.valueData.Value5)
             {
                 var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
                 audioSource.PlayOneShot(audioClips[3]);

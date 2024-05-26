@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
-using System;
-using System.Reflection;
+using UnityEngine;
 
 public class StageMgr : MonoBehaviour
 {
@@ -169,6 +165,7 @@ public class StageMgr : MonoBehaviour
                     enemyData = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).Get(i - 1000);
 
                     var Boss = Resources.Load<Enemy>(string.Format("Prefabs/Monsters/{0}", BossEnemyData.ID));
+                    Boss.isBoss = true;
                     var enemy = Resources.Load<Enemy>(string.Format("Prefabs/Monsters/{0}", enemyData.ID));
                     enemySpawner.Spawn(enemy, (int)PosNum.Left, enemyData);
                     enemySpawner.Spawn(Boss, (int)PosNum.Center, BossEnemyData);

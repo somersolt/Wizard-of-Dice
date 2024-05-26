@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -122,6 +120,9 @@ public class UI : MonoBehaviour
     [SerializeField]
     private Button QuitNo;
 
+    [SerializeField]
+    private GameObject BackGroundPanel;
+
     public AudioSource audioSource;
     [SerializeField]
     private List<AudioClip> audioClips = new List<AudioClip>();
@@ -133,6 +134,7 @@ public class UI : MonoBehaviour
         diceRewardConfirm.onClick.AddListener(() =>
         {
             getDicePanel.gameObject.SetActive(false);
+            BackGroundPanel.gameObject.SetActive(false);
             GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
             StageMgr.Instance.NextStage();
         });
@@ -173,6 +175,7 @@ public class UI : MonoBehaviour
                 GameMgr.Instance.SetRankList(index);
                 maxSpells[index].gameObject.SetActive(false);
                 maxSpellRewardPanel.gameObject.SetActive(false);
+                BackGroundPanel.gameObject.SetActive(false);
                 GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
                 GameMgr.Instance.RanksListUpdate();
                 StageMgr.Instance.NextStage();
@@ -263,23 +266,25 @@ public class UI : MonoBehaviour
             else if (rewardList.Count == 0)
             {
                 rewardSpells[i] = empty;
-                spellNames[i].text = "매 진";
-                spellInfos[i].text = "SOLD OUT!!";
+                spellNames[i].text = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(1000).GetName;
+                spellInfos[i].text = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(1000).GetDesc;
                 spellLevels[i].text = " ";
+                examples[i].sprite = null;
             }
         }
 
         spellNames[2].text = "신체 강화";
-        spellInfos[2].text = $"기본 공격력 + 3 \n 주사위 개수 x 5 ({(int)GameMgr.Instance.currentDiceCount * 5}) 만큼 회복";
+        spellInfos[2].text = $"기본 공격력 + {GameMgr.Instance.artifact.valueData.Stat1} \n 주사위 개수 x 5 ({(int)GameMgr.Instance.currentDiceCount * 5}) 만큼 회복";
         spellLevels[2].text = " ";
         if (mode == RewardMode.Artifact && count > 0)
         {
-            rewards[2].onClick.AddListener(() => GetStatus(3,RewardMode.Artifact, count));
+            rewards[2].onClick.AddListener(() => GetStatus( GameMgr.Instance.artifact.valueData.Stat1,RewardMode.Artifact, count));
         }
         else
         {
-            rewards[2].onClick.AddListener(() => GetStatus(3));
+            rewards[2].onClick.AddListener(() => GetStatus(GameMgr.Instance.artifact.valueData.Stat1));
         }
+        BackGroundPanel.gameObject.SetActive(true);
         rewardPanel.gameObject.SetActive(true);
         StartCoroutine(PanelSlide(rewardPanel));
     }
@@ -325,11 +330,11 @@ public class UI : MonoBehaviour
 
         diceRewards[1].onClick.AddListener(() =>
         {
-            GetStatus(20, RewardMode.Event);
+            GetStatus(GameMgr.Instance.artifact.valueData.Stat2, RewardMode.Event);
         });
 
         diceRewardNames[1].text = "마나 증량";
-        diceRewardInfos[1].text = "주사위 개수를 늘리지 않고 마법력 20 증가 \n 주사위 눈금 총합에 20을 더합니다.";
+        diceRewardInfos[1].text = $"주사위 개수를 늘리지 않고 공격력 {GameMgr.Instance.artifact.valueData.Stat2} 증가 \n 주사위 눈금 총합에 {GameMgr.Instance.artifact.valueData.Stat2}을 더합니다.";
 
         foreach (var ranks in GameMgr.Instance.GetRankList())
         {
@@ -353,6 +358,7 @@ public class UI : MonoBehaviour
             }
         }
 
+        BackGroundPanel.gameObject.SetActive(true);
         diceRewardPanel.gameObject.SetActive(true);
         StartCoroutine(PanelSlide(diceRewardPanel));
     }
@@ -380,6 +386,7 @@ public class UI : MonoBehaviour
             }
         }
 
+        BackGroundPanel.gameObject.SetActive(true);
         artifactRewardPanel.gameObject.SetActive(true);
         StartCoroutine(PanelSlide(artifactRewardPanel));
     }
@@ -402,17 +409,20 @@ public class UI : MonoBehaviour
                 getDiceImage.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Got_Dice_4to5"));
                 break;
         }
+        BackGroundPanel.gameObject.SetActive(true);
         getDicePanel.gameObject.SetActive(true);
         StartCoroutine(PanelSlide(getDicePanel));
     }
 
     public void GameOver()
     {
+        BackGroundPanel.gameObject.SetActive(true);
         gameOverPanel.gameObject.SetActive(true);
     }
 
     public void Victory()
     {
+        BackGroundPanel.gameObject.SetActive(true);
         victoryPanel.gameObject.SetActive(true);
     }
     public void ReturnTitle()
@@ -455,6 +465,7 @@ public class UI : MonoBehaviour
         GameMgr.Instance.RanksListUpdate();
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         rewardPanel.gameObject.SetActive(false);
+        BackGroundPanel.gameObject.SetActive(false);
         GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
 
         if (mode == RewardMode.Artifact && count > 0)
@@ -491,6 +502,7 @@ public class UI : MonoBehaviour
             }
         }
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
+        BackGroundPanel.gameObject.SetActive(false);
 
         if (mode != RewardMode.Event)
         {
@@ -541,12 +553,13 @@ public class UI : MonoBehaviour
         }
         GetArtifactEffect(artifactData.ID);
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
+        BackGroundPanel.gameObject.SetActive(false);
         artifactRewardPanel.gameObject.SetActive(false);
         GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
         if (artifactData.ID == 3)
         {
             OnReward(RewardMode.Artifact
-                ,GameMgr.Instance.artifact.Value3 - 1);
+                ,GameMgr.Instance.artifact.valueData.Value3 - 1);
             return;
         }
 
@@ -617,7 +630,7 @@ public class UI : MonoBehaviour
             case 8:
                 break;
             case 9:
-                GameMgr.Instance.MaxLifeSet(GameMgr.Instance.artifact.Value9);
+                GameMgr.Instance.MaxLifeSet(GameMgr.Instance.artifact.valueData.Value9);
                 GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[5]);
                 GameMgr.Instance.LifeMax();
                 break;
@@ -677,7 +690,7 @@ public class UI : MonoBehaviour
 
     public void EventStage()
     {
-
+        BackGroundPanel.gameObject.SetActive(true);
         switch (StageMgr.Instance.currentField)
         {
             case 1:

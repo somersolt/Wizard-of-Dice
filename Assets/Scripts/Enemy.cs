@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +11,11 @@ public class Enemy : MonoBehaviour
     public int MaxHp;
     public int Damage;
     public string Name;
+    private float time;
+    private float duration = 1f;
+
+    public bool isBoss;
+
     int Hp;
     public bool onDead = false;
     [SerializeField]
@@ -35,7 +36,14 @@ public class Enemy : MonoBehaviour
         canvas.sortingLayerName = "UI";
         canvas.sortingOrder = 10;
     }
-    
+
+    private void Update()
+    {
+        if (Time.time > time + duration && onDead)
+        {
+            gameObject.SetActive(false);
+        }
+    }
     // TO-DO 테이블에 추가 요청
 
     public void TutoSet()
@@ -44,7 +52,7 @@ public class Enemy : MonoBehaviour
         Life.text = Hp.ToString();
         DamageInfo.text = Damage.ToString();
     }
-    
+
 
     public void Set(MonsterData data)
     {
@@ -70,10 +78,9 @@ public class Enemy : MonoBehaviour
         particle.Play();
         Destroy(particle.gameObject, main.duration);
 
-        if ( Hp <= 0 )
+        if (Hp <= 0)
         {
             animator.SetTrigger("onDead");
-            onDead = true;
             Hp = 0;
             HpBar.fillAmount = (float)Hp / MaxHp;
             Life.text = Hp.ToString();
@@ -99,7 +106,6 @@ public class Enemy : MonoBehaviour
         if (Hp <= 0)
         {
             animator.SetTrigger("onDead");
-            onDead = true;
             Hp = 0;
             HpBar.fillAmount = (float)Hp / MaxHp;
             Life.text = Hp.ToString();
@@ -121,7 +127,13 @@ public class Enemy : MonoBehaviour
     {
         StageMgr.Instance.DeadEnemies.Add(this);
         StageMgr.Instance.enemies.Remove(this);
-
+        onDead = true;
+        time = Time.time;
+        if (isBoss)
+        {
+            GameMgr.Instance.bossSignal++;
+            return;
+        }
         Signal();
     }
     public void Signal()
