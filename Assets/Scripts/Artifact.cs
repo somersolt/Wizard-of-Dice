@@ -57,11 +57,4 @@ public class Artifact : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-       if(Input.GetKeyDown(KeyCode.Escape))
-        {
-           Debug.Log( playersArtifactsNumber[0]);
-        }
-    }
 }

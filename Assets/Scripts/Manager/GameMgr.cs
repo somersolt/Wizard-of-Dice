@@ -170,7 +170,15 @@ public class GameMgr : MonoBehaviour
     private bool onMonsterAttack = false;
 
     [SerializeField]
+    private Button option;
+
+    [SerializeField]
+    private GameObject QuitPanel;
+    [SerializeField]
     private Button quit;
+    [SerializeField]
+    private Button cancle;
+    private bool onBackButton;
 
     /// <summary>
     /// 소리 관련
@@ -212,8 +220,10 @@ public class GameMgr : MonoBehaviour
 
         TurnUpdate(10);
         publisher.AttackEvent += listener.AttackHandleEvent;// 이벤트에 이벤트 핸들러 메서드를 추가
-        quit.onClick.AddListener(() => pauseGame());
+        option.onClick.AddListener(() => pauseGame());
         MagicInfo.onClick.AddListener(() => { ui.magicInfoPanel.SetActive(true); });
+        quit.onClick.AddListener(() => QuitGame());
+        cancle.onClick.AddListener(() => { onBackButton = false; QuitPanel.gameObject.SetActive(false); });
     }
 
 
@@ -241,6 +251,20 @@ public class GameMgr : MonoBehaviour
     {
         audioSource.volume = BGM.Instance.SFXsound;
         ui.audioSource.volume = BGM.Instance.SFXsound;
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(onBackButton)
+            {
+                onBackButton = false;
+                QuitPanel.gameObject.SetActive(false);
+            }
+            else
+            {
+                onBackButton = true;
+                QuitPanel.gameObject.SetActive(true);
+            }
+        }
 
         switch (currentStatus)
         {
@@ -1053,6 +1077,7 @@ public class GameMgr : MonoBehaviour
         ui.PausePanel.gameObject.SetActive(true);
     }
 
+    
     public void QuitGame()
     {
 #if UNITY_EDITOR
