@@ -617,7 +617,7 @@ public class GameMgr : MonoBehaviour
 
     public void SetRankList(int i)
     {
-        if (RankList[i] == 3)
+        if (RankList[i] == 4)
         {
             return;
             //max level
@@ -724,6 +724,10 @@ public class GameMgr : MonoBehaviour
                         ui.infoMagicLevels[i].text = "°­È­";
                         break;
                     case 3:
+                        newText.Append("- ¼÷·Ã");
+                        ui.infoMagicLevels[i].text = "¼÷·Ã";
+                        break;
+                    case 4:
                         newText.Append("- ÃÊ¿ù");
                         ui.infoMagicLevels[i].text = "ÃÊ¿ù";
                         break;

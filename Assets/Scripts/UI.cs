@@ -266,6 +266,9 @@ public class UI : MonoBehaviour
                     case 2:
                         spellLevels[i].text = "강화";
                         break;
+                    case 3:
+                        spellLevels[i].text = "숙련";
+                        break;
                 }
                 rewardList.Remove(rewardList[a]);
             }
@@ -275,7 +278,7 @@ public class UI : MonoBehaviour
                 spellNames[i].text = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(1000).GetName;
                 spellInfos[i].text = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(1000).GetDesc;
                 spellLevels[i].text = " ";
-                examples[i].sprite = null;
+                examples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "null_image"));
             }
         }
 
@@ -344,7 +347,7 @@ public class UI : MonoBehaviour
 
         foreach (var ranks in GameMgr.Instance.GetRankList())
         {
-            if (ranks == 2)
+            if (ranks == 3)
             {
                 diceRewards[2].onClick.AddListener(() =>
                 {
@@ -360,7 +363,7 @@ public class UI : MonoBehaviour
             else
             {
                 diceRewardNames[2].text = "초월 마법";
-                diceRewardInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 강화된 마법이 없어 초월할 수 없습니다.";
+                diceRewardInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 숙련된 마법이 없어 초월할 수 없습니다.";
             }
         }
 
@@ -443,7 +446,7 @@ public class UI : MonoBehaviour
         {
             if (i == index)
             {
-                if (spellData.LEVEL == 1)
+                if (spellData.LEVEL == 1 || spellData.LEVEL == 2)
                 {
                     rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(spellData.ID + 1));
                     //if (spellData.LEVEL == 1)
@@ -462,7 +465,7 @@ public class UI : MonoBehaviour
         if (rewardSpells[index].LEVEL != 0)
         {
             GameMgr.Instance.SetRankList((spellData.ID % 100) / 10 - 1);
-            if (rewardSpells[index].LEVEL == 2)
+            if (rewardSpells[index].LEVEL == 3)
             {
                 maxSpells[(spellData.ID % 100) / 10 - 1].gameObject.SetActive(true);
             }
