@@ -1,11 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using System;
-using System.Reflection;
-using Unity.VisualScripting;
 
 public class DiceMgr : MonoBehaviour
 {
@@ -49,7 +47,7 @@ public class DiceMgr : MonoBehaviour
     private RanksFlag checkedRanksList; // 랭크 체크 후 9개 족보 활성화 여부 저장
     public RanksFlag CheckedRanksList
     {
-        get {return checkedRanksList; }
+        get { return checkedRanksList; }
     }
 
     public int[] manipulList = new int[constant.diceMax]; // 주사위 조작용 리스트
@@ -71,8 +69,18 @@ public class DiceMgr : MonoBehaviour
 
     [SerializeField]
     private SpinControl enemyDice;
+    [SerializeField]
+    private SpinControl enemyDiceTwin1;
+    [SerializeField]
+    private SpinControl enemyDiceTwin2;
+    [SerializeField]
+    private SpinControl enemyDiceTriple1;
+    [SerializeField]
+    private SpinControl enemyDiceTriple2;
     public int enemyValue;
-
+    public int enemyValue2;
+    public int enemyValue3;
+    public int currentEnemyDice;
 
     public List<Coroutine> activeCoroutines = new List<Coroutine>(); // 코루틴관리자
     public List<SpinControl> coroutineList = new List<SpinControl>(); // 코루틴관리자2
@@ -101,6 +109,8 @@ public class DiceMgr : MonoBehaviour
         }
         reRoll.onClick.AddListener(() => DiceRoll());
         confirm.onClick.AddListener(() => { GameMgr.Instance.PlayerAttackEffect(); onDiceRoll = true; });
+
+        currentEnemyDice = 1;
     }
 
     public void InfoClear()
@@ -308,7 +318,7 @@ public class DiceMgr : MonoBehaviour
                 switch (i)
                 {
                     case 0:
-                        Coroutine newcoroutine= StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 4));
+                        Coroutine newcoroutine = StartCoroutine(SelectDiceRoll(selectedDice[i], starting, tutorialCallback, 4));
                         activeCoroutines.Add(newcoroutine);
                         break;
                     case 1:
@@ -459,10 +469,33 @@ public class DiceMgr : MonoBehaviour
 
     public void EnemyDiceRoll()
     {
-        enemyValue = UnityEngine.Random.Range(1, 7);
-        GameMgr.Instance.enemyValue = enemyValue;
-        Action enemySpincallback = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
-        enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], () => enemySpincallback());
+        switch (currentEnemyDice)
+        {
+            case 1:
+                enemyValue = UnityEngine.Random.Range(1, 7);
+                GameMgr.Instance.enemyValue = enemyValue;
+                Action enemySpincallback = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
+                enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], () => enemySpincallback());
+                break;
+            case 2:
+                enemyValue = UnityEngine.Random.Range(1, 7);
+                enemyValue2 = UnityEngine.Random.Range(1, 7);
+                GameMgr.Instance.enemyValue = enemyValue + enemyValue2;
+                Action enemySpincallback2 = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
+                enemyDiceTwin1.DiceSpin(30, RotatePos.posList[enemyValue - 1]);
+                enemyDiceTwin2.DiceSpin(30, RotatePos.posList[enemyValue2 - 1], () => enemySpincallback2());
+                break;
+            case 3:
+                enemyValue = UnityEngine.Random.Range(1, 7);
+                enemyValue2 = UnityEngine.Random.Range(1, 7);
+                enemyValue3 = UnityEngine.Random.Range(1, 7);
+                GameMgr.Instance.enemyValue = enemyValue + enemyValue2 + enemyValue3;
+                Action enemySpincallback3 = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
+                enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1]);
+                enemyDiceTriple1.DiceSpin(30, RotatePos.posList[enemyValue2 - 1]);
+                enemyDiceTriple2.DiceSpin(30, RotatePos.posList[enemyValue3 - 1], () => enemySpincallback3());
+                break;
+        }
     }
 
     public void Artifact2()
@@ -484,6 +517,35 @@ public class DiceMgr : MonoBehaviour
             StopCoroutine(coroutine);
         }
         activeCoroutines.Clear();
+    }
+
+    public void SetEnemyDiceCount(int i)
+    {
+        currentEnemyDice = i;
+        switch (i)
+        {
+            case 1:
+                enemyDice.gameObject.SetActive(true);
+                enemyDiceTwin1.gameObject.SetActive(false);
+                enemyDiceTwin2.gameObject.SetActive(false);
+                enemyDiceTriple1.gameObject.SetActive(false);
+                enemyDiceTriple2.gameObject.SetActive(false);
+                break;
+            case 2:
+                enemyDice.gameObject.SetActive(false);
+                enemyDiceTwin1.gameObject.SetActive(true);
+                enemyDiceTwin2.gameObject.SetActive(true);
+                enemyDiceTriple1.gameObject.SetActive(false);
+                enemyDiceTriple2.gameObject.SetActive(false);
+                break;
+            case 3:
+                enemyDice.gameObject.SetActive(true);
+                enemyDiceTwin1.gameObject.SetActive(false);
+                enemyDiceTwin2.gameObject.SetActive(false);
+                enemyDiceTriple1.gameObject.SetActive(true);
+                enemyDiceTriple2.gameObject.SetActive(true);
+                break;
+        }
     }
 
 }

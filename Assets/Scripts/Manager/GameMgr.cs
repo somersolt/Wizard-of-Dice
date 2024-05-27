@@ -170,6 +170,10 @@ public class GameMgr : MonoBehaviour
 
     private bool onMonsterAttack = false;
 
+    private int BossAtackCount;
+    private int BossShieldCount;
+    public int EnemyDiceCount;
+
     [SerializeField]
     private Button option;
 
@@ -226,6 +230,7 @@ public class GameMgr : MonoBehaviour
         getMagicInfo.onClick.AddListener(() => { ui.magicInfoPanel.SetActive(true); ui.BackGroundPanel.SetActive(true); ui.toggleMagicInfo(true); ui.magicInfoToggle.isOn = true; });
         quit.onClick.AddListener(() => QuitGame());
         cancle.onClick.AddListener(() => { onBackButton = false; QuitPanel.gameObject.SetActive(false); });
+        EnemyDiceCount = 1;
     }
 
 
@@ -254,7 +259,16 @@ public class GameMgr : MonoBehaviour
         audioSource.volume = BGM.Instance.SFXsound;
         ui.audioSource.volume = BGM.Instance.SFXsound;
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            Debug.Log(livingMonster);
+            Debug.Log(monsterSignal);
+
+        }
+
+
+
+            if (Input.GetKeyDown(KeyCode.Escape))
         {
             if(onBackButton)
             {
@@ -434,6 +448,16 @@ public class GameMgr : MonoBehaviour
     {
         if (!enemyDiceRoll)
         {
+            if (StageMgr.Instance.currentField == 1 || StageMgr.Instance.currentField == 2)
+            {
+                foreach (var enemy in StageMgr.Instance.enemies)
+                {
+                    if (enemy.isBoss)
+                    {
+                        enemy.OnHeal(10);
+                    }
+                }
+            }
             enemyDiceRoll = true;
             DiceMgr.Instance.EnemyDiceRoll();
         }
@@ -1005,7 +1029,7 @@ public class GameMgr : MonoBehaviour
 
         for(int i = 0; i < RankList.Length;  i++)
         {
-            if (RankList[i] == 2)
+            if (RankList[i] == 3)
             {
                ui.maxSpells[i].gameObject.SetActive(true);
             }

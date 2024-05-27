@@ -5197,6 +5197,7 @@ MonoBehaviour:
   MaxHp: 100
   Damage: 3
   Name: 
+  isBoss: 0
   onDead: 0
   HpBar: {fileID: 2882870584508517358}
   Life: {fileID: 4877520016213193771}

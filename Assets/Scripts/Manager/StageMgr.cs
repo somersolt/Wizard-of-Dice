@@ -44,8 +44,8 @@ public class StageMgr : MonoBehaviour
     private SpriteRenderer backGround;
 
     public int TutorialStage = 0;
-    public int latStage = 5;
-    public int lastField = 4;
+    public int latStage;
+    public int lastField;
 
     public EnemySpawner enemySpawner;
     private void Awake()
@@ -58,7 +58,9 @@ public class StageMgr : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
+        latStage = 7;
+        lastField = 4;
+}
     public void GameStart()
     {
         currentStage = 0;
@@ -73,7 +75,7 @@ public class StageMgr : MonoBehaviour
         if(!LoadData)
         {
             currentStage++;
-            if (currentStage == 6)
+            if (currentStage == 8)
             {
                 currentStage = 1;
                 currentField++;
@@ -96,7 +98,7 @@ public class StageMgr : MonoBehaviour
             GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.three;
             SetEnemy();
         }
-        else if (currentStage == 4)
+        else if (currentStage == 6)
         {
             GameMgr.Instance.ui.EventStage();
             return;
@@ -128,11 +130,27 @@ public class StageMgr : MonoBehaviour
     {
         MonsterData enemyData = new MonsterData();
         keyList = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).AllItemIds;
+        if(currentStage == 7)
+        {
+            if(currentField == 3)
+            {
+                DiceMgr.Instance.SetEnemyDiceCount(2);
+            }
+            else if (currentField == 4)
+            {
+                DiceMgr.Instance.SetEnemyDiceCount(3);
+            }
+        }
+        else
+        {
+            DiceMgr.Instance.SetEnemyDiceCount(1);
+        }
+
         foreach (int i in keyList)
         {
             if (i / 1000 == 2)
             {
-                if (i % 100 / 10 == currentField && i % 10 == currentStage && currentStage != 5)
+                if (i % 100 / 10 == currentField && i % 10 == currentStage && currentStage != 7)
                 {
                     enemyData = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).Get(i);
 
@@ -157,7 +175,7 @@ public class StageMgr : MonoBehaviour
                     return;
                 }
             }
-            else if (i / 1000 == 3 && currentStage == 5)
+            else if (i / 1000 == 3 && currentStage == 7)
             {
                 if (i % 100 / 10 == currentField)
                 {

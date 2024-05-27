@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -141,4 +142,24 @@ public class Enemy : MonoBehaviour
         GameMgr.Instance.monsterSignal++;
     }
 
+
+    public void OnHeal(int d)
+    {
+        Hp += d;
+        if (Hp > MaxHp)
+        {
+            d -= Hp - MaxHp;
+            Hp = MaxHp;
+        }
+        var HealMessage = Instantiate(damagePrefab, canvas.transform);
+        HealMessage.Setup(d, Color.green, true);
+        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Heal")), canvas.transform);
+        var main = particle.main;
+        main.loop = false;
+        particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        particle.Play();
+        Destroy(particle.gameObject, main.duration);
+        HpBar.fillAmount = (float)Hp / MaxHp;
+        Life.text = Hp.ToString();
+    }
 }
