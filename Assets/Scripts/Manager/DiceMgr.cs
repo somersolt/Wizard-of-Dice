@@ -47,6 +47,10 @@ public class DiceMgr : MonoBehaviour
     public List<int> selectedDice = new List<int>();
 
     private RanksFlag checkedRanksList; // 랭크 체크 후 9개 족보 활성화 여부 저장
+    public RanksFlag CheckedRanksList
+    {
+        get {return checkedRanksList; }
+    }
 
     public int[] manipulList = new int[constant.diceMax]; // 주사위 조작용 리스트
 

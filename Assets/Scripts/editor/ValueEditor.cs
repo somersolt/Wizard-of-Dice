@@ -13,6 +13,7 @@ public class ValueEditor : Editor
     SerializedProperty value9Prop;
     SerializedProperty Stat1Prop;
     SerializedProperty Stat2Prop;
+    SerializedProperty Stat3Prop;
 
     void OnEnable()
     {
@@ -26,6 +27,7 @@ public class ValueEditor : Editor
         value9Prop = serializedObject.FindProperty("Value9");
         Stat1Prop = serializedObject.FindProperty("Stat1");
         Stat2Prop = serializedObject.FindProperty("Stat2");
+        Stat3Prop = serializedObject.FindProperty("Stat3");
     }
     public override void OnInspectorGUI()
     {
@@ -64,6 +66,9 @@ public class ValueEditor : Editor
 
         EditorGUILayout.PropertyField(Stat2Prop, new GUIContent("주사위 스탯 보상"));
         DrawDescriptionLabel("공격력 n 증가");
+
+        EditorGUILayout.PropertyField(Stat3Prop, new GUIContent("주사위 스탯 회복량"));
+        DrawDescriptionLabel("주사위 x n 증가");
         EditorGUILayout.EndVertical();
 
 

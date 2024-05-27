@@ -135,7 +135,8 @@ public class GameMgr : MonoBehaviour
     private TextMeshProUGUI damageInfo;
     [SerializeField]
     private TextMeshProUGUI targetInfo;
-    public Button MagicInfo;
+    public Button currentMagicInfo;
+    public Button getMagicInfo;
     public int currentDamage;
     public int currentBarrier;
     public int currentRecovery;
@@ -221,7 +222,8 @@ public class GameMgr : MonoBehaviour
         TurnUpdate(10);
         publisher.AttackEvent += listener.AttackHandleEvent;// 이벤트에 이벤트 핸들러 메서드를 추가
         option.onClick.AddListener(() => pauseGame());
-        MagicInfo.onClick.AddListener(() => { ui.magicInfoPanel.SetActive(true); });
+        currentMagicInfo.onClick.AddListener(() => { ui.magicInfoPanel.SetActive(true); ui.BackGroundPanel.SetActive(true); ui.toggleMagicInfo(false); ui.magicInfoToggle.isOn = false; });
+        getMagicInfo.onClick.AddListener(() => { ui.magicInfoPanel.SetActive(true); ui.BackGroundPanel.SetActive(true); ui.toggleMagicInfo(true); ui.magicInfoToggle.isOn = true; });
         quit.onClick.AddListener(() => QuitGame());
         cancle.onClick.AddListener(() => { onBackButton = false; QuitPanel.gameObject.SetActive(false); });
     }
@@ -652,7 +654,8 @@ public class GameMgr : MonoBehaviour
         damageInfo.text = currentDamage.ToString();
         targetInfo.text = currentTarget.ToString();
 
-        MagicInfo.interactable = true;
+        currentMagicInfo.interactable = true;
+        ui.magicInfoToggle.interactable = true;
 
         /*
         int r = 0;
@@ -776,7 +779,8 @@ public class GameMgr : MonoBehaviour
         }
         damageInfo.text = "공격력";
         targetInfo.text = "타겟";
-        MagicInfo.interactable = false;
+        currentMagicInfo.interactable = false;
+        ui.magicInfoToggle.interactable = false;
 
         for (int i = 0; i < 5; i++)
         {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -62,6 +63,9 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] artifactsNames = new TextMeshProUGUI[3];
     private TextMeshProUGUI[] artifactsInfos = new TextMeshProUGUI[3];
 
+    public Toggle magicInfoToggle;
+    public TextMeshProUGUI magicInfoToggleText;
+    
     public GameObject magicInfoPanel;
     [SerializeField]
     private Button DamageInfoButton;
@@ -120,8 +124,7 @@ public class UI : MonoBehaviour
     [SerializeField]
     private Button QuitNo;
 
-    [SerializeField]
-    private GameObject BackGroundPanel;
+    public GameObject BackGroundPanel;
 
     public AudioSource audioSource;
     [SerializeField]
@@ -195,8 +198,8 @@ public class UI : MonoBehaviour
             artifactsInfos[i] = artifacts[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
         } // 유물 보상
 
-        magicExitButton.onClick.AddListener(() => { magicInfoPanel.gameObject.SetActive(false); });
-        damageExitButton.onClick.AddListener(() => { damageInfoPanel.gameObject.SetActive(false); });
+        magicExitButton.onClick.AddListener(() => { magicInfoPanel.gameObject.SetActive(false); BackGroundPanel.gameObject.SetActive(false); });
+        damageExitButton.onClick.AddListener(() => { damageInfoPanel.gameObject.SetActive(false); BackGroundPanel.gameObject.SetActive(false); });
         DamageInfoButton.onClick.AddListener(() => { magicInfoPanel.gameObject.SetActive(false); ; damageInfoPanel.gameObject.SetActive(true); });
 
         for (int i = 0; i < 9; i++)
@@ -231,6 +234,9 @@ public class UI : MonoBehaviour
         {
             a.text = " ";
         }
+
+        magicInfoToggle.onValueChanged.AddListener((isOn) => { toggleMagicInfo(isOn); });
+
     }
     public void OnReward(RewardMode mode = RewardMode.Normal  , int count = 0)
     {
@@ -274,7 +280,7 @@ public class UI : MonoBehaviour
         }
 
         spellNames[2].text = "신체 강화";
-        spellInfos[2].text = $"기본 공격력 + {GameMgr.Instance.artifact.valueData.Stat1} \n 주사위 개수 x 5 ({(int)GameMgr.Instance.currentDiceCount * 5}) 만큼 회복";
+        spellInfos[2].text = $"기본 공격력 + {GameMgr.Instance.artifact.valueData.Stat1} \n 주사위 개수 x {GameMgr.Instance.artifact.valueData.Stat3} ({(int)GameMgr.Instance.currentDiceCount * GameMgr.Instance.artifact.valueData.Stat3}) 만큼 회복";
         spellLevels[2].text = " ";
         if (mode == RewardMode.Artifact && count > 0)
         {
@@ -490,7 +496,7 @@ public class UI : MonoBehaviour
                 }
             }
 
-            GameMgr.Instance.Heal((int)GameMgr.Instance.currentDiceCount * 5, 0);
+            GameMgr.Instance.Heal((int)GameMgr.Instance.currentDiceCount * GameMgr.Instance.artifact.valueData.Stat3, 0);
         }
 
         GameMgr.Instance.curruntBonusStat += value;
@@ -720,6 +726,41 @@ public class UI : MonoBehaviour
         }
 
         evenetPanel.gameObject.SetActive(true);
+
+    }
+
+
+    public void toggleMagicInfo(bool isOn)
+    {
+        foreach(var magic in infoMagics)
+        {
+            magic.gameObject.SetActive(false);
+        }
+
+        magicInfoToggleText.gameObject.SetActive(isOn);
+        DamageInfoButton.gameObject.SetActive(!isOn);
+
+        if (magicInfoToggle.isOn)
+        {
+            for (int i = 0; i < infoMagics.Length; i++)
+            {
+                if(GameMgr.Instance.GetRank(i) > 0)
+                {
+                    infoMagics[i].gameObject.SetActive(true);
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < infoMagics.Length; i++)
+            {
+                RanksFlag currentFlag = (RanksFlag)(1 << i);
+                if ((DiceMgr.Instance.CheckedRanksList & currentFlag) != 0)
+                {
+                    infoMagics[i].gameObject.SetActive(true);
+                }
+            }
+        }
 
     }
 
