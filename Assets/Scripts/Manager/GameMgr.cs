@@ -170,7 +170,8 @@ public class GameMgr : MonoBehaviour
 
     private bool onMonsterAttack = false;
 
-    private int BossAtackCount;
+    public int AttackCount;
+    public bool bossDoubleAttack;
     private int BossShieldCount;
     public int EnemyDiceCount;
 
@@ -261,9 +262,8 @@ public class GameMgr : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            Debug.Log(livingMonster);
-            Debug.Log(monsterSignal);
-
+            currentBarrier = 100;
+            LifeUpdate();
         }
 
 
@@ -495,6 +495,16 @@ public class GameMgr : MonoBehaviour
             //플레이어 사망 체크
         }
 
+
+        if(monsterSignal == StageMgr.Instance.enemies.Count && AttackCount > 1)
+        {
+            onMonsterAttack = false;
+            monsterSignal = 0;
+            AttackCount--;
+            return;
+        }
+
+
         if (artifact.playersArtifacts[0] == 1)
         {
             if (monsterSignal == StageMgr.Instance.enemies.Count && !onTicWait)
@@ -537,6 +547,7 @@ public class GameMgr : MonoBehaviour
                     LifeUpdate();
 
                     currentStatus = TurnStatus.PlayerDice;
+                    
                     onMonsterAttack = false;
 
                     if (tutorialMode)
@@ -586,8 +597,12 @@ public class GameMgr : MonoBehaviour
 
                 currentStatus = TurnStatus.PlayerDice;
                 onMonsterAttack = false;
+                if (bossDoubleAttack)
+                {
+                    AttackCount = 2;
+                }
 
-                if (tutorialMode)
+                    if (tutorialMode)
                 {
                     tutorial.eventCount++;
                     return;
@@ -766,6 +781,16 @@ public class GameMgr : MonoBehaviour
         currentTurn = n;
         turnInfo.text = currentTurn.ToString() + " Turn";
         currentStatus = TurnStatus.PlayerDice;
+
+        if(StageMgr.Instance.currentField == 4 && currentTurn == 5)
+        {
+            foreach(var boss in StageMgr.Instance.enemies) 
+            {
+                boss.isimmune = false;
+            }
+            DiceMgr.Instance.SetEnemyDiceCount(3);
+        }
+        
     }
 
     public void PlayerAttackEffect()

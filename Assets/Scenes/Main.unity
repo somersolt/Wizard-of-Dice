@@ -14445,6 +14445,8 @@ MonoBehaviour:
   PlayerBarrierInfo: {fileID: 637320932}
   monsterSignal: 0
   bossSignal: 0
+  AttackCount: 0
+  bossDoubleAttack: 0
   EnemyDiceCount: 0
   option: {fileID: 483629545}
   QuitPanel: {fileID: 1181936082}
@@ -32852,7 +32854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1966313739005046, guid: 29161880b0c72c848a5ea5f7d2cf423f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4689745717259636, guid: 29161880b0c72c848a5ea5f7d2cf423f, type: 3}
       propertyPath: m_LocalScale.x
@@ -32868,7 +32870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4689745717259636, guid: 29161880b0c72c848a5ea5f7d2cf423f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10000.59
+      value: -10000.86
       objectReference: {fileID: 0}
     - target: {fileID: 4689745717259636, guid: 29161880b0c72c848a5ea5f7d2cf423f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -40029,7 +40031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1966313739005046, guid: 29161880b0c72c848a5ea5f7d2cf423f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4689745717259636, guid: 29161880b0c72c848a5ea5f7d2cf423f, type: 3}
       propertyPath: m_LocalScale.x
@@ -40045,7 +40047,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4689745717259636, guid: 29161880b0c72c848a5ea5f7d2cf423f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9999.44
+      value: -9999.09
       objectReference: {fileID: 0}
     - target: {fileID: 4689745717259636, guid: 29161880b0c72c848a5ea5f7d2cf423f, type: 3}
       propertyPath: m_LocalPosition.y

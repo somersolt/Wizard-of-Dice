@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
     public Canvas canvas;
     public PlayerMessage damagePrefab;
     ParticleSystem particle;
+    private GameObject effectPos;
+
     public int MaxHp;
     public int Damage;
     public string Name;
@@ -16,6 +18,7 @@ public class Enemy : MonoBehaviour
     private float duration = 1f;
 
     public bool isBoss;
+    public bool isimmune;
 
     int Hp;
     public bool onDead = false;
@@ -36,6 +39,9 @@ public class Enemy : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         canvas.sortingLayerName = "UI";
         canvas.sortingOrder = 10;
+        //effectPos = canvas.transform.Find("effectPos").GetComponentInChildren<GameObject>();
+
+
     }
 
     private void Update()
@@ -69,9 +75,14 @@ public class Enemy : MonoBehaviour
 
     public void OnDamage(int d)
     {
+        if(isimmune)
+        {
+            d = 1;
+        }
+
         Hp -= d;
         var DamageMessage = Instantiate(damagePrefab, canvas.transform);
-        DamageMessage.Setup(GameMgr.Instance.currentDamage, Color.red, true);
+        DamageMessage.Setup(d, Color.red, true);
         particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 1")), canvas.transform);
         var main = particle.main;
         main.loop = false;
@@ -95,9 +106,14 @@ public class Enemy : MonoBehaviour
 
     public void OnTicDamage(int d)
     {
+        if (isimmune)
+        {
+            d = 1;
+        }
+
         Hp -= d;
         var DamageMessage = Instantiate(damagePrefab, canvas.transform);
-        DamageMessage.Setup(GameMgr.Instance.curruntBonusStat, Color.red, true);
+        DamageMessage.Setup(d, Color.red, true);
         particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 13")), canvas.transform);
         var main = particle.main;
         main.loop = false;
@@ -153,7 +169,7 @@ public class Enemy : MonoBehaviour
         }
         var HealMessage = Instantiate(damagePrefab, canvas.transform);
         HealMessage.Setup(d, Color.green, true);
-        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Heal")), canvas.transform);
+        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Boss1_Healing")), canvas.transform);
         var main = particle.main;
         main.loop = false;
         particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);

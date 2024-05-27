@@ -132,18 +132,32 @@ public class StageMgr : MonoBehaviour
         keyList = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).AllItemIds;
         if(currentStage == 7)
         {
-            if(currentField == 3)
+            if (currentField == 2)
             {
                 DiceMgr.Instance.SetEnemyDiceCount(2);
+                GameMgr.Instance.bossDoubleAttack = true;
+                GameMgr.Instance.AttackCount = 2;
+
+            }
+
+            if (currentField == 3)
+            {
+                DiceMgr.Instance.SetEnemyDiceCount(2);
+                GameMgr.Instance.bossDoubleAttack = true;
+                GameMgr.Instance.AttackCount = 2;
+
             }
             else if (currentField == 4)
             {
-                DiceMgr.Instance.SetEnemyDiceCount(3);
+                DiceMgr.Instance.SetEnemyDiceCount(2);
+                GameMgr.Instance.bossDoubleAttack = false;
+
             }
         }
         else
         {
             DiceMgr.Instance.SetEnemyDiceCount(1);
+            GameMgr.Instance.AttackCount = 1;
         }
 
         foreach (int i in keyList)
@@ -184,6 +198,10 @@ public class StageMgr : MonoBehaviour
 
                     var Boss = Resources.Load<Enemy>(string.Format("Prefabs/Monsters/{0}", BossEnemyData.ID));
                     Boss.isBoss = true;
+                    if(currentField == 4)
+                    {
+                        Boss.isimmune = true;
+                    }
                     var enemy = Resources.Load<Enemy>(string.Format("Prefabs/Monsters/{0}", enemyData.ID));
                     enemySpawner.Spawn(enemy, (int)PosNum.Left, enemyData);
                     enemySpawner.Spawn(Boss, (int)PosNum.Center, BossEnemyData);

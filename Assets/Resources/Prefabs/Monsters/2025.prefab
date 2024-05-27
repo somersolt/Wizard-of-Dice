@@ -481,6 +481,7 @@ MonoBehaviour:
   Damage: 0
   Name: 
   isBoss: 0
+  isimmune: 0
   onDead: 0
   HpBar: {fileID: 2479222015983119207}
   Life: {fileID: 5320328206185878690}
@@ -750,7 +751,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3266407483026101806}
-  - component: {fileID: 1181623916728120243}
   m_Layer: 0
   m_Name: BatPBR
   m_TagString: Untagged
@@ -775,27 +775,6 @@ Transform:
   - {fileID: 2992676565440447022}
   m_Father: {fileID: 6268348900415322425}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1181623916728120243
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4297509622805302747}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 988da0c1e6e4407ba259bb31f7182996, type: 3}
-  m_Controller: {fileID: 9100000, guid: 3c92bbc5af32dba4a8e2c71509f8d1ce, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4319682045450669138
 GameObject:
   m_ObjectHideFlags: 0
