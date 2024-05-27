@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     public Canvas canvas;
     public PlayerMessage damagePrefab;
     ParticleSystem particle;
-    private GameObject effectPos;
+    private Transform effectPos;
 
     public int MaxHp;
     public int Damage;
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         canvas.sortingLayerName = "UI";
         canvas.sortingOrder = 10;
-        //effectPos = canvas.transform.Find("effectPos").GetComponentInChildren<GameObject>();
+        effectPos = canvas.transform.Find("effectPos").GetComponent<Transform>();
 
 
     }
@@ -83,7 +83,7 @@ public class Enemy : MonoBehaviour
         Hp -= d;
         var DamageMessage = Instantiate(damagePrefab, canvas.transform);
         DamageMessage.Setup(d, Color.red, true);
-        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 1")), canvas.transform);
+        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 1")), effectPos.transform);
         var main = particle.main;
         main.loop = false;
         particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
@@ -114,7 +114,7 @@ public class Enemy : MonoBehaviour
         Hp -= d;
         var DamageMessage = Instantiate(damagePrefab, canvas.transform);
         DamageMessage.Setup(d, Color.red, true);
-        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 13")), canvas.transform);
+        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 13")), effectPos.transform);
         var main = particle.main;
         main.loop = false;
         particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
@@ -169,7 +169,7 @@ public class Enemy : MonoBehaviour
         }
         var HealMessage = Instantiate(damagePrefab, canvas.transform);
         HealMessage.Setup(d, Color.green, true);
-        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Boss1_Healing")), canvas.transform);
+        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Boss1_Healing")), effectPos.transform);
         var main = particle.main;
         main.loop = false;
         particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
