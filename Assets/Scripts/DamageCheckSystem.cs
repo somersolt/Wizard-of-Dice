@@ -63,7 +63,7 @@ public static class DamageCheckSystem
 
         sum += GameMgr.Instance.curruntBonusStat;
 
-        GameMgr.Instance.ui.damages[4].text = ((value + sum) * (100 + multiple) / 100).ToString();
+        GameMgr.Instance.ui.damages[4].text = ((totalvalue + sum) * (100 + multiple) / 100).ToString();
 
         GameMgr.Instance.currentTarget = target;
         GameMgr.Instance.currentBarrier = barrier;
