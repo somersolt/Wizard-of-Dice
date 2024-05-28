@@ -107,7 +107,7 @@ public class StageMgr : MonoBehaviour
 
         GameMgr.Instance.ui.ArtifactInfoUpdate();
 
-        StageInfo.text = $"Stage {currentField} - {currentStage}";
+        StageInfo.text = $"Stage \n {currentField} - {currentStage}";
         var path = currentField.ToString() + currentStage.ToString();
         backGround.sprite = Resources.Load<Sprite>(string.Format("Field/{0}", path));
         BGM.Instance.PlayBGM(BGM.Instance.ChangeBgm(currentField, currentStage), 3);

@@ -784,7 +784,7 @@ public class GameMgr : MonoBehaviour
     public void TurnUpdate(int n)
     {
         currentTurn = n;
-        turnInfo.text = currentTurn.ToString() + " Turn";
+        turnInfo.text = currentTurn.ToString();
         currentStatus = TurnStatus.PlayerDice;
 
         if(StageMgr.Instance.currentField == 4 && currentTurn == 5)
