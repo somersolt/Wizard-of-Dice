@@ -28,6 +28,7 @@ public class UI : MonoBehaviour
     private TextMeshProUGUI[] spellInfos = new TextMeshProUGUI[3];
     private TextMeshProUGUI[] spellLevels = new TextMeshProUGUI[3];
     private TextMeshProUGUI[] newTexts = new TextMeshProUGUI[2];
+    private Image[] stars = new Image[2];
 
     private SpellData[] rewardSpells = new SpellData[2];
     private Image[] examples = new Image[2];
@@ -74,6 +75,7 @@ public class UI : MonoBehaviour
     public TextMeshProUGUI[] infoMagicInfos = new TextMeshProUGUI[9];
     public TextMeshProUGUI[] infoMagicLevels = new TextMeshProUGUI[9];
     private Image[] infoMagicexamples = new Image[9];
+    public Image[] infoMagicstars = new Image[9];
 
     [SerializeField]
     private Button magicExitButton;
@@ -153,6 +155,7 @@ public class UI : MonoBehaviour
             spellInfos[i] = rewards[i].transform.Find("Info").GetComponentInChildren<TextMeshProUGUI>();
             spellLevels[i] = rewards[i].transform.Find("level").GetComponentInChildren<TextMeshProUGUI>();
             newTexts[i] = rewards[i].transform.Find("new").GetComponentInChildren<TextMeshProUGUI>();
+            stars[i] = rewards[i].transform.Find("star").GetComponentInChildren<Image>();
         } // 족보 보상 1~2칸
 
         spellNames[2] = rewards[2].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("name").GetComponentInChildren<TextMeshProUGUI>();
@@ -210,6 +213,7 @@ public class UI : MonoBehaviour
             infoMagicexamples[i] = infoMagics[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("ex").GetComponentInChildren<Image>();
             var path = (i + 1).ToString();
             infoMagicexamples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", path)); ;
+            infoMagicstars[i] = infoMagics[i].transform.Find("star").GetComponentInChildren<Image>();
         } //적용 마법
 
         for (int i = 0; i < 3; i++)
@@ -253,21 +257,27 @@ public class UI : MonoBehaviour
                 spellNames[i].text = rewardList[a].GetName;
                 spellInfos[i].text = rewardList[a].GetDesc;
                 var path = (rewardList[a].ID % 100 / 10).ToString();
-                examples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", path)); ;
+                examples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", path));
                 switch (rewardList[a].LEVEL)
                 {
                     case 1:
                         spellLevels[i].text = "일반";
+                        spellLevels[i].color = Color.white;
                         if (i == 0)
                         { newTexts[0].gameObject.SetActive(true); }
                         if (i == 1)
                         { newTexts[1].gameObject.SetActive(true); }
+                        stars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_1"));
                         break;
                     case 2:
                         spellLevels[i].text = "강화";
+                        spellLevels[i].color = Color.green;
+                        stars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_2"));
                         break;
                     case 3:
                         spellLevels[i].text = "숙련";
+                        spellLevels[i].color = Color.yellow;
+                        stars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_3"));
                         break;
                 }
                 rewardList.Remove(rewardList[a]);
@@ -279,6 +289,7 @@ public class UI : MonoBehaviour
                 spellInfos[i].text = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(1110).GetDesc;
                 spellLevels[i].text = " ";
                 examples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "null_image"));
+                stars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "null_image"));
             }
         }
 

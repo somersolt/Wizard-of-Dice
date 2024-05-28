@@ -265,10 +265,13 @@ public class GameMgr : MonoBehaviour
             currentBarrier = 100;
             LifeUpdate();
         }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Debug.Log(livingMonster + "/" + monsterSignal);
+        }
 
 
-
-            if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if(onBackButton)
             {
@@ -420,12 +423,6 @@ public class GameMgr : MonoBehaviour
             Debug.Log("9번유물");
         }
         // 테스트 코드
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            Debug.Log(ui.rewardList.Count);
-        }
-
 
     }
     private void PlayerAttackUpdate()
@@ -757,18 +754,26 @@ public class GameMgr : MonoBehaviour
                     case 1:
                         newText.Append("- 일반");
                         ui.infoMagicLevels[i].text = "일반";
+                        ui.infoMagicLevels[i].color = Color.white;
+                        ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_1"));
                         break;
                     case 2:
                         newText.Append("- 강화");
                         ui.infoMagicLevels[i].text = "강화";
+                        ui.infoMagicLevels[i].color = Color.green;
+                        ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_2"));
                         break;
                     case 3:
                         newText.Append("- 숙련");
                         ui.infoMagicLevels[i].text = "숙련";
+                        ui.infoMagicLevels[i].color = Color.yellow;
+                        ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_3"));
                         break;
                     case 4:
                         newText.Append("- 초월");
                         ui.infoMagicLevels[i].text = "초월";
+                        ui.infoMagicLevels[i].color = Color.red;
+                        ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_4"));
                         break;
                 }
                 ranksInfo[i].text = newText.ToString();
@@ -865,6 +870,7 @@ public class GameMgr : MonoBehaviour
             }
 
             bossSignal = 0;
+            monsterSignal = 0;
         }
         if (StageMgr.Instance.enemies.Count == 0)
         {
