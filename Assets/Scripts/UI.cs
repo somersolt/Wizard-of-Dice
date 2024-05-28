@@ -169,7 +169,7 @@ public class UI : MonoBehaviour
             maxSpellexamples[i] = maxSpells[i].transform.Find("namePanel").GetComponentInChildren<LayoutElement>().transform.Find("ex").GetComponentInChildren<Image>();
             var path = (i + 1).ToString();
             maxSpellexamples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", path)); ;
-            var maxSpell = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 2);
+            var maxSpell = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + 3);
             maxSpellNames[i].text = maxSpell.GetName;
             maxSpellInfos[i].text = maxSpell.GetDesc;
             maxSpellLevels[i].text = "ÃÊ¿ù";

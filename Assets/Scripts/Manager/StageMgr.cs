@@ -134,7 +134,7 @@ public class StageMgr : MonoBehaviour
         {
             if (currentField == 2)
             {
-                DiceMgr.Instance.SetEnemyDiceCount(2);
+                DiceMgr.Instance.SetEnemyDiceCount(1);
                 GameMgr.Instance.bossDoubleAttack = true;
                 GameMgr.Instance.AttackCount = 2;
 
@@ -151,12 +151,13 @@ public class StageMgr : MonoBehaviour
             {
                 DiceMgr.Instance.SetEnemyDiceCount(2);
                 GameMgr.Instance.bossDoubleAttack = false;
-
+                GameMgr.Instance.AttackCount = 1;
             }
         }
         else
         {
             DiceMgr.Instance.SetEnemyDiceCount(1);
+            GameMgr.Instance.bossDoubleAttack = false;
             GameMgr.Instance.AttackCount = 1;
         }
 

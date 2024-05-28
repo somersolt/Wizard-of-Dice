@@ -86,6 +86,7 @@ MonoBehaviour:
   Damage: 0
   Name: 
   isBoss: 0
+  isimmune: 0
   onDead: 0
   HpBar: {fileID: 7304893968253511360}
   Life: {fileID: 1068020813738268933}
@@ -452,7 +453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_LocalRotation.w

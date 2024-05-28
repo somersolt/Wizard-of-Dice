@@ -9777,7 +9777,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 6f290e7fceb57364288809eb23e7ab96, type: 2}
-  - {fileID: 2100000, guid: 6f290e7fceb57364288809eb23e7ab96, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14659,7 +14658,6 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6f290e7fceb57364288809eb23e7ab96, type: 2}
   - {fileID: 2100000, guid: 6f290e7fceb57364288809eb23e7ab96, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -19600,7 +19598,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d16bd995763ed8f4bb02059102b2e591, type: 2}
-  - {fileID: 2100000, guid: d16bd995763ed8f4bb02059102b2e591, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -20054,7 +20051,7 @@ Transform:
   m_GameObject: {fileID: 6733664980114479587}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.14, z: 1}
+  m_LocalPosition: {x: 0, y: 0.14, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25236,6 +25233,8 @@ MonoBehaviour:
   MaxHp: 100
   Damage: 3
   Name: 
+  isBoss: 0
+  isimmune: 0
   onDead: 0
   HpBar: {fileID: 9011016178287785521}
   Life: {fileID: 1639277698982808052}
@@ -25316,7 +25315,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_LocalRotation.w

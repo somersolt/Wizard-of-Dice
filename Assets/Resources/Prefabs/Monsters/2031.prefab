@@ -91,7 +91,7 @@ Transform:
   m_GameObject: {fileID: 347109622135472030}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -118,6 +118,7 @@ MonoBehaviour:
   Damage: 0
   Name: 
   isBoss: 0
+  isimmune: 0
   onDead: 0
   HpBar: {fileID: 3410784707616621724}
   Life: {fileID: 4965191684878105433}
@@ -1034,6 +1035,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MonsterFrame
       objectReference: {fileID: 0}
+    - target: {fileID: 1166329109029652573, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1076,7 +1081,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_LocalRotation.w
