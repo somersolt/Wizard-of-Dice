@@ -199,7 +199,7 @@ public class StageMgr : MonoBehaviour
 
                     var Boss = Resources.Load<Enemy>(string.Format("Prefabs/Monsters/{0}", BossEnemyData.ID));
                     Boss.isBoss = true;
-                    if(currentField == 4)
+                    if (currentField == 4)
                     {
                         Boss.isimmune = true;
                     }

@@ -275,8 +275,8 @@ public class UI : MonoBehaviour
             else if (rewardList.Count == 0)
             {
                 rewardSpells[i] = empty;
-                spellNames[i].text = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(1000).GetName;
-                spellInfos[i].text = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(1000).GetDesc;
+                spellNames[i].text = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(1110).GetName;
+                spellInfos[i].text = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(1110).GetDesc;
                 spellLevels[i].text = " ";
                 examples[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "null_image"));
             }

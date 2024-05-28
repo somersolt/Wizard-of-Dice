@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     public Canvas canvas;
     public PlayerMessage damagePrefab;
     ParticleSystem particle;
+    ParticleSystem immuneParticle;
     private Transform effectPos;
 
     public int MaxHp;
@@ -41,7 +42,10 @@ public class Enemy : MonoBehaviour
         canvas.sortingOrder = 10;
         effectPos = canvas.transform.Find("effectPos").GetComponent<Transform>();
 
-
+        if(isimmune && StageMgr.Instance.currentField == 4)
+        {
+            ImmuneEffect(true);
+        }
     }
 
     private void Update()
@@ -131,6 +135,42 @@ public class Enemy : MonoBehaviour
         animator.SetTrigger("GetHit");
         HpBar.fillAmount = (float)Hp / MaxHp;
         Life.text = Hp.ToString();
+    }
+
+    public void WindEffect()
+    {
+        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Boss3_Wind")), effectPos.transform);
+        var main = particle.main;
+        main.loop = false;
+        particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        particle.Play();
+        Destroy(particle.gameObject, main.duration);
+    }
+
+    public void BloodEffect()
+    {
+        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Boss2_Blood")), effectPos.transform);
+        var main = particle.main;
+        main.loop = false;
+        particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        particle.Play();
+        Destroy(particle.gameObject, main.duration);
+    }
+
+    public void ImmuneEffect(bool immune)
+    {
+        if (immune)
+        {
+            immuneParticle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Boss4_Shield")), effectPos.transform);
+            var main = immuneParticle.main;
+            main.loop = true;
+            immuneParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            immuneParticle.Play();
+        }
+        else
+        {
+            immuneParticle.Stop();
+        }
     }
 
     public void OnAttack()

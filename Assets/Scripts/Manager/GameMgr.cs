@@ -787,8 +787,11 @@ public class GameMgr : MonoBehaviour
             foreach(var boss in StageMgr.Instance.enemies) 
             {
                 boss.isimmune = false;
+                boss.ImmuneEffect(false);
+                boss.BloodEffect();
             }
             DiceMgr.Instance.SetEnemyDiceCount(3);
+            
         }
         
     }

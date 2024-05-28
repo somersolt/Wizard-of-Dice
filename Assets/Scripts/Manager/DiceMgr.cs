@@ -469,6 +469,19 @@ public class DiceMgr : MonoBehaviour
 
     public void EnemyDiceRoll()
     {
+        if (StageMgr.Instance.currentStage == 7)
+        {
+            if (StageMgr.Instance.currentField == 2 || StageMgr.Instance.currentField == 3)
+            {
+                foreach (var boss in StageMgr.Instance.enemies) 
+                {
+                    if(boss.isBoss)
+                    {
+                        boss.WindEffect();
+                    }
+                }
+            }
+        }
         switch (currentEnemyDice)
         {
             case 1:
