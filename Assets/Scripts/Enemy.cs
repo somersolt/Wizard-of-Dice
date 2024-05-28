@@ -169,7 +169,12 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            immuneParticle.Stop();
+            if (immuneParticle != null)
+            {
+                immuneParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                Destroy(immuneParticle.gameObject);
+                immuneParticle = null;
+            }
         }
     }
 
