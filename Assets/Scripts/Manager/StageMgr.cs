@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Drawing;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageMgr : MonoBehaviour
 {
@@ -40,6 +43,12 @@ public class StageMgr : MonoBehaviour
     public List<int> keyList = new List<int>();
     public Enemy tutorialEnemy; // TO-DO 테스트 적
 
+    public Toggle bossGimic;
+    [SerializeField]
+    private GameObject bossGimicPanel;
+    [SerializeField]
+    private TextMeshProUGUI bossGimicText;
+
     [SerializeField]
     private SpriteRenderer backGround;
 
@@ -60,7 +69,8 @@ public class StageMgr : MonoBehaviour
         }
         latStage = 7;
         lastField = 4;
-}
+        bossGimic.onValueChanged.AddListener((isOn) => OnToggleValueChanged(isOn));
+    }
     public void GameStart()
     {
         currentStage = 0;
@@ -69,10 +79,22 @@ public class StageMgr : MonoBehaviour
         StageInfo.text = $"Tutorial";
     }
 
+    private void OnToggleValueChanged(bool isOn)
+    {
+        if (isOn)
+        {
+            bossGimicPanel.gameObject.SetActive(true);
+        }
+        else
+        {
+            bossGimicPanel.gameObject.SetActive(false);
+        }
+    }
+
     public void NextStage(bool LoadData = false)
     {
 
-        if(!LoadData)
+        if (!LoadData)
         {
             currentStage++;
             if (currentStage == 8)
@@ -107,7 +129,7 @@ public class StageMgr : MonoBehaviour
         {
             SetEnemy();
         }
-        
+
 
         switch (GameMgr.Instance.currentDiceCount)
         {
@@ -130,10 +152,17 @@ public class StageMgr : MonoBehaviour
     {
         MonsterData enemyData = new MonsterData();
         keyList = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).AllItemIds;
-        if(currentStage == 7)
+        if (currentStage == 7)
         {
+            bossGimic.gameObject.SetActive(true);
+            if (currentField == 1)
+            {
+                bossGimicText.text = "<size=50> 킹 슬라임\n <size=35><color=red> -매 턴 체력 10 회복";
+            }
+
             if (currentField == 2)
             {
+                bossGimicText.text = "<size=50> 사악한 마법사 \n <size=35><color=red> -매 턴 체력 10 회복 \n-2회 공격";
                 DiceMgr.Instance.SetEnemyDiceCount(1);
                 GameMgr.Instance.bossDoubleAttack = true;
                 GameMgr.Instance.AttackCount = 2;
@@ -142,6 +171,7 @@ public class StageMgr : MonoBehaviour
 
             if (currentField == 3)
             {
+                bossGimicText.text = "<size=50> 데스 \n <size=35><color=red> -주사위 개수 +1 \n-2회 공격";
                 DiceMgr.Instance.SetEnemyDiceCount(2);
                 GameMgr.Instance.bossDoubleAttack = true;
                 GameMgr.Instance.AttackCount = 2;
@@ -149,6 +179,7 @@ public class StageMgr : MonoBehaviour
             }
             else if (currentField == 4)
             {
+                bossGimicText.text = "<size=50> 데스 메이지 \n <size=35><color=red> -5턴 동안 데미지 면역 \n-주사위 개수 +1\n-5턴 이후 주사위 개수 +1";
                 DiceMgr.Instance.SetEnemyDiceCount(2);
                 GameMgr.Instance.bossDoubleAttack = false;
                 GameMgr.Instance.AttackCount = 1;
@@ -156,6 +187,8 @@ public class StageMgr : MonoBehaviour
         }
         else
         {
+            bossGimic.isOn = false;
+            bossGimic.gameObject.SetActive(false);
             DiceMgr.Instance.SetEnemyDiceCount(1);
             GameMgr.Instance.bossDoubleAttack = false;
             GameMgr.Instance.AttackCount = 1;

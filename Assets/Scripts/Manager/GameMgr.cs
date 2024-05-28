@@ -478,7 +478,7 @@ public class GameMgr : MonoBehaviour
                 PlayerHp = artifact.valueData.Value7;
 
                 var DamageMessage = Instantiate(messagePrefab, canvas.transform);
-                DamageMessage.Setup("유물 사용!", Color.cyan);
+                DamageMessage.Setup("유물 사용!", Color.blue);
                 audioSource.PlayOneShot(audioClips[1]);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                     messagePos.GetComponent<RectTransform>().anchoredPosition;
@@ -874,6 +874,9 @@ public class GameMgr : MonoBehaviour
                 Destroy(deadEnemy.gameObject);
             }
             StageMgr.Instance.DeadEnemies.Clear();
+
+            PlayerBarrier = 0;
+            LifeUpdate();
 
             if (StageMgr.Instance.currentStage == StageMgr.Instance.latStage && StageMgr.Instance.currentField == StageMgr.Instance.lastField)
             {
