@@ -11,7 +11,7 @@ public class Artifact : MonoBehaviour
     private void Awake()
     {
         ArtifactData data1 = new ArtifactData();
-        data1.Set(0, "방화광", $"매턴 모든 적에게 '기본 마법력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지");
+        data1.Set(0, "방화광", $"매턴 모든 적에게 '기본 공격력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지");
         artifacts.Add(data1);
 
         ArtifactData data2 = new ArtifactData();

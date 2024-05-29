@@ -294,7 +294,7 @@ public class UI : MonoBehaviour
         }
 
         spellNames[2].text = "신체 강화";
-        spellInfos[2].text = $"기본 공격력 + {GameMgr.Instance.artifact.valueData.Stat1} \n 주사위 개수 x {GameMgr.Instance.artifact.valueData.Stat3} (<color=green>{(int)GameMgr.Instance.currentDiceCount * GameMgr.Instance.artifact.valueData.Stat3}</color>) 만큼 회복";
+        spellInfos[2].text = $"기본 공격력 + <color=red>{GameMgr.Instance.artifact.valueData.Stat1}</color> \n 주사위 개수 x {GameMgr.Instance.artifact.valueData.Stat3} (<color=green>{(int)GameMgr.Instance.currentDiceCount * GameMgr.Instance.artifact.valueData.Stat3}</color>) 만큼 회복";
         spellLevels[2].text = " ";
         if (mode == RewardMode.Artifact && count > 0)
         {
@@ -354,7 +354,7 @@ public class UI : MonoBehaviour
         });
 
         diceRewardNames[1].text = "마나 증량";
-        diceRewardInfos[1].text = $"주사위 개수를 늘리지 않고 공격력 {GameMgr.Instance.artifact.valueData.Stat2} 증가 \n 주사위 눈금 총합에 {GameMgr.Instance.artifact.valueData.Stat2}을 더합니다.";
+        diceRewardInfos[1].text = $"주사위 개수를 늘리지 않고 공격력 <color=red>{GameMgr.Instance.artifact.valueData.Stat2}</color> 증가 \n 주사위 눈금 총합에 <color=red>{GameMgr.Instance.artifact.valueData.Stat2}</color>을 더합니다.";
 
         foreach (var ranks in GameMgr.Instance.GetRankList())
         {
@@ -374,7 +374,7 @@ public class UI : MonoBehaviour
             else
             {
                 diceRewardNames[2].text = "초월 마법";
-                diceRewardInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n 숙련된 마법이 없어 초월할 수 없습니다.";
+                diceRewardInfos[2].text = "보유한 마법 중 하나를 초월 등급으로 변경합니다. \n <color=red>숙련된 마법이 없어 초월할 수 없습니다.";
             }
         }
 
@@ -518,7 +518,7 @@ public class UI : MonoBehaviour
         {
             if(artifact.ID == 0)
             {
-                artifact.Set(0, "방화광", $"매턴 모든 적에게 '기본 마법력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지");
+                artifact.Set(0, "방화광", $"매턴 모든 적에게 '기본 공격력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지");
             }
         }
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
@@ -601,7 +601,7 @@ public class UI : MonoBehaviour
         {
             if (playerArtifactName[i].text == "방화광")
             {
-                playerArtifactInfo[i].text = $"매턴 모든 적에게 '기본 마법력'({GameMgr.Instance.curruntBonusStat}) 만큼의 데미지";
+                playerArtifactInfo[i].text = $"매턴 모든 적에게 '기본 공격력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지";
             }
         }
     }
