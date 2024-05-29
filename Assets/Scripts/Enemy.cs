@@ -87,7 +87,14 @@ public class Enemy : MonoBehaviour
         Hp -= d;
         var DamageMessage = Instantiate(damagePrefab, canvas.transform);
         DamageMessage.Setup(d, Color.red, true);
-        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 1")), effectPos.transform);
+        if (GameMgr.Instance.scrollsound >= 3)
+        {
+            particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 4")), effectPos.transform);
+        }
+        else
+        {
+            particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 1")), effectPos.transform);
+        }
         var main = particle.main;
         main.loop = false;
         particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);

@@ -37,6 +37,8 @@ public class AttackEventListener
     public void AttackHandleEvent(object sender, AttackEventArgs e)
     {
         GameMgr.Instance.Heal(GameMgr.Instance.currentRecovery, GameMgr.Instance.currentBarrier);
+        GameMgr.Instance.HpUpText.text = " ";
+        GameMgr.Instance.BarrierUpText.text = " ";
         Enemy[] targets = new Enemy[Math.Min(GameMgr.Instance.currentTarget, StageMgr.Instance.enemies.Count)];
 
         for (int i = 0; i < targets.Length; i++)
@@ -142,10 +144,9 @@ public class GameMgr : MonoBehaviour
     public int currentRecovery;
     public int currentTarget;
 
-    [SerializeField]
-    private Button[] scrolls = new Button[3];
-    [SerializeField]
-    private Button totalScrolls;
+    public TextMeshProUGUI HpUpText;
+    public TextMeshProUGUI BarrierUpText;
+
 
     public int enemyValue;
     [SerializeField]
@@ -190,7 +191,7 @@ public class GameMgr : MonoBehaviour
     /// 소리 관련
     public AudioSource audioSource;
     public List<AudioClip> audioClips;
-    private int scrollsound = 0;
+    public int scrollsound = 0;
     /// </summary>
     private void Awake()
     {
@@ -242,13 +243,13 @@ public class GameMgr : MonoBehaviour
         ScrollsClear();
         RanksListUpdate();
 
-        if(LoadData())
+        if (LoadData())
         {
             return;
         }
 
         StageMgr.Instance.GameStart();
-        if(PlayerPrefs.GetInt("Tutorial", 0) == 1)
+        if (PlayerPrefs.GetInt("Tutorial", 0) == 1)
         {
             tutorial.TutorialSkip();
             return;
@@ -273,7 +274,7 @@ public class GameMgr : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if(onBackButton)
+            if (onBackButton)
             {
                 onBackButton = false;
                 QuitPanel.gameObject.SetActive(false);
@@ -427,7 +428,7 @@ public class GameMgr : MonoBehaviour
     }
     private void PlayerAttackUpdate()
     {
-        if(bossSignal == 1)
+        if (bossSignal == 1)
         {
             MonsterCheck();
             return;
@@ -486,14 +487,14 @@ public class GameMgr : MonoBehaviour
                 currentStatus = TurnStatus.PlayerLose;
                 BGM.Instance.currentAudio.Stop();
                 audioSource.PlayOneShot(audioClips[4]);
-                
+
                 return;
             }
             //플레이어 사망 체크
         }
 
 
-        if(monsterSignal == StageMgr.Instance.enemies.Count && AttackCount > 1)
+        if (monsterSignal == StageMgr.Instance.enemies.Count && AttackCount > 1)
         {
             onMonsterAttack = false;
             monsterSignal = 0;
@@ -544,7 +545,7 @@ public class GameMgr : MonoBehaviour
                     LifeUpdate();
 
                     currentStatus = TurnStatus.PlayerDice;
-                    
+
                     onMonsterAttack = false;
 
                     if (tutorialMode)
@@ -599,7 +600,7 @@ public class GameMgr : MonoBehaviour
                     AttackCount = 2;
                 }
 
-                    if (tutorialMode)
+                if (tutorialMode)
                 {
                     tutorial.eventCount++;
                     return;
@@ -690,6 +691,15 @@ public class GameMgr : MonoBehaviour
         damageInfo.text = currentDamage.ToString();
         targetInfo.text = currentTarget.ToString();
 
+        if (currentRecovery > 0)
+        {
+            HpUpText.text = "↑" + currentRecovery;
+        }
+        if (currentBarrier > 0)
+        {
+            BarrierUpText.text = "↑" + currentBarrier;
+        }
+
         currentMagicInfo.interactable = true;
         ui.magicInfoToggle.interactable = true;
 
@@ -725,7 +735,7 @@ public class GameMgr : MonoBehaviour
             }
         }
 
-        if(scrollsound > 0 && scrollsound < 3)
+        if (scrollsound > 0 && scrollsound < 3)
         {
             audioSource.PlayOneShot(audioClips[0]);
         }
@@ -733,7 +743,6 @@ public class GameMgr : MonoBehaviour
         {
             audioSource.PlayOneShot(audioClips[1]);
         }
-
     }
 
     public void RanksListUpdate()
@@ -787,18 +796,18 @@ public class GameMgr : MonoBehaviour
         turnInfo.text = currentTurn.ToString();
         currentStatus = TurnStatus.PlayerDice;
 
-        if(StageMgr.Instance.currentField == 4 && currentTurn == 5)
+        if (StageMgr.Instance.currentField == 4 && currentTurn == 5)
         {
-            foreach(var boss in StageMgr.Instance.enemies) 
+            foreach (var boss in StageMgr.Instance.enemies)
             {
                 boss.isimmune = false;
                 boss.ImmuneEffect(false);
                 boss.BloodEffect();
             }
             DiceMgr.Instance.SetEnemyDiceCount(3);
-            
+
         }
-        
+
     }
 
     public void PlayerAttackEffect()
@@ -806,7 +815,7 @@ public class GameMgr : MonoBehaviour
         livingMonster = Math.Min(StageMgr.Instance.enemies.Count, currentTarget);
         CurrentStatus = TurnStatus.PlayerAttack;
         audioSource.PlayOneShot(audioClips[2]);
-        if(currentBarrier > 0 || currentRecovery > 0)
+        if (currentBarrier > 0 || currentRecovery > 0)
         {
             audioSource.PlayOneShot(audioClips[5]);
         }
@@ -857,7 +866,7 @@ public class GameMgr : MonoBehaviour
     private void MonsterCheck()
     {
         monsterSignal = 0;
-        if(bossSignal==1)
+        if (bossSignal == 1)
         {
             List<Enemy> indicesToRemove = new List<Enemy>();
             foreach (var e in StageMgr.Instance.enemies)
@@ -886,7 +895,7 @@ public class GameMgr : MonoBehaviour
 
             if (StageMgr.Instance.currentStage == StageMgr.Instance.latStage && StageMgr.Instance.currentField == StageMgr.Instance.lastField)
             {
-                BGM.Instance.PlayBGM(BGM.Instance.bgm[1],2);
+                BGM.Instance.PlayBGM(BGM.Instance.bgm[1], 2);
                 SaveLoadSystem.DeleteSaveData();
                 ui.Victory();
                 return;
@@ -1042,7 +1051,7 @@ public class GameMgr : MonoBehaviour
         artifact.playersArtifacts[7] = 2;
         foreach (var a in ui.artifactInfo)
         {
-            if(a.text == "원코인 추가")
+            if (a.text == "원코인 추가")
             {
                 a.color = Color.red;
                 a.text = "원코인 추가(사용)";
@@ -1052,7 +1061,7 @@ public class GameMgr : MonoBehaviour
 
     private bool LoadData()
     {
-        if(SaveLoadSystem.Load() == 0)
+        if (SaveLoadSystem.Load() == 0)
         {
             return false;
         }
@@ -1064,19 +1073,19 @@ public class GameMgr : MonoBehaviour
         LifeUpdate();
         RanksListUpdate();
 
-        for(int i = 0; i < RankList.Length;  i++)
+        for (int i = 0; i < RankList.Length; i++)
         {
             if (RankList[i] == 3)
             {
-               ui.maxSpells[i].gameObject.SetActive(true);
+                ui.maxSpells[i].gameObject.SetActive(true);
             }
         } // 마법서 보상 목록
 
-        if(artifact.playersArtifactsNumber[0] != -1)
+        if (artifact.playersArtifactsNumber[0] != -1)
         {
             foreach (var a in artifact.artifacts)
             {
-                if(a.ID == artifact.playersArtifactsNumber[0])
+                if (a.ID == artifact.playersArtifactsNumber[0])
                 {
                     artifact.artifacts.Remove(a);
                     ui.ArtifactUpdate(a, 0);
@@ -1146,7 +1155,7 @@ public class GameMgr : MonoBehaviour
         ui.PausePanel.gameObject.SetActive(true);
     }
 
-    
+
     public void QuitGame()
     {
 #if UNITY_EDITOR
