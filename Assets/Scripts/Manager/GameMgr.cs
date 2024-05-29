@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 public class AttackEventArgs : EventArgs
@@ -695,9 +696,18 @@ public class GameMgr : MonoBehaviour
         {
             HpUpText.text = "↑" + currentRecovery;
         }
+        else
+        {
+            HpUpText.text = " ";
+        }
+
         if (currentBarrier > 0)
         {
             BarrierUpText.text = "↑" + currentBarrier;
+        }
+        else
+        {
+            BarrierUpText.text = " ";
         }
 
         currentMagicInfo.interactable = true;
@@ -815,7 +825,7 @@ public class GameMgr : MonoBehaviour
         livingMonster = Math.Min(StageMgr.Instance.enemies.Count, currentTarget);
         CurrentStatus = TurnStatus.PlayerAttack;
         audioSource.PlayOneShot(audioClips[2]);
-        if (currentBarrier > 0 || currentRecovery > 0)
+        if (currentRecovery > 0)
         {
             audioSource.PlayOneShot(audioClips[5]);
         }
@@ -1061,7 +1071,7 @@ public class GameMgr : MonoBehaviour
 
     private bool LoadData()
     {
-        if (SaveLoadSystem.Load() == 0)
+        if (PlayerPrefs.GetInt("Save", 0) == 0)
         {
             return false;
         }
@@ -1070,8 +1080,41 @@ public class GameMgr : MonoBehaviour
         tutorial.tutorialPanel.gameObject.SetActive(false);
         tutorial.skipButton.gameObject.SetActive(false);
 
+        StageMgr.Instance.currentField = SaveLoadSystem.CurrSaveData.savePlay.Stage / 10;
+        StageMgr.Instance.currentStage = SaveLoadSystem.CurrSaveData.savePlay.Stage % 10;
+        currentDiceCount = (DiceCount)SaveLoadSystem.CurrSaveData.savePlay.DiceCount;
+        curruntBonusStat = SaveLoadSystem.CurrSaveData.savePlay.Damage;
+        PlayerHp = SaveLoadSystem.CurrSaveData.savePlay.Hp;
+        PlayerHpMax = SaveLoadSystem.CurrSaveData.savePlay.MaxHp;
+        RankList = SaveLoadSystem.CurrSaveData.savePlay.RankList;
+
         LifeUpdate();
         RanksListUpdate();
+
+        ui.rewardList.Clear();
+        for (int i = 0; i < 9; i++)
+        {
+            if (SaveLoadSystem.CurrSaveData.savePlay.RankRewardList[i] == 0)
+            {
+                continue;
+            }
+            else
+            {
+                ui.rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(SaveLoadSystem.CurrSaveData.savePlay.RankRewardList[i]));
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            artifact.playersArtifactsNumber[i] = SaveLoadSystem.CurrSaveData.savePlay.ArtifactList[i];
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            artifact.playersArtifacts[i] = SaveLoadSystem.CurrSaveData.savePlay.ArtifactLevelList[i];
+        }
+
+
 
         for (int i = 0; i < RankList.Length; i++)
         {
@@ -1079,7 +1122,7 @@ public class GameMgr : MonoBehaviour
             {
                 ui.maxSpells[i].gameObject.SetActive(true);
             }
-        } // 마법서 보상 목록
+        } // 초월마법등록
 
         if (artifact.playersArtifactsNumber[0] != -1)
         {

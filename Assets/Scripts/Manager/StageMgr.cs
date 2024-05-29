@@ -102,6 +102,7 @@ public class StageMgr : MonoBehaviour
                 currentStage = 1;
                 currentField++;
             }
+
             SaveLoadSystem.Save();
         }
 
@@ -110,8 +111,14 @@ public class StageMgr : MonoBehaviour
         StageInfo.text = $"Stage \n {currentField} - {currentStage}";
         var path = currentField.ToString() + currentStage.ToString();
         backGround.sprite = Resources.Load<Sprite>(string.Format("Field/{0}", path));
-        BGM.Instance.PlayBGM(BGM.Instance.ChangeBgm(currentField, currentStage), 3);
-
+        if (LoadData)
+        {
+            BGM.Instance.PlayBGM(BGM.Instance.StartBgm(currentField, currentStage), 3);
+        }
+        else
+        {
+            BGM.Instance.PlayBGM(BGM.Instance.ChangeBgm(currentField, currentStage), 3);
+        }
         GameMgr.Instance.TurnUpdate(10);
         if (currentStage == 1 && currentField == 1)
         {

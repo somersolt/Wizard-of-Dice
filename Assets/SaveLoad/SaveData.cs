@@ -6,12 +6,15 @@ using UnityEngine;
 public class SavePlayData
 {
     public int instanceId;
-    public int DiceCount;
     public int Stage;
-    public int MaxHp;
+    public int DiceCount;
+    public int Damage;
     public int Hp;
-    public List<int> SpellLIst;
-    public List<int> MonsterList;
+    public int MaxHp;
+    public int[] RankList = new int[9];
+    public List<int> RankRewardList;
+    public List<int> ArtifactList;
+    public List<int> ArtifactLevelList;
 
 }
 

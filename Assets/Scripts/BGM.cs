@@ -71,11 +71,64 @@ public class BGM : MonoBehaviour
         }
     }
 
+    public AudioClip StartBgm(int i, int j)
+    {
+        if (i == 1)
+        {
+            if (j == 7)
+            {
+                return bgm[2];
+            }
+            else
+            {
+                return bgm[3];
+            }
+        }
+
+        if (i == 2)
+        {
+            if (j == 7)
+            {
+                return bgm[5];
+            }
+            else
+            {
+                return bgm[4];
+            }
+        }
+
+        if (i == 3)
+        {
+            if (j == 7)
+            {
+                return bgm[7];
+            }
+            else
+            {
+                return bgm[6];
+            }
+        }
+
+        if (i == 4)
+        {
+            if (j == 7)
+            {
+                return bgm[9];
+            }
+            else
+            {
+                return bgm[8];
+            }
+        }
+
+        return null;
+    }
+
     public AudioClip ChangeBgm(int i, int j)
     {
         if (i == 1)
         {
-            if (j == 5)
+            if (j == 7)
             {
                 return bgm[2];
             }
@@ -92,7 +145,7 @@ public class BGM : MonoBehaviour
 
         if (i == 2)
         {
-            if (j == 5)
+            if (j == 7)
             {
                 return bgm[5];
 
@@ -109,7 +162,7 @@ public class BGM : MonoBehaviour
 
         if (i == 3)
         {
-            if (j == 5)
+            if (j == 7)
             {
                 return bgm[7];
 
@@ -126,10 +179,9 @@ public class BGM : MonoBehaviour
 
         if (i == 4)
         {
-            if (j == 5)
+            if (j == 7)
             {
                 return bgm[9];
-
             }
             else if (j == 1)
             {
