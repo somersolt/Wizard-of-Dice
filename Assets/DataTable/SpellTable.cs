@@ -96,7 +96,9 @@ public class SpellTable : DataTable
 
         var textAsset = Resources.Load<TextAsset>(path);
 
-        using (var reader = new StringReader(textAsset.text))
+        string text = textAsset.text.Replace("\\n", "\n");
+
+        using (var reader = new StringReader(text))
         using (var csvReader = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
             var records = csvReader.GetRecords<SpellData>();
