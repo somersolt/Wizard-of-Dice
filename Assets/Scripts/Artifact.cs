@@ -11,7 +11,7 @@ public class Artifact : MonoBehaviour
     private void Awake()
     {
         ArtifactData data1 = new ArtifactData();
-        data1.Set(0, "방화광", $"매턴 모든 적에게 '기본 마법력'({GameMgr.Instance.curruntBonusStat}) 만큼의 데미지");
+        data1.Set(0, "방화광", $"매턴 모든 적에게 '기본 마법력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지");
         artifacts.Add(data1);
 
         ArtifactData data2 = new ArtifactData();
@@ -39,7 +39,7 @@ public class Artifact : MonoBehaviour
         artifacts.Add(data7);
 
         ArtifactData data8 = new ArtifactData();
-        data8.Set(7, "원코인 추가", $"사망에 이르는 피해를 입을 시 사망을 1회 무효로 하고 {valueData.Value7} 의 체력을 회복");
+        data8.Set(7, "원코인 추가", $"사망에 이르는 피해를 입을 시 사망을 1회 무효로 하고 <color=green>{valueData.Value7}</color> 의 체력을 회복");
         artifacts.Add(data8);
 
         ArtifactData data9 = new ArtifactData();
@@ -47,7 +47,7 @@ public class Artifact : MonoBehaviour
         artifacts.Add(data9);
 
         ArtifactData data10 = new ArtifactData();
-        data10.Set(9, "구사일생", $"최대 체력 {valueData.Value9} 증가, 체력이 전부 회복됨");
+        data10.Set(9, "구사일생", $"최대 체력 <color=green>{valueData.Value9}</color> 증가, 체력이 전부 회복됨");
         artifacts.Add(data10);
 
 

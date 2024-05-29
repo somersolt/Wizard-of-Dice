@@ -294,7 +294,7 @@ public class UI : MonoBehaviour
         }
 
         spellNames[2].text = "신체 강화";
-        spellInfos[2].text = $"기본 공격력 + {GameMgr.Instance.artifact.valueData.Stat1} \n 주사위 개수 x {GameMgr.Instance.artifact.valueData.Stat3} ({(int)GameMgr.Instance.currentDiceCount * GameMgr.Instance.artifact.valueData.Stat3}) 만큼 회복";
+        spellInfos[2].text = $"기본 공격력 + {GameMgr.Instance.artifact.valueData.Stat1} \n 주사위 개수 x {GameMgr.Instance.artifact.valueData.Stat3} (<color=green>{(int)GameMgr.Instance.currentDiceCount * GameMgr.Instance.artifact.valueData.Stat3}</color>) 만큼 회복";
         spellLevels[2].text = " ";
         if (mode == RewardMode.Artifact && count > 0)
         {
@@ -518,7 +518,7 @@ public class UI : MonoBehaviour
         {
             if(artifact.ID == 0)
             {
-                artifact.Set(0, "방화광", $"매턴 모든 적에게 '기본 마법력'({GameMgr.Instance.curruntBonusStat}) 만큼의 데미지");
+                artifact.Set(0, "방화광", $"매턴 모든 적에게 '기본 마법력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지");
             }
         }
         GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;

@@ -73,6 +73,7 @@ public class Tutorial : MonoBehaviour
         skipNo.onClick.AddListener(() => { skipPanel.gameObject.SetActive(false); });
         nextButton.onClick.AddListener(() => NextStep());
         textCount = 30005;
+        dices.color = UsedColor.usedColor;
     }
 
     public void NextStep()
