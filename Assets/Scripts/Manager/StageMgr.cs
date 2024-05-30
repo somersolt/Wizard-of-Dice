@@ -191,7 +191,7 @@ public class StageMgr : MonoBehaviour
             }
             else if (currentField == 4)
             {
-                bossGimicText.text = "<size=50> 데스 메이지 \n <size=35><color=red> -5턴 동안 데미지 면역 \n-주사위 개수 +1\n-5턴 이후 주사위 개수 +1";
+                bossGimicText.text = "<size=50> 데스 메이지 \n <size=35><color=red> -5턴 동안 데미지 면역 \n-주사위 개수 +1\n-5턴 이후 주사위 개수 +2, 2회 공격";
                 DiceMgr.Instance.SetEnemyDiceCount(2);
                 GameMgr.Instance.bossDoubleAttack = false;
                 GameMgr.Instance.AttackCount = 1;

@@ -806,6 +806,8 @@ public class GameMgr : MonoBehaviour
                 boss.isimmune = false;
                 boss.ImmuneEffect(false);
                 boss.BloodEffect();
+                bossDoubleAttack = true;
+                AttackCount = 2;
             }
             DiceMgr.Instance.SetEnemyDiceCount(3);
 
