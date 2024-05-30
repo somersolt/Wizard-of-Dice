@@ -106,6 +106,11 @@ public class StageMgr : MonoBehaviour
             SaveLoadSystem.Save();
         }
 
+        if (currentField == 3 || currentField == 4)
+        {
+            GameMgr.Instance.artifact.valueData.Stat1 = 5;
+        }
+
         GameMgr.Instance.ui.ArtifactInfoUpdate();
 
         StageInfo.text = $"Stage \n {currentField} - {currentStage}";
@@ -252,7 +257,6 @@ public class StageMgr : MonoBehaviour
                 }
             }
         }
-        Debug.Log("적 데이터 없음");
     }
 
 

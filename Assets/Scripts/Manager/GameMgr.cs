@@ -261,18 +261,13 @@ public class GameMgr : MonoBehaviour
     {
         audioSource.volume = BGM.Instance.SFXsound;
         ui.audioSource.volume = BGM.Instance.SFXsound;
-
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
             currentBarrier = 100;
             LifeUpdate();
         }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            Debug.Log(livingMonster + "/" + monsterSignal);
-        }
-
-
+#endif
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (onBackButton)
@@ -313,7 +308,7 @@ public class GameMgr : MonoBehaviour
 
     private void PlayerDiceUpdate()
     {
-
+#if UNITY_EDITOR
         //if (Input.GetKeyDown(KeyCode.Alpha1))
         //{
         //    currentDiceCount = DiceCount.three;
@@ -419,7 +414,7 @@ public class GameMgr : MonoBehaviour
             Debug.Log("9번유물");
         }
         // 테스트 코드
-
+#endif
     }
     private void PlayerAttackUpdate()
     {
@@ -542,6 +537,10 @@ public class GameMgr : MonoBehaviour
                     currentStatus = TurnStatus.PlayerDice;
 
                     onMonsterAttack = false;
+                    if (bossDoubleAttack)
+                    {
+                        AttackCount = 2;
+                    }
 
                     if (tutorialMode)
                     {
@@ -1117,6 +1116,14 @@ public class GameMgr : MonoBehaviour
                 ui.maxSpells[i].gameObject.SetActive(true);
             }
         } // 초월마법등록
+
+        foreach (var artifact in GameMgr.Instance.artifact.artifacts)
+        {
+            if (artifact.ID == 0)
+            {
+                artifact.Set(0, "방화광", $"매턴 모든 적에게 '기본 공격력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지");
+            }
+        } //유물상점 업데이트
 
         if (artifact.playersArtifactsNumber[0] != -1)
         {
