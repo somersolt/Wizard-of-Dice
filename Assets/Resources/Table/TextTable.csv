@@ -1,184 +1,184 @@
-ID,TEXT
-10000,ÅØ½ºÆ® ÀÌ¸§
-20000,ÅØ½ºÆ® ¼³¸í
-30000,½ºÅä¸®¶óÀÎ
-40000,»óÀÎ NPC ÀÌ¸§
-50000,»óÀÎ NPC Á¶¿ì ´ë»ç
-60000,»óÁ¡ ±¸¸Å Áß ´ë»ç
-11100,¸ÅÁø
-21100,ÇöÀç ÁÖ»çÀ§ ¼ö¿¡¼­´Â ´õ ÀÌ»ó ±¸¸ÅÇÒ ¼ö ÀÖ´Â ¸¶¹ý¼­°¡ ¾ø½À´Ï´Ù.
-10111,Áßµ¶
-20111,3ÅÏ µ¿¾È ÅÏ ´ç 10ÀÇ °íÁ¤ µ¥¹ÌÁö¸¦ ÀÔÈù´Ù.
-10112,¸Íµ¶
-20112,3ÅÏ µ¿¾È ÅÏ ´ç °ø°Ý·Â ºñÀ² 50%ÀÇ µ¥¹ÌÁö¸¦ ÀÔÈù´Ù.
-10121,È­»ó
-20121,5ÅÏ µ¿¾È ÅÏ ´ç °ø°Ý·Â ºñÀ² 20%ÀÇ µ¥¹ÌÁö¸¦ ÀÔÈù´Ù.
-11111,¿øÆä¾î
-21111,"ÁÖ»çÀ§ 2°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>7</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=blue><size=45>7</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» È¹µæÇÑ´Ù."
-21112,"ÁÖ»çÀ§ 2°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>10</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=blue><size=45>12</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» È¹µæÇÑ´Ù."
-21113,"ÁÖ»çÀ§ 2°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>13</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=blue><size=45>18</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» È¹µæÇÑ´Ù."
-21114,"ÁÖ»çÀ§ 2°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>20</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=blue><size=45>25</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» È¹µæÇÑ´Ù."
-11121,Æ®¸®ÇÃ
-21121,"ÁÖ»çÀ§ 3°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>10</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=green><size=45>10</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù."
-21122,"ÁÖ»çÀ§ 3°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>14</size></color>ÀÇ</color> <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=green><size=45>15</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù."
-21123,"ÁÖ»çÀ§ 3°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>20</size></color>ÀÇ</color> <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=green><size=45>20</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù."
-21124,"ÁÖ»çÀ§ 3°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>25</size></color>ÀÇ</color> <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=green><size=45>30</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù."
-11131,3 ½ºÆ®·¹ÀÌÆ®
-21131,"ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 3°³ÀÏ °æ¿ì\n<color=red><size=45>5</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\nÀû <color=red>2¸¶¸®</color>¸¦ °ø°ÝÇÑ´Ù."
-21132,"ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 3°³ÀÏ °æ¿ì\n<color=red><size=45>9</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\nÀû <color=red>2¸¶¸®</color>¸¦ °ø°ÝÇÑ´Ù."
-21133,"ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 3°³ÀÏ °æ¿ì\n<color=red><size=45>13</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\nÀû <color=red>2¸¶¸®</color>¸¦ °ø°ÝÇÑ´Ù."
-21134,"ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 3°³ÀÏ °æ¿ì\n<color=red><size=45>15</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\nÀû <color=red>3¸¶¸®</color>¸¦ °ø°ÝÇÑ´Ù."
-11141,ÅõÆä¾î
-21141,"¿ø Æä¾î°¡ 2°³ ÀÖÀ» °æ¿ì\n<color=red><size=45>20</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=green><size=45>10</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù."
-21142,"¿ø Æä¾î°¡ 2°³ ÀÖÀ» °æ¿ì\n<color=red><size=45>25</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=green><size=45>15</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù."
-21143,"¿ø Æä¾î°¡ 2°³ ÀÖÀ» °æ¿ì\n<color=red><size=45>30</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=green><size=45>20</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù."
-21144,"¿ø Æä¾î°¡ 2°³ ÀÖÀ» °æ¿ì\n<color=red><size=45>40</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=green><size=45>30</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù."
-11151,Ä«ÀÎµå ¿Àºê 4
-21151,"ÁÖ»çÀ§ 4°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>12</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\nÀû <color=red>2¸¶¸®</color>¸¦ °ø°ÝÇÑ´Ù."
-21152,"ÁÖ»çÀ§ 4°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>12</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\nÀû <color=red>3¸¶¸®</color>¸¦ °ø°ÝÇÑ´Ù."
-21153,"ÁÖ»çÀ§ 4°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>16</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\nÀû <color=red>3¸¶¸®</color>¸¦ °ø°ÝÇÑ´Ù."
-21154,"ÁÖ»çÀ§ 4°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>20</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\nÀû <color=red>3¸¶¸®</color>¸¦ °ø°ÝÇÑ´Ù."
-11161,4 ½ºÆ®·¹ÀÌÆ®
-21161,ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 4°³ÀÏ °æ¿ì\n<color=red><size=45>15</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í\n<color=green><size=45>20</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù.
-21162,ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 4°³ÀÏ °æ¿ì\n<color=red><size=45>22</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í\n<color=green><size=45>25</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù.
-21163,ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 4°³ÀÏ °æ¿ì\n<color=red><size=45>29</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í\n<color=green><size=45>30</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù.
-21164,ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 4°³ÀÏ °æ¿ì\n<color=red><size=45>45</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í\n<color=green><size=45>50</size></color>ÀÇ Ã¼·ÂÀ» <color=green>È¸º¹</color>ÇÑ´Ù.
-11171,Ç®ÇÏ¿ì½º
-21171,"¿ø Æä¾î¿Í Æ®¸®ÇÃÀÌ ¸ðµÎ ÀÖ´Ù¸é\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>40%</size></color> <color=red>ÁõÆø</color>½ÃÅ°°í,\n<color=blue><size=45>15</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» ¾ò´Â´Ù."
-21172,"¿ø Æä¾î¿Í Æ®¸®ÇÃÀÌ ¸ðµÎ ÀÖ´Ù¸é\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>60%</size></color> <color=red>ÁõÆø</color>½ÃÅ°°í,\n<color=blue><size=45>20</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» ¾ò´Â´Ù."
-21173,"¿ø Æä¾î¿Í Æ®¸®ÇÃÀÌ ¸ðµÎ ÀÖ´Ù¸é\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>80%</size></color> <color=red>ÁõÆø</color>½ÃÅ°°í,\n<color=blue><size=45>25</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» ¾ò´Â´Ù."
-21174,"¿ø Æä¾î¿Í Æ®¸®ÇÃÀÌ ¸ðµÎ ÀÖ´Ù¸é\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>150%</size></color> <color=red>ÁõÆø</color>½ÃÅ°°í,\n<color=blue><size=45>30</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» ¾ò´Â´Ù."
-11181,5 ½ºÆ®·¹ÀÌÆ®
-21181,"ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 5°³ÀÏ °æ¿ì\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>75%</size></color> <color=red>ÁõÆø</color>½ÃÅ°°í,\n<color=blue><size=45>30</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» ¾ò´Â´Ù."
-21182,"ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 5°³ÀÏ °æ¿ì\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>100%</size></color> <color=red>ÁõÆø</color>½ÃÅ°°í,\n<color=blue><size=45>40</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» ¾ò´Â´Ù."
-21183,"ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 5°³ÀÏ °æ¿ì\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>125%</size></color> <color=red>ÁõÆø</color>½ÃÅ°°í,\n<color=blue><size=45>50</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» ¾ò´Â´Ù."
-21184,"ÀÌ¾îÁö´Â ¼ýÀÚ°¡ 5°³ÀÏ °æ¿ì\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>200%</size></color> <color=red>ÁõÆø</color>½ÃÅ°°í,\n<color=blue><size=45>65</size></color>ÀÇ <color=blue>º¸È£¸·</color>À» ¾ò´Â´Ù."
-11191,Ä«ÀÎµå ¿Àºê 5
-21191,"ÁÖ»çÀ§ 5°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>10</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>40%</size></color> <color=red>ÁõÆø</color>½ÃÅ²´Ù."
-21192,"ÁÖ»çÀ§ 5°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>14</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>55%</size></color> <color=red>ÁõÆø</color>½ÃÅ²´Ù."
-21193,"ÁÖ»çÀ§ 5°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>18</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>70%</size></color> <color=red>ÁõÆø</color>½ÃÅ²´Ù."
-21194,"ÁÖ»çÀ§ 5°³ÀÇ ´«±ÝÀÌ °°Àº °æ¿ì\n<color=red><size=45>25</size></color>ÀÇ <color=red>Ãß°¡ °ø°Ý·Â</color>À» ¾ò°í,\n<color=red>°ø°Ý·Â</color>À» <color=red><size=45>100%</size></color> <color=red>ÁõÆø</color>½ÃÅ²´Ù."
-11201,Ãß°¡ °ø°Ý·Â
-21201,±âº» °ø°Ý·ÂÀÌ 15 Áõ°¡ÇÑ´Ù.
-11202,»ý¸í·Â Èí¼ö
-21202,¸ó½ºÅÍ Ã³Ä¡ ½Ã °ø°Ý·ÂÀÇ 20%ÀÇ Ã¼·ÂÀ» È¸º¹ÇÑ´Ù.
-11203,È¸º¹
-21203,ÀüÅõ Á¾·á ½Ã 20ÀÇ Ã¼·ÂÀ» È¸º¹ÇÑ´Ù. È¸º¹·®Àº ÃÖ´ë Ã¼·ÂÀ» ÃÊ°úÇÒ ¼ö ¾ø´Ù.
-11204,º¸È£¸·
-21204,ÀüÅõ ½ÃÀÛ ½Ã 30ÀÇ º¸È£¸·À» È¹µæÇÑ´Ù. º¸È£¸·Àº ÃÖ´ë Ã¼·ÂÀ» ÃÊ°úÇÒ ¼ö ÀÖ´Ù.
-11205,¹æÈ­±¤
-21205,¸Å ÅÏ ¸ðµç Àû¿¡°Ô 10¸¸Å­ÀÇ µ¥¹ÌÁö¸¦ ÀÔÈù´Ù.
-11206,¸ð ¾Æ´Ï¸é µµ
-21206,"ÁÖ»çÀ§ ´«±Ý¿¡¼­ 3, 4, 5¸¦ Á¦°ÅÇÑ´Ù."
-11207,½ºÆ®·¹ÀÌÆ® ¸Å´Ï¾Æ
-21207,"Ã¹ ÁÖ»çÀ§ ±¼¸²¿¡ 1, 2, 3À» ¹Ýµå½Ã °¡Á®°£´Ù."
-11208,Á·º¸ ¼öÁý
-21208,¸¶¹ý¼­ º¸»ó ¼±ÅÃÀ» 2È¸ ½ÇÇàÇÑ´Ù.
-11209,±âº»±â ¼ö·Ã
-21209,ÁÖ»çÀ§°¡ 3°³ ÀÌÇÏ¶ó¸é ÃÖÁ¾ °ø°Ý·ÂÀÇ 50%ÀÇ ÁõÆø µ¥¹ÌÁö¸¦ ÀÔÈù´Ù.
-11210,È¸ÇÇ
-21210,30%ÀÇ È®·ü·Î ÀûÀÇ °ø°ÝÀ» ¹«½ÃÇÑ´Ù.
-11211,¿ÀÈ÷·Á ÁÁ¾Æ
-21211,ÁÖ»çÀ§ ´«±Ý 1 ÇÏ³ª´ç 5ÀÇ Ãß°¡ µ¥¹ÌÁö¸¦ ÀÔÈù´Ù.
-11212,¿øÄÚÀÎ Ãß°¡
-21212,"»ç¸Á¿¡ ÀÌ¸£´Â ÇÇÇØ¸¦ ÀÔÀ» ½Ã »ç¸ÁÀ» 1È¸ ¹«È¿È­ÇÏ°í, 50ÀÇ Ã¼·ÂÀ» È¸º¹ÇÑ´Ù."
-11213,ºù°á
-21213,ÀûÀÌ Ã¹ ÅÏ¿¡ ¾Æ¹« Çàµ¿µµ ÇÏÁö ¸øÇÑ´Ù.
-11214,Àç±¼¸² Ãß°¡
-21214,Àç±¼¸² È½¼ö¸¦ 2È¸ Ãß°¡ÇÑ´Ù.
-11215,±¸»çÀÏ»ý
-21215,"ÃÖ´ë Ã¼·ÂÀÌ 20 Áõ°¡ÇÏ°í, ¼±ÅÃ ½Ã ÃÖ´ë Ã¼·Â±îÁö Ã¼·ÂÀÌ È¸º¹µÈ´Ù."
-12011,¾Æ±â ½½¶óÀÓ
+ï»¿ID,TEXT
+10000,í…ìŠ¤íŠ¸ ì´ë¦„
+20000,í…ìŠ¤íŠ¸ ì„¤ëª…
+30000,ìŠ¤í† ë¦¬ë¼ì¸
+40000,ìƒì¸ NPC ì´ë¦„
+50000,ìƒì¸ NPC ì¡°ìš° ëŒ€ì‚¬
+60000,ìƒì  êµ¬ë§¤ ì¤‘ ëŒ€ì‚¬
+11100,ë§¤ì§„
+21100,í˜„ìž¬ ì£¼ì‚¬ìœ„ ìˆ˜ì—ì„œëŠ” ë” ì´ìƒ êµ¬ë§¤í•  ìˆ˜ ìžˆëŠ” ë§ˆë²•ì„œê°€ ì—†ìŠµë‹ˆë‹¤.
+10111,ì¤‘ë…
+20111,3í„´ ë™ì•ˆ í„´ ë‹¹ 10ì˜ ê³ ì • ë°ë¯¸ì§€ë¥¼ ìž…ížŒë‹¤.
+10112,ë§¹ë…
+20112,3í„´ ë™ì•ˆ í„´ ë‹¹ ê³µê²©ë ¥ ë¹„ìœ¨ 50%ì˜ ë°ë¯¸ì§€ë¥¼ ìž…ížŒë‹¤.
+10121,í™”ìƒ
+20121,5í„´ ë™ì•ˆ í„´ ë‹¹ ê³µê²©ë ¥ ë¹„ìœ¨ 20%ì˜ ë°ë¯¸ì§€ë¥¼ ìž…ížŒë‹¤.
+11111,ì›íŽ˜ì–´
+21111,"ì£¼ì‚¬ìœ„ 2ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>7</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=blue><size=45>7</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ íšë“í•œë‹¤."
+21112,"ì£¼ì‚¬ìœ„ 2ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>10</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=blue><size=45>12</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ íšë“í•œë‹¤."
+21113,"ì£¼ì‚¬ìœ„ 2ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>13</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=blue><size=45>18</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ íšë“í•œë‹¤."
+21114,"ì£¼ì‚¬ìœ„ 2ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>20</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=blue><size=45>25</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ íšë“í•œë‹¤."
+11121,íŠ¸ë¦¬í”Œ
+21121,"ì£¼ì‚¬ìœ„ 3ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>10</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=green><size=45>10</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤."
+21122,"ì£¼ì‚¬ìœ„ 3ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>14</size></color>ì˜</color> <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=green><size=45>15</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤."
+21123,"ì£¼ì‚¬ìœ„ 3ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>20</size></color>ì˜</color> <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=green><size=45>20</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤."
+21124,"ì£¼ì‚¬ìœ„ 3ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>25</size></color>ì˜</color> <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=green><size=45>30</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤."
+11131,3 ìŠ¤íŠ¸ë ˆì´íŠ¸
+21131,"ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 3ê°œì¼ ê²½ìš°\n<color=red><size=45>5</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\nì  <color=red>2ë§ˆë¦¬</color>ë¥¼ ê³µê²©í•œë‹¤."
+21132,"ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 3ê°œì¼ ê²½ìš°\n<color=red><size=45>9</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\nì  <color=red>2ë§ˆë¦¬</color>ë¥¼ ê³µê²©í•œë‹¤."
+21133,"ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 3ê°œì¼ ê²½ìš°\n<color=red><size=45>13</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\nì  <color=red>2ë§ˆë¦¬</color>ë¥¼ ê³µê²©í•œë‹¤."
+21134,"ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 3ê°œì¼ ê²½ìš°\n<color=red><size=45>15</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\nì  <color=red>3ë§ˆë¦¬</color>ë¥¼ ê³µê²©í•œë‹¤."
+11141,íˆ¬íŽ˜ì–´
+21141,"ì› íŽ˜ì–´ê°€ 2ê°œ ìžˆì„ ê²½ìš°\n<color=red><size=45>20</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=green><size=45>10</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤."
+21142,"ì› íŽ˜ì–´ê°€ 2ê°œ ìžˆì„ ê²½ìš°\n<color=red><size=45>25</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=green><size=45>15</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤."
+21143,"ì› íŽ˜ì–´ê°€ 2ê°œ ìžˆì„ ê²½ìš°\n<color=red><size=45>30</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=green><size=45>20</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤."
+21144,"ì› íŽ˜ì–´ê°€ 2ê°œ ìžˆì„ ê²½ìš°\n<color=red><size=45>40</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=green><size=45>30</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤."
+11151,ì¹´ì¸ë“œ ì˜¤ë¸Œ 4
+21151,"ì£¼ì‚¬ìœ„ 4ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>12</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\nì  <color=red>2ë§ˆë¦¬</color>ë¥¼ ê³µê²©í•œë‹¤."
+21152,"ì£¼ì‚¬ìœ„ 4ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>12</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\nì  <color=red>3ë§ˆë¦¬</color>ë¥¼ ê³µê²©í•œë‹¤."
+21153,"ì£¼ì‚¬ìœ„ 4ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>16</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\nì  <color=red>3ë§ˆë¦¬</color>ë¥¼ ê³µê²©í•œë‹¤."
+21154,"ì£¼ì‚¬ìœ„ 4ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>20</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\nì  <color=red>3ë§ˆë¦¬</color>ë¥¼ ê³µê²©í•œë‹¤."
+11161,4 ìŠ¤íŠ¸ë ˆì´íŠ¸
+21161,ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 4ê°œì¼ ê²½ìš°\n<color=red><size=45>15</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ \n<color=green><size=45>20</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤.
+21162,ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 4ê°œì¼ ê²½ìš°\n<color=red><size=45>22</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ \n<color=green><size=45>25</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤.
+21163,ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 4ê°œì¼ ê²½ìš°\n<color=red><size=45>29</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ \n<color=green><size=45>30</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤.
+21164,ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 4ê°œì¼ ê²½ìš°\n<color=red><size=45>45</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ \n<color=green><size=45>50</size></color>ì˜ ì²´ë ¥ì„ <color=green>íšŒë³µ</color>í•œë‹¤.
+11171,í’€í•˜ìš°ìŠ¤
+21171,"ì› íŽ˜ì–´ì™€ íŠ¸ë¦¬í”Œì´ ëª¨ë‘ ìžˆë‹¤ë©´\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>40%</size></color> <color=red>ì¦í­</color>ì‹œí‚¤ê³ ,\n<color=blue><size=45>15</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ ì–»ëŠ”ë‹¤."
+21172,"ì› íŽ˜ì–´ì™€ íŠ¸ë¦¬í”Œì´ ëª¨ë‘ ìžˆë‹¤ë©´\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>60%</size></color> <color=red>ì¦í­</color>ì‹œí‚¤ê³ ,\n<color=blue><size=45>20</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ ì–»ëŠ”ë‹¤."
+21173,"ì› íŽ˜ì–´ì™€ íŠ¸ë¦¬í”Œì´ ëª¨ë‘ ìžˆë‹¤ë©´\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>80%</size></color> <color=red>ì¦í­</color>ì‹œí‚¤ê³ ,\n<color=blue><size=45>25</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ ì–»ëŠ”ë‹¤."
+21174,"ì› íŽ˜ì–´ì™€ íŠ¸ë¦¬í”Œì´ ëª¨ë‘ ìžˆë‹¤ë©´\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>150%</size></color> <color=red>ì¦í­</color>ì‹œí‚¤ê³ ,\n<color=blue><size=45>30</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ ì–»ëŠ”ë‹¤."
+11181,5 ìŠ¤íŠ¸ë ˆì´íŠ¸
+21181,"ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 5ê°œì¼ ê²½ìš°\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>75%</size></color> <color=red>ì¦í­</color>ì‹œí‚¤ê³ ,\n<color=blue><size=45>30</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ ì–»ëŠ”ë‹¤."
+21182,"ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 5ê°œì¼ ê²½ìš°\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>100%</size></color> <color=red>ì¦í­</color>ì‹œí‚¤ê³ ,\n<color=blue><size=45>40</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ ì–»ëŠ”ë‹¤."
+21183,"ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 5ê°œì¼ ê²½ìš°\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>125%</size></color> <color=red>ì¦í­</color>ì‹œí‚¤ê³ ,\n<color=blue><size=45>50</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ ì–»ëŠ”ë‹¤."
+21184,"ì´ì–´ì§€ëŠ” ìˆ«ìžê°€ 5ê°œì¼ ê²½ìš°\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>200%</size></color> <color=red>ì¦í­</color>ì‹œí‚¤ê³ ,\n<color=blue><size=45>65</size></color>ì˜ <color=blue>ë³´í˜¸ë§‰</color>ì„ ì–»ëŠ”ë‹¤."
+11191,ì¹´ì¸ë“œ ì˜¤ë¸Œ 5
+21191,"ì£¼ì‚¬ìœ„ 5ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>10</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>40%</size></color> <color=red>ì¦í­</color>ì‹œí‚¨ë‹¤."
+21192,"ì£¼ì‚¬ìœ„ 5ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>14</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>55%</size></color> <color=red>ì¦í­</color>ì‹œí‚¨ë‹¤."
+21193,"ì£¼ì‚¬ìœ„ 5ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>18</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>70%</size></color> <color=red>ì¦í­</color>ì‹œí‚¨ë‹¤."
+21194,"ì£¼ì‚¬ìœ„ 5ê°œì˜ ëˆˆê¸ˆì´ ê°™ì€ ê²½ìš°\n<color=red><size=45>25</size></color>ì˜ <color=red>ì¶”ê°€ ê³µê²©ë ¥</color>ì„ ì–»ê³ ,\n<color=red>ê³µê²©ë ¥</color>ì„ <color=red><size=45>100%</size></color> <color=red>ì¦í­</color>ì‹œí‚¨ë‹¤."
+11201,ì¶”ê°€ ê³µê²©ë ¥
+21201,ê¸°ë³¸ ê³µê²©ë ¥ì´ 15 ì¦ê°€í•œë‹¤.
+11202,ìƒëª…ë ¥ í¡ìˆ˜
+21202,ëª¬ìŠ¤í„° ì²˜ì¹˜ ì‹œ ê³µê²©ë ¥ì˜ 20%ì˜ ì²´ë ¥ì„ íšŒë³µí•œë‹¤.
+11203,íšŒë³µ
+21203,ì „íˆ¬ ì¢…ë£Œ ì‹œ 20ì˜ ì²´ë ¥ì„ íšŒë³µí•œë‹¤. íšŒë³µëŸ‰ì€ ìµœëŒ€ ì²´ë ¥ì„ ì´ˆê³¼í•  ìˆ˜ ì—†ë‹¤.
+11204,ë³´í˜¸ë§‰
+21204,ì „íˆ¬ ì‹œìž‘ ì‹œ 30ì˜ ë³´í˜¸ë§‰ì„ íšë“í•œë‹¤. ë³´í˜¸ë§‰ì€ ìµœëŒ€ ì²´ë ¥ì„ ì´ˆê³¼í•  ìˆ˜ ìžˆë‹¤.
+11205,ë°©í™”ê´‘
+21205,ë§¤ í„´ ëª¨ë“  ì ì—ê²Œ 10ë§Œí¼ì˜ ë°ë¯¸ì§€ë¥¼ ìž…ížŒë‹¤.
+11206,ëª¨ ì•„ë‹ˆë©´ ë„
+21206,"ì£¼ì‚¬ìœ„ ëˆˆê¸ˆì—ì„œ 3, 4, 5ë¥¼ ì œê±°í•œë‹¤."
+11207,ìŠ¤íŠ¸ë ˆì´íŠ¸ ë§¤ë‹ˆì•„
+21207,"ì²« ì£¼ì‚¬ìœ„ êµ´ë¦¼ì— 1, 2, 3ì„ ë°˜ë“œì‹œ ê°€ì ¸ê°„ë‹¤."
+11208,ì¡±ë³´ ìˆ˜ì§‘
+21208,ë§ˆë²•ì„œ ë³´ìƒ ì„ íƒì„ 2íšŒ ì‹¤í–‰í•œë‹¤.
+11209,ê¸°ë³¸ê¸° ìˆ˜ë ¨
+21209,ì£¼ì‚¬ìœ„ê°€ 3ê°œ ì´í•˜ë¼ë©´ ìµœì¢… ê³µê²©ë ¥ì˜ 50%ì˜ ì¦í­ ë°ë¯¸ì§€ë¥¼ ìž…ížŒë‹¤.
+11210,íšŒí”¼
+21210,30%ì˜ í™•ë¥ ë¡œ ì ì˜ ê³µê²©ì„ ë¬´ì‹œí•œë‹¤.
+11211,ì˜¤ížˆë ¤ ì¢‹ì•„
+21211,ì£¼ì‚¬ìœ„ ëˆˆê¸ˆ 1 í•˜ë‚˜ë‹¹ 5ì˜ ì¶”ê°€ ë°ë¯¸ì§€ë¥¼ ìž…ížŒë‹¤.
+11212,ì›ì½”ì¸ ì¶”ê°€
+21212,"ì‚¬ë§ì— ì´ë¥´ëŠ” í”¼í•´ë¥¼ ìž…ì„ ì‹œ ì‚¬ë§ì„ 1íšŒ ë¬´íš¨í™”í•˜ê³ , 50ì˜ ì²´ë ¥ì„ íšŒë³µí•œë‹¤."
+11213,ë¹™ê²°
+21213,ì ì´ ì²« í„´ì— ì•„ë¬´ í–‰ë™ë„ í•˜ì§€ ëª»í•œë‹¤.
+11214,ìž¬êµ´ë¦¼ ì¶”ê°€
+21214,ìž¬êµ´ë¦¼ íšŸìˆ˜ë¥¼ 2íšŒ ì¶”ê°€í•œë‹¤.
+11215,êµ¬ì‚¬ì¼ìƒ
+21215,"ìµœëŒ€ ì²´ë ¥ì´ 20 ì¦ê°€í•˜ê³ , ì„ íƒ ì‹œ ìµœëŒ€ ì²´ë ¥ê¹Œì§€ ì²´ë ¥ì´ íšŒë³µëœë‹¤."
+12011,ì•„ê¸° ìŠ¬ë¼ìž„
 22011,
-12012,»õ½Ï ½½¶óÀÓ
+12012,ìƒˆì‹¹ ìŠ¬ë¼ìž„
 22012,
-12013,³ª¹µÀÙ ½½¶óÀÓ
+12013,ë‚˜ë­‡ìžŽ ìŠ¬ë¼ìž„
 22013,
-12014,Åä³¢ ½½¶óÀÓ
+12014,í† ë¼ ìŠ¬ë¼ìž„
 22014,
-12015,º´»ç ½½¶óÀÓ
+12015,ë³‘ì‚¬ ìŠ¬ë¼ìž„
 22015,
-12017,±â»ç ½½¶óÀÓ
+12017,ê¸°ì‚¬ ìŠ¬ë¼ìž„
 22017,
-12021,¿¡ÀÏ¸®¾ð ½½¶óÀÓ
+12021,ì—ì¼ë¦¬ì–¸ ìŠ¬ë¼ìž„
 22021,
-12022,ÅÍÆ²½© ½½¶óÀÓ
+12022,í„°í‹€ì‰˜ ìŠ¬ë¼ìž„
 22022,
-12023,½ºÆÄÀÌ´õ
+12023,ìŠ¤íŒŒì´ë”
 22023,
-12024,º£ÀÌºñ µå·¡°ï
+12024,ë² ì´ë¹„ ë“œëž˜ê³¤
 22024,
-12025,¹èÆ®
+12025,ë°°íŠ¸
 22025,
-12027,¿ÀÅ©
+12027,ì˜¤í¬
 22027,
-12031,°í½ºÆ®
+12031,ê³ ìŠ¤íŠ¸
 22031,
-12032,¸Ó¹Ì
+12032,ë¨¸ë¯¸
 22032,
-12033,½ºÄÝÇÇ¿Â
+12033,ìŠ¤ì½œí”¼ì˜¨
 22033,
-12034,Æ÷¸£±â³×ÀÌ
+12034,í¬ë¥´ê¸°ë„¤ì´
 22034,
-12035,°ñ·½
+12035,ê³¨ë ˜
 22035,
-12037,±×¸² ¸®ÆÛ
+12037,ê·¸ë¦¼ ë¦¬í¼
 22037,
-12041,ÀúÁÖ¹ÞÀº µ¢±¼
+12041,ì €ì£¼ë°›ì€ ë©êµ´
 22041,
-12042,¿ú
+12042,ì›œ
 22042,
-12043,Äý ¿ú
+12043,í€¸ ì›œ
 22043,
-12044,½ºÄÝÇÇ¿Â Å·
+12044,ìŠ¤ì½œí”¼ì˜¨ í‚¹
 22044,
-12045,È­¿° °ñ·½
+12045,í™”ì—¼ ê³¨ë ˜
 22045,
-12047,·¹ÀÌ½º
+12047,ë ˆì´ìŠ¤
 22047,
-13017,Å· ½½¶óÀÓ
+13017,í‚¹ ìŠ¬ë¼ìž„
 23017,
-13027,»ç¾ÇÇÑ ¸¶¹ý»ç
+13027,ì‚¬ì•…í•œ ë§ˆë²•ì‚¬
 23027,
-13037,µ¥½º
+13037,ë°ìŠ¤
 23037,
-13047,µ¥½º ¸ÞÀÌÁö
+13047,ë°ìŠ¤ ë©”ì´ì§€
 23047,
-30001,¸ê¸Á Á÷ÀüÀÇ ¼¼°è¿¡¼­ ³ªÅ¸³­ ¸¶Áö¸· ¿ë»ç.
-30002,±× ¿ë»ç´Â '¼¼°èÀÇ ¸ê¸ÁÀº ¿î¸í¿¡ ´Þ¸° °Í' ÀÌ¶ó¸ç ÁÖ»çÀ§¸¦ ´øÁ® ´«±ÝÀÌ ³ª¿À´Â ´ë·Î ¸¶¹ýÀ» ¾²´Â ¿î¸í·ÐÀÚ ÇÐÆÄÀÇ ¸¶¹ý»ç¿´´Âµ¥¡¦
-30003,Æò¼Ò ¸ðµç Çàµ¿À» ÁÖ»çÀ§ÀÇ ´«±Ý¿¡ µû¶ó °áÁ¤ÇÏ´Â Å¿¿¡ »ç¶÷µéÀº ±×¸¦ ¹«½ÃÇß´Ù.
-30004,ÇÏÁö¸¸ ÀÌÁ¦´Â ±×ÀÇ ÁÖ»çÀ§¿¡ ¼¼»óÀÇ Á¸¸ÁÀÌ ´Þ·Á ÀÖ´Ù!
-30005,Wizard Of Dice¿¡ ¿À½Å °ÍÀ» È¯¿µÇÕ´Ï´Ù!
-30006,Wizard Of Dice´Â ÁÖ»çÀ§¸¦ ±¼·Á¼­ ¸¶¹ý·ÂÀ» ¸ðÀ¸°í Á¶ÇÕµÈ ¸¶¹ýÀ» »ç¿ëÇØ ´øÀüÀ» Å½ÇèÇÏ´Â °ÔÀÓÀÔ´Ï´Ù.
-30007,ÀÌ°ÍÀÌ ´ç½ÅÀÇ ÁÖ»çÀ§ÀÔ´Ï´Ù.
-30008,ÁÖ»çÀ§¸¦ ±¼·Áº¼±î¿ä?
-30009,4¿Í 6ÀÌ ³ª¿Ô³×¿ä!
-30010,´ç½ÅÀÇ ¸¶¹ý·ÂÀº ÁÖ»çÀ§ ´«±ÝÀÇ ÃÑÇÕÀ¸·Î °áÁ¤µÇ¾î ÀÌ°÷¿¡ Ç¥½ÃµË´Ï´Ù! 4¿Í 6ÀÇ ÇÕ°èÀÎ 10ÀÌ º¸ÀÌ½Ã³ª¿ä?
-30011,ÁÖ»çÀ§ ¼ýÀÚ°¡ ¸¶À½¿¡ ¾È µå½Å´Ù°í¿ä? ¿å½ÉÀïÀÌ³×¿ä! ÁÖ»çÀ§´Â 'Àç±¼¸²' ¹öÆ°À¸·Î ´Ù½Ã ±¼¸± ¼ö ÀÖ½À´Ï´Ù.
-30012,¶ÇÇÑ ±¼¸®±â Àü¿¡ ÁÖ»çÀ§¸¦ ´©¸£½Ã¸é ÁÖ»çÀ§¸¦ '°íÁ¤' ÇÒ ¼ö ÀÖ´ä´Ï´Ù! ´Ù¸¸ ÇÑ ¹ø °íÁ¤ÇÑ ÁÖ»çÀ§´Â ´Ù½Ã ±¼¸®Áö ¸øÇØ¿ä.
-30013,±×·³ 4¸¦ °íÁ¤ÇÏ°í Àç±¼¸²À» ÇØ º¼±î¿ä?
-30014,4°¡ µÎ °³°¡ ³ª¿Ô½À´Ï´Ù!
-30015,¿ÞÂÊ ¾Æ·¡¿¡ '¿øÆä¾î'°¡ º¸ÀÌ½Ã³ª¿ä? ±×°ÍÀÌ ´ç½ÅÀÌ °¡Áø '¸¶¹ý' ÀÔ´Ï´Ù!
-30016,ÁÖ»çÀ§ ´«ÀÌ Æ¯Á¤ ¸¶¹ýÀÇ Á¶°Ç¿¡ ¸ÂÀ¸¸é ´ç½ÅÀÇ ¸¶¹ý·ÂÀÌ °­È­µË´Ï´Ù!
-30017,¿øÆä¾î'´Â °°Àº ÁÖ»çÀ§ ´«ÀÌ µÎ °³ÀÏ ¶§ È°¼ºÈ­µÇ´Â ¸¶¹ýÀÔ´Ï´Ù.
-30018,"¸¶¹ýÀº ½ºÅ×ÀÌÁö¸¦ Å¬¸®¾î ÇÒ ¶§¸¶´Ù Ãß°¡·Î È¹µæÇÒ ¼öµµ, ±âÁ¸ ¸¶¹ýÀ» ¾÷±×·¹ÀÌµå ÇÒ ¼öµµ ÀÖ½À´Ï´Ù."
-30019,±×·³ ÀÌÁ¦ °ø°ÝÀ» ÇØ º¼±î¿ä? '°ø°Ý' ¹öÆ°À» ´­·¯º¸¼¼¿ä!
-30020,³î¶ó¼Ì³ª¿ä? ¿©·¯ºÐÀÇ °ø°ÝÀÌ ³¡³ª¸é Àûµéµµ ÁÖ»çÀ§¸¦ ±¼·Á¼­ °ø°Ý ÇØ ¿Â´ä´Ï´Ù.
-30021,"ÀûÀÇ ¸Ó¸® À§¿¡ ÀÖ´Â ÁÖ»çÀ§ °ª¿¡, Ã¼·Â ¹Ù ¿ÞÂÊÀÇ °ø°Ý·ÂÀ» ´õÇÑ °ÍÀÌ ÀûÀÇ µ¥¹ÌÁöÀÔ´Ï´Ù."
-30022,"¿©·¯ºÐÀÇ ¸¶¹ýÀÌ ÀûÁßÇÏ´Â ¼ø¼­µµ, ÀûµéÀÌ °ø°ÝÇÏ´Â ¼ø¼­µµ Ç×»ó '¿ÞÂÊ'ºÎÅÍ °è»êµË´Ï´Ù. ÀÌ Á¡ ²À ÁÖÀÇÇØ ÁÖ¼¼¿ä!"
-30023,"¿øÆä¾î' ´Â ÇÏ³ªÀÇ Àû ¹Û¿¡ °ø°ÝÇÒ ¼ö ¾øÁö¸¸, ½ºÅ×ÀÌÁö¸¦ Å¬¸®¾î ÇØ ³ª°¡¸é¼­ ¾òÀ» ¼ö ÀÖ´Â ¸¶¹ýµéµµ Á¸ÀçÇÕ´Ï´Ù."
-30024,"¿©·¯ºÐÀÌ °¡Áø ¸¶¹ýµé°ú ÁÖ»çÀ§ÀÇ Á¶°ÇÀÌ ¸Â´Ù¸é, ¸¶¹ýÀÌ ÀüºÎ ÇÕÃÄÁý´Ï´Ù! ¸¶¹ý·ÂÀÌ ÀüºÎ ÇÕÃÄÁö´Â °ÍÀº ¹°·ÐÀÌ°í, ±¤¿ª ¸¶¹ýÀÌ µÉ ¼öµµ ÀÖÁÒ."
-30025,"½ºÅ×ÀÌÁö¸¦ ÇÏ³ª¾¿ Å¬¸®¾î ÇÒ ¶§¸¶´Ù º¸»óÀÇ ±âÈ¸°¡ ÁÖ¾îÁý´Ï´Ù. ´Ù¸¸, ½ºÅ×ÀÌÁö ¿À¸¥ÂÊÀÇ 10ÅÏÀÌ Áö³ª¸é ÆÐ¹èÇÏ´Ï Á¶½ÉÇÏ½Ã±â ¹Ù¶ø´Ï´Ù."
-30026,"ÀÚ, ±×·³ ÀÌÁ¦ ´« ¾ÕÀÇ ÀûÀ» ¾²·¯¶ß·Á º¸¼¼¿ä! ¸ÚÁø º¸»óÀÌ ±â´Ù¸®°í ÀÖ´ä´Ï´Ù."
-40001,¼ö¼ö²²³¢ÀÇ »óÀÎ
-50001,"¿©±â¸¦ È¥ÀÚ ¶Õ°í Áö³ª°¥ ¼ÀÀÎ°¡? Ä¡±â ¾î¸° Ä£±¸·Î±º. ³»°¡ µµ¿òÀ» ÁÙ ¼ö ÀÖÀ» °Í °°Àºµ¥, ¹Þ¾Æº¸°Ú³ª?"
-60001,´ë°¡´Â ÇÊ¿ä¾ø´Ù³×. ´ë½Å Àç¹ÌÀÖ´Â °á°ú¸¦ º¸¿©Áà¾ß ÇÒ °Å¾ß.
-40002,¾Ç¸¶ÀÇ °Å·¡
-50002,"¿©±â¿¡ ¿À´Ù´Ï, °­ÀÎÇÑ ¸¶·ÂÀ» °¡Áö°í ÀÖ³ª º¸±º. È¤½Ã ´õ °­ÇÑ ÈûÀÌ ÇÊ¿äÇÏÁø ¾Ê³ª?"
-60002,Å« Èû¿¡´Â Å« Ã¥ÀÓÀÌ µû¸£´Â ¹ýÀÌÁö. ±× Ã¥ÀÓÀº ¾ðÁ¨°¡ Áö°Ô µÉ °Å¾ß¡¦
-40003,½ÅºñÇÑ ¸¶¹ý¼®
-50003,¸ó½ºÅÍµéÀÇ ½ÃÃ¼ »çÀÌ¿¡¼­ ºû³ª´Â ¹«¾ð°¡¸¦ ¹ß°ßÇß´Ù. ¾öÃ»³­ ¸¶·ÂÀ» »Õ¾î³»´Â ¸¶¹ý¼®ÀÎ °Í °°´Ù.
-60003,¸¶¹ý¼®ÀÇ ÈûÀ¸·Î ³» ´É·ÂÀ» °­È­ÇÒ ¼ö ÀÖÀ» °Í °°´Ù¡¦
-40004,¼ö¼ö²²³¢ÀÇ »óÀÎ
-50004,"¿©±â±îÁö ¿À´Ù´Ï, ¿ª½Ã ³»°¡ º¸´Â ´«ÀÌ ÀÖ¾î. ¸¶Áö¸·À¸·Î ³» ÈûÀ» ºô·Áº¸´Â °Ç ¾î¶²°¡?"
-60004,"Àç¹Õ±º, Àç¹Õ¾î. ¸¶Áö¸·±îÁö ³» ±â´ë¿¡ ºÎÀÀÇØÁÖ±æ ¹Ù¶ó³×."
+30001,ë©¸ë§ ì§ì „ì˜ ì„¸ê³„ì—ì„œ ë‚˜íƒ€ë‚œ ë§ˆì§€ë§‰ ìš©ì‚¬.
+30002,ê·¸ ìš©ì‚¬ëŠ” 'ì„¸ê³„ì˜ ë©¸ë§ì€ ìš´ëª…ì— ë‹¬ë¦° ê²ƒ' ì´ë¼ë©° ì£¼ì‚¬ìœ„ë¥¼ ë˜ì ¸ ëˆˆê¸ˆì´ ë‚˜ì˜¤ëŠ” ëŒ€ë¡œ ë§ˆë²•ì„ ì“°ëŠ” ìš´ëª…ë¡ ìž í•™íŒŒì˜ ë§ˆë²•ì‚¬ì˜€ëŠ”ë°â€¦
+30003,í‰ì†Œ ëª¨ë“  í–‰ë™ì„ ì£¼ì‚¬ìœ„ì˜ ëˆˆê¸ˆì— ë”°ë¼ ê²°ì •í•˜ëŠ” íƒ“ì— ì‚¬ëžŒë“¤ì€ ê·¸ë¥¼ ë¬´ì‹œí–ˆë‹¤.
+30004,í•˜ì§€ë§Œ ì´ì œëŠ” ê·¸ì˜ ì£¼ì‚¬ìœ„ì— ì„¸ìƒì˜ ì¡´ë§ì´ ë‹¬ë ¤ ìžˆë‹¤!
+30005,Wizard Of Diceì— ì˜¤ì‹  ê²ƒì„ í™˜ì˜í•©ë‹ˆë‹¤!
+30006,Wizard Of DiceëŠ” ì£¼ì‚¬ìœ„ë¥¼ êµ´ë ¤ì„œ ë§ˆë²•ë ¥ì„ ëª¨ìœ¼ê³  ì¡°í•©ëœ ë§ˆë²•ì„ ì‚¬ìš©í•´ ë˜ì „ì„ íƒí—˜í•˜ëŠ” ê²Œìž„ìž…ë‹ˆë‹¤.
+30007,ì´ê²ƒì´ ë‹¹ì‹ ì˜ ì£¼ì‚¬ìœ„ìž…ë‹ˆë‹¤.
+30008,ì£¼ì‚¬ìœ„ë¥¼ êµ´ë ¤ë³¼ê¹Œìš”?
+30009,4ì™€ 6ì´ ë‚˜ì™”ë„¤ìš”!
+30010,ë‹¹ì‹ ì˜ ë§ˆë²•ë ¥ì€ ì£¼ì‚¬ìœ„ ëˆˆê¸ˆì˜ ì´í•©ìœ¼ë¡œ ê²°ì •ë˜ì–´ ì´ê³³ì— í‘œì‹œë©ë‹ˆë‹¤! 4ì™€ 6ì˜ í•©ê³„ì¸ 10ì´ ë³´ì´ì‹œë‚˜ìš”?
+30011,ì£¼ì‚¬ìœ„ ìˆ«ìžê°€ ë§ˆìŒì— ì•ˆ ë“œì‹ ë‹¤ê³ ìš”? ìš•ì‹¬ìŸì´ë„¤ìš”! ì£¼ì‚¬ìœ„ëŠ” 'ìž¬êµ´ë¦¼' ë²„íŠ¼ìœ¼ë¡œ ë‹¤ì‹œ êµ´ë¦´ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+30012,ë˜í•œ êµ´ë¦¬ê¸° ì „ì— ì£¼ì‚¬ìœ„ë¥¼ ëˆ„ë¥´ì‹œë©´ ì£¼ì‚¬ìœ„ë¥¼ 'ê³ ì •' í•  ìˆ˜ ìžˆë‹µë‹ˆë‹¤! ë‹¤ë§Œ í•œ ë²ˆ ê³ ì •í•œ ì£¼ì‚¬ìœ„ëŠ” ë‹¤ì‹œ êµ´ë¦¬ì§€ ëª»í•´ìš”.
+30013,ê·¸ëŸ¼ 4ë¥¼ ê³ ì •í•˜ê³  ìž¬êµ´ë¦¼ì„ í•´ ë³¼ê¹Œìš”?
+30014,4ê°€ ë‘ ê°œê°€ ë‚˜ì™”ìŠµë‹ˆë‹¤!
+30015,ì™¼ìª½ ì•„ëž˜ì— 'ì›íŽ˜ì–´'ê°€ ë³´ì´ì‹œë‚˜ìš”? ê·¸ê²ƒì´ ë‹¹ì‹ ì´ ê°€ì§„ 'ë§ˆë²•' ìž…ë‹ˆë‹¤!
+30016,ì£¼ì‚¬ìœ„ ëˆˆì´ íŠ¹ì • ë§ˆë²•ì˜ ì¡°ê±´ì— ë§žìœ¼ë©´ ë‹¹ì‹ ì˜ ë§ˆë²•ë ¥ì´ ê°•í™”ë©ë‹ˆë‹¤!
+30017,ì›íŽ˜ì–´'ëŠ” ê°™ì€ ì£¼ì‚¬ìœ„ ëˆˆì´ ë‘ ê°œì¼ ë•Œ í™œì„±í™”ë˜ëŠ” ë§ˆë²•ìž…ë‹ˆë‹¤.
+30018,"ë§ˆë²•ì€ ìŠ¤í…Œì´ì§€ë¥¼ í´ë¦¬ì–´ í•  ë•Œë§ˆë‹¤ ì¶”ê°€ë¡œ íšë“í•  ìˆ˜ë„, ê¸°ì¡´ ë§ˆë²•ì„ ì—…ê·¸ë ˆì´ë“œ í•  ìˆ˜ë„ ìžˆìŠµë‹ˆë‹¤."
+30019,ê·¸ëŸ¼ ì´ì œ ê³µê²©ì„ í•´ ë³¼ê¹Œìš”? 'ê³µê²©' ë²„íŠ¼ì„ ëˆŒëŸ¬ë³´ì„¸ìš”!
+30020,ë†€ë¼ì…¨ë‚˜ìš”? ì—¬ëŸ¬ë¶„ì˜ ê³µê²©ì´ ëë‚˜ë©´ ì ë“¤ë„ ì£¼ì‚¬ìœ„ë¥¼ êµ´ë ¤ì„œ ê³µê²© í•´ ì˜¨ë‹µë‹ˆë‹¤.
+30021,"ì ì˜ ë¨¸ë¦¬ ìœ„ì— ìžˆëŠ” ì£¼ì‚¬ìœ„ ê°’ì—, ì²´ë ¥ ë°” ì™¼ìª½ì˜ ê³µê²©ë ¥ì„ ë”í•œ ê²ƒì´ ì ì˜ ë°ë¯¸ì§€ìž…ë‹ˆë‹¤."
+30022,"ì—¬ëŸ¬ë¶„ì˜ ë§ˆë²•ì´ ì ì¤‘í•˜ëŠ” ìˆœì„œë„, ì ë“¤ì´ ê³µê²©í•˜ëŠ” ìˆœì„œë„ í•­ìƒ 'ì™¼ìª½'ë¶€í„° ê³„ì‚°ë©ë‹ˆë‹¤. ì´ ì  ê¼­ ì£¼ì˜í•´ ì£¼ì„¸ìš”!"
+30023,"ì›íŽ˜ì–´' ëŠ” í•˜ë‚˜ì˜ ì  ë°–ì— ê³µê²©í•  ìˆ˜ ì—†ì§€ë§Œ, ìŠ¤í…Œì´ì§€ë¥¼ í´ë¦¬ì–´ í•´ ë‚˜ê°€ë©´ì„œ ì–»ì„ ìˆ˜ ìžˆëŠ” ë§ˆë²•ë“¤ë„ ì¡´ìž¬í•©ë‹ˆë‹¤."
+30024,"ì—¬ëŸ¬ë¶„ì´ ê°€ì§„ ë§ˆë²•ë“¤ê³¼ ì£¼ì‚¬ìœ„ì˜ ì¡°ê±´ì´ ë§žë‹¤ë©´, ë§ˆë²•ì´ ì „ë¶€ í•©ì³ì§‘ë‹ˆë‹¤! ë§ˆë²•ë ¥ì´ ì „ë¶€ í•©ì³ì§€ëŠ” ê²ƒì€ ë¬¼ë¡ ì´ê³ , ê´‘ì—­ ë§ˆë²•ì´ ë  ìˆ˜ë„ ìžˆì£ ."
+30025,"ìŠ¤í…Œì´ì§€ë¥¼ í•˜ë‚˜ì”© í´ë¦¬ì–´ í•  ë•Œë§ˆë‹¤ ë³´ìƒì˜ ê¸°íšŒê°€ ì£¼ì–´ì§‘ë‹ˆë‹¤. ë‹¤ë§Œ, ìŠ¤í…Œì´ì§€ ì˜¤ë¥¸ìª½ì˜ 10í„´ì´ ì§€ë‚˜ë©´ íŒ¨ë°°í•˜ë‹ˆ ì¡°ì‹¬í•˜ì‹œê¸° ë°”ëžë‹ˆë‹¤."
+30026,"ìž, ê·¸ëŸ¼ ì´ì œ ëˆˆ ì•žì˜ ì ì„ ì“°ëŸ¬ëœ¨ë ¤ ë³´ì„¸ìš”! ë©‹ì§„ ë³´ìƒì´ ê¸°ë‹¤ë¦¬ê³  ìžˆë‹µë‹ˆë‹¤."
+40001,ìˆ˜ìˆ˜ê»˜ë¼ì˜ ìƒì¸
+50001,"ì—¬ê¸°ë¥¼ í˜¼ìž ëš«ê³  ì§€ë‚˜ê°ˆ ì…ˆì¸ê°€? ì¹˜ê¸° ì–´ë¦° ì¹œêµ¬ë¡œêµ°. ë‚´ê°€ ë„ì›€ì„ ì¤„ ìˆ˜ ìžˆì„ ê²ƒ ê°™ì€ë°, ë°›ì•„ë³´ê² ë‚˜?"
+60001,ëŒ€ê°€ëŠ” í•„ìš”ì—†ë‹¤ë„¤. ëŒ€ì‹  ìž¬ë¯¸ìžˆëŠ” ê²°ê³¼ë¥¼ ë³´ì—¬ì¤˜ì•¼ í•  ê±°ì•¼.
+40002,ì•…ë§ˆì˜ ê±°ëž˜
+50002,"ì—¬ê¸°ì— ì˜¤ë‹¤ë‹ˆ, ê°•ì¸í•œ ë§ˆë ¥ì„ ê°€ì§€ê³  ìžˆë‚˜ ë³´êµ°. í˜¹ì‹œ ë” ê°•í•œ íž˜ì´ í•„ìš”í•˜ì§„ ì•Šë‚˜?"
+60002,í° íž˜ì—ëŠ” í° ì±…ìž„ì´ ë”°ë¥´ëŠ” ë²•ì´ì§€. ê·¸ ì±…ìž„ì€ ì–¸ì  ê°€ ì§€ê²Œ ë  ê±°ì•¼â€¦
+40003,ì‹ ë¹„í•œ ë§ˆë²•ì„
+50003,ëª¬ìŠ¤í„°ë“¤ì˜ ì‹œì²´ ì‚¬ì´ì—ì„œ ë¹›ë‚˜ëŠ” ë¬´ì–¸ê°€ë¥¼ ë°œê²¬í–ˆë‹¤. ì—„ì²­ë‚œ ë§ˆë ¥ì„ ë¿œì–´ë‚´ëŠ” ë§ˆë²•ì„ì¸ ê²ƒ ê°™ë‹¤.
+60003,ë§ˆë²•ì„ì˜ íž˜ìœ¼ë¡œ ë‚´ ëŠ¥ë ¥ì„ ê°•í™”í•  ìˆ˜ ìžˆì„ ê²ƒ ê°™ë‹¤â€¦
+40004,ìˆ˜ìˆ˜ê»˜ë¼ì˜ ìƒì¸
+50004,"ì—¬ê¸°ê¹Œì§€ ì˜¤ë‹¤ë‹ˆ, ì—­ì‹œ ë‚´ê°€ ë³´ëŠ” ëˆˆì´ ìžˆì–´. ë§ˆì§€ë§‰ìœ¼ë¡œ ë‚´ íž˜ì„ ë¹Œë ¤ë³´ëŠ” ê±´ ì–´ë–¤ê°€?"
+60004,"ìž¬ë°Œêµ°, ìž¬ë°Œì–´. ë§ˆì§€ë§‰ê¹Œì§€ ë‚´ ê¸°ëŒ€ì— ë¶€ì‘í•´ì£¼ê¸¸ ë°”ë¼ë„¤."
