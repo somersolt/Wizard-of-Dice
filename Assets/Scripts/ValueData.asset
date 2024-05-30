@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: ValueData
   m_EditorClassIdentifier: 
   Value3: 2
-  Value4: 100
-  Value5: 20
-  Value6: 10
+  Value4: 50
+  Value5: 30
+  Value6: 5
   Value7: 50
   Value8: 2
-  Value9: 80
+  Value9: 20
   Stat1: 3
   Stat2: 20
   Stat3: 5
