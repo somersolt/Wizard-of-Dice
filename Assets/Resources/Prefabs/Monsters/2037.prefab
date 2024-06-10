@@ -84,6 +84,8 @@ MonoBehaviour:
   MaxHp: 100
   Damage: 3
   Name: 
+  isBoss: 0
+  isimmune: 0
   onDead: 0
   HpBar: {fileID: 5360317557603787323}
   Life: {fileID: 2436941569500143102}
@@ -782,6 +784,10 @@ PrefabInstance:
     - target: {fileID: 267810358724829310, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_Name
       value: MonsterFrame
+      objectReference: {fileID: 0}
+    - target: {fileID: 1166329109029652573, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2186680683425552072, guid: ddc95b33cfaa551448e8b5fe021f7d4d, type: 3}
       propertyPath: m_Pivot.x
