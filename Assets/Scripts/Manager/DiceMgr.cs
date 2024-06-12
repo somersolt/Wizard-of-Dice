@@ -7,25 +7,16 @@ using UnityEngine.UI;
 
 public class DiceMgr : MonoBehaviour
 {
-    private static DiceMgr instance;
 
-    public static DiceMgr Instance
+    private Mediator mediator;
+
+    public void Initialize(Mediator mediator)
     {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<DiceMgr>();
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject("DiceMgr");
-                    instance = obj.AddComponent<DiceMgr>();
-                }
-            }
-            return instance;
-        }
+        this.mediator = mediator;
+    }
 
-    }    // 싱글톤 패턴
+    private GameMgr gameMgr;
+    private StageMgr stageMgr;
 
 
     public bool onDiceRoll;
@@ -88,14 +79,8 @@ public class DiceMgr : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
+        gameMgr = mediator.gameMgr;
+        stageMgr = mediator.stageMgr;
 
         for (int i = 0; i < constant.diceNumberMax; i++)
         {
@@ -108,7 +93,7 @@ public class DiceMgr : MonoBehaviour
             dices[index].onClick.AddListener(() => ButtonSelect(index));  // 버튼 세팅
         }
         reRoll.onClick.AddListener(() => DiceRoll());
-        confirm.onClick.AddListener(() => { GameMgr.Instance.PlayerAttackEffect(); onDiceRoll = true; });
+        confirm.onClick.AddListener(() => { gameMgr.PlayerAttackEffect(); onDiceRoll = true; });
 
         currentEnemyDice = 1;
     }
@@ -119,7 +104,7 @@ public class DiceMgr : MonoBehaviour
         onResult = false;
         onDiceRoll = false;
         totalValue = 0;
-        for (int i = 0; i < (int)GameMgr.Instance.currentDiceCount; i++)
+        for (int i = 0; i < (int)gameMgr.currentDiceCount; i++)
         {
             totalValue += dicesValues[i];
             //buttonToggle[i] = false; // 전부 고정 푸는 코드
@@ -141,7 +126,7 @@ public class DiceMgr : MonoBehaviour
             onResult = false;
             onDiceRoll = false;
             totalValue = 0;
-            for (int i = 0; i < (int)GameMgr.Instance.currentDiceCount; i++)
+            for (int i = 0; i < (int)gameMgr.currentDiceCount; i++)
             {
                 totalValue += dicesValues[i];
                 //buttonToggle[i] = false; // 전부 고정 푸는 코드
@@ -151,7 +136,7 @@ public class DiceMgr : MonoBehaviour
                     selectedDice.Add(i);
                 }
             }
-            GameMgr.Instance.SetResult(checkedRanksList, totalValue);
+            gameMgr.SetResult(checkedRanksList, totalValue);
         }
 
         if (!tutorialControl)
@@ -229,22 +214,22 @@ public class DiceMgr : MonoBehaviour
                 IncrementTutorialTextCount();
                 DiceRoll(false, GameMode.Tutorial2);
             });
-            confirm.onClick.AddListener(() => { IncrementTutorialTextCount(); GameMgr.Instance.PlayerAttackEffect(); onDiceRoll = true; });
+            confirm.onClick.AddListener(() => { IncrementTutorialTextCount(); gameMgr.PlayerAttackEffect(); onDiceRoll = true; });
         }
         else
         {
             reRoll.onClick.AddListener(() => DiceRoll());
-            confirm.onClick.AddListener(() => { GameMgr.Instance.PlayerAttackEffect(); onDiceRoll = true; });
+            confirm.onClick.AddListener(() => { gameMgr.PlayerAttackEffect(); onDiceRoll = true; });
         }
     }
     private void IncrementTutorialTextCount()
     {
-        GameMgr.Instance.tutorial.NextStep();
+        gameMgr.tutorial.NextStep();
     }
     public void DiceRoll(bool starting = false, GameMode mode = GameMode.Default)
     {
-        GameMgr.Instance.ScrollsClear();
-        GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[6]);
+        gameMgr.ScrollsClear();
+        gameMgr.audioSource.PlayOneShot(gameMgr.audioClips[6]);
         onDiceRoll = true;
         onResult = true;
         countToResult = 0;
@@ -255,15 +240,15 @@ public class DiceMgr : MonoBehaviour
         int selectedDiceCount = selectedDice.Count;
         if (starting)
         {
-            selectedDiceCount = (int)GameMgr.Instance.currentDiceCount;
+            selectedDiceCount = (int)gameMgr.currentDiceCount;
             for (int i = 0; i < selectedDiceCount; i++)
             {
                 buttonLock[i].gameObject.SetActive(false);
             }
 
-            if (GameMgr.Instance.artifact.playersArtifacts[8] == 1)//9번 유물
+            if (gameMgr.artifact.playersArtifacts[8] == 1)//9번 유물
             {
-                rerollCount = GameMgr.Instance.artifact.valueData.Value8 + 2;
+                rerollCount = gameMgr.artifact.valueData.Value8 + 2;
             }
             else
             {
@@ -291,7 +276,7 @@ public class DiceMgr : MonoBehaviour
             {
                 dices[diceIndex].GetComponentInChildren<TextMeshProUGUI>().text = dicesValues[diceIndex].ToString();
                 countToResult++;
-                GameMgr.Instance.tutorial.eventCount++;
+                gameMgr.tutorial.eventCount++;
             };
 
             if (mode == GameMode.Default)
@@ -338,7 +323,7 @@ public class DiceMgr : MonoBehaviour
             buttonToggle[selectedDice[i]] = false;
         }
 
-        for (int i = 0; i < (int)GameMgr.Instance.currentDiceCount; i++)
+        for (int i = 0; i < (int)gameMgr.currentDiceCount; i++)
         {
             numbersCount[dicesValues[i] - 1]++;
         }
@@ -347,17 +332,17 @@ public class DiceMgr : MonoBehaviour
 
     private IEnumerator SelectDiceRoll(int index, bool starting, Action<int> callback, int manipul = 0)
     {
-        if (GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.two && (index == 2 || index == 3 || index == 4))
+        if (gameMgr.currentDiceCount == GameMgr.DiceCount.two && (index == 2 || index == 3 || index == 4))
         {
             dicesValues[index] = 0;
             yield break;
         }
-        if (GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.three && (index == 3 || index == 4))
+        if (gameMgr.currentDiceCount == GameMgr.DiceCount.three && (index == 3 || index == 4))
         {
             dicesValues[index] = 0;
             yield break;
         }
-        if (GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.four && index == 4)
+        if (gameMgr.currentDiceCount == GameMgr.DiceCount.four && index == 4)
         {
             dicesValues[index] = 0;
             yield break;
@@ -375,7 +360,7 @@ public class DiceMgr : MonoBehaviour
 
         if (starting)
         {
-            switch (GameMgr.Instance.currentDiceCount)
+            switch (gameMgr.currentDiceCount)
             {
                 case GameMgr.DiceCount.two:
                     SpinControlers[index].DiceSpin(30 + index * 24, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
@@ -416,7 +401,7 @@ public class DiceMgr : MonoBehaviour
                 buttonToggle[i] = false;
                 buttonLock[i].gameObject.SetActive(false);
             }
-            GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[7]);
+            gameMgr.audioSource.PlayOneShot(gameMgr.audioClips[7]);
         }
     }
 
@@ -469,11 +454,11 @@ public class DiceMgr : MonoBehaviour
 
     public void EnemyDiceRoll()
     {
-        if (StageMgr.Instance.currentStage == 7)
+        if (stageMgr.currentStage == 7)
         {
-            if (StageMgr.Instance.currentField == 2 || StageMgr.Instance.currentField == 3)
+            if (stageMgr.currentField == 2 || stageMgr.currentField == 3)
             {
-                foreach (var boss in StageMgr.Instance.enemies) 
+                foreach (var boss in stageMgr.enemies) 
                 {
                     if(boss.isBoss)
                     {
@@ -486,15 +471,15 @@ public class DiceMgr : MonoBehaviour
         {
             case 1:
                 enemyValue = UnityEngine.Random.Range(1, 7);
-                GameMgr.Instance.enemyValue = enemyValue;
-                Action enemySpincallback = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
+                gameMgr.enemyValue = enemyValue;
+                Action enemySpincallback = () => { gameMgr.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
                 enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], () => enemySpincallback());
                 break;
             case 2:
                 enemyValue = UnityEngine.Random.Range(1, 7);
-                enemyValue2 = UnityEngine.Random.Range(1, 7);
-                GameMgr.Instance.enemyValue = enemyValue + enemyValue2;
-                Action enemySpincallback2 = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
+                enemyValue2 = UnityEngine.Random.Range(1, 7);   
+                gameMgr.enemyValue = enemyValue + enemyValue2;
+                Action enemySpincallback2 = () => { gameMgr.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
                 enemyDiceTwin1.DiceSpin(30, RotatePos.posList[enemyValue - 1]);
                 enemyDiceTwin2.DiceSpin(30, RotatePos.posList[enemyValue2 - 1], () => enemySpincallback2());
                 break;
@@ -502,8 +487,8 @@ public class DiceMgr : MonoBehaviour
                 enemyValue = UnityEngine.Random.Range(1, 7);
                 enemyValue2 = UnityEngine.Random.Range(1, 7);
                 enemyValue3 = UnityEngine.Random.Range(1, 7);
-                GameMgr.Instance.enemyValue = enemyValue + enemyValue2 + enemyValue3;
-                Action enemySpincallback3 = () => { GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
+                gameMgr.enemyValue = enemyValue + enemyValue2 + enemyValue3;
+                Action enemySpincallback3 = () => { gameMgr.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
                 enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1]);
                 enemyDiceTriple1.DiceSpin(30, RotatePos.posList[enemyValue2 - 1]);
                 enemyDiceTriple2.DiceSpin(30, RotatePos.posList[enemyValue3 - 1], () => enemySpincallback3());

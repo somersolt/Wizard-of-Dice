@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
 using UnityEngine;
 
 
-public static class SaveLoadSystem
+public class SaveLoadSystem
 {
+
     private static readonly byte[] Key = Convert.FromBase64String("ZgjtMN69XqjbfyS22uDnrlohWL9O6rwQSM/ykpSsVko="); // 32 bytes for AES-256
     private static readonly byte[] IV = Convert.FromBase64String("7Tyf5sE7xYNCPBRY3A82Cg==");   // 16 bytes for AES
 
@@ -32,7 +32,6 @@ public static class SaveLoadSystem
         if (!Load())
         {
             CurrSaveData = new SaveDataV1();
-            Save();
         }
     }
 
@@ -46,42 +45,43 @@ public static class SaveLoadSystem
         }
     }
 
-    public static bool Save()
+    public static bool Save(GameMgr gameMgr, StageMgr stageMgr)
     {
+
         PlayerPrefs.SetInt("Save", 1);
 
         CurrSaveData.savePlay = new SavePlayData();
-        CurrSaveData.savePlay.Stage = StageMgr.Instance.currentField * 10 + StageMgr.Instance.currentStage;
-        CurrSaveData.savePlay.DiceCount = (int)GameMgr.Instance.currentDiceCount;
-        CurrSaveData.savePlay.Damage = GameMgr.Instance.curruntBonusStat;
-        CurrSaveData.savePlay.Hp = GameMgr.Instance.GetHp();
-        CurrSaveData.savePlay.MaxHp = GameMgr.Instance.GetMaxHp();
-        CurrSaveData.savePlay.RankList = GameMgr.Instance.GetRankList();
+        CurrSaveData.savePlay.Stage = stageMgr.currentField * 10 + stageMgr.currentStage;
+        CurrSaveData.savePlay.DiceCount = (int)gameMgr.currentDiceCount;
+        CurrSaveData.savePlay.Damage = gameMgr.curruntBonusStat;
+        CurrSaveData.savePlay.Hp = gameMgr.GetHp();
+        CurrSaveData.savePlay.MaxHp = gameMgr.GetMaxHp();
+        CurrSaveData.savePlay.RankList = gameMgr.GetRankList();
         CurrSaveData.savePlay.RankRewardList = new List<int>();
         CurrSaveData.savePlay.RankRewardList.Clear();
         for (int i = 0; i < 9; i++)
         {
-            if (i >= GameMgr.Instance.ui.rewardList.Count)
+            if (i >= gameMgr.ui.rewardList.Count)
             {
                 CurrSaveData.savePlay.RankRewardList.Add(0);
             }
             else
             {
-                CurrSaveData.savePlay.RankRewardList.Add(GameMgr.Instance.ui.rewardList[i].ID);
+                CurrSaveData.savePlay.RankRewardList.Add(gameMgr.ui.rewardList[i].ID);
             }
         }
         CurrSaveData.savePlay.ArtifactList = new List<int>();
         CurrSaveData.savePlay.ArtifactList.Clear();
         for (int i = 0; i < 3; i++)
         {
-            CurrSaveData.savePlay.ArtifactList.Add(GameMgr.Instance.artifact.playersArtifactsNumber[i]);
+            CurrSaveData.savePlay.ArtifactList.Add(gameMgr.artifact.playersArtifactsNumber[i]);
         }
 
         CurrSaveData.savePlay.ArtifactLevelList = new List<int>();
         CurrSaveData.savePlay.ArtifactLevelList.Clear();
         for (int i = 0; i < 10; i++)
         {
-            CurrSaveData.savePlay.ArtifactLevelList.Add(GameMgr.Instance.artifact.playersArtifacts[i]);
+            CurrSaveData.savePlay.ArtifactLevelList.Add(gameMgr.artifact.playersArtifacts[i]);
         }
 
 

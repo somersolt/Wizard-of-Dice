@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 public class AttackEventArgs : EventArgs
@@ -37,7 +36,7 @@ public class AttackEventListener
 {
     public void AttackHandleEvent(object sender, AttackEventArgs e)
     {
-        GameMgr.Instance.Heal(GameMgr.Instance.currentRecovery, GameMgr.Instance.currentBarrier);
+        GameMgr.Heal(GameMgr.Instance.currentRecovery, GameMgr.Instance.currentBarrier);
         GameMgr.Instance.HpUpText.text = " ";
         GameMgr.Instance.BarrierUpText.text = " ";
         Enemy[] targets = new Enemy[Math.Min(GameMgr.Instance.currentTarget, StageMgr.Instance.enemies.Count)];
@@ -57,25 +56,16 @@ public class AttackEventListener
 
 public class GameMgr : MonoBehaviour
 {
-    private static GameMgr instance;
+    private Mediator mediator;
 
-    public static GameMgr Instance
+    public void Initialize(Mediator mediator)
     {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<GameMgr>();
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject("GameMgr");
-                    instance = obj.AddComponent<GameMgr>();
-                }
-            }
-            return instance;
-        }
+        this.mediator = mediator;
+    }
 
-    }    // 싱글톤 패턴
+    private DiceMgr diceMgr;
+    private StageMgr stageMgr;
+
 
     public Tutorial tutorial;
     public bool tutorialMode;
@@ -196,14 +186,8 @@ public class GameMgr : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
+        diceMgr = mediator.diceMgr;
+        stageMgr = mediator.stageMgr;
 
         for (int i = 0; i < ranksInfo.Length; i++)
         {
@@ -240,7 +224,7 @@ public class GameMgr : MonoBehaviour
     private void Start()
     {
         currentDiceCount = DiceCount.two;
-        DiceMgr.Instance.DiceTwo();
+        diceMgr.DiceTwo();
         ScrollsClear();
         RanksListUpdate();
 
@@ -249,7 +233,7 @@ public class GameMgr : MonoBehaviour
             return;
         }
 
-        StageMgr.Instance.GameStart();
+        stageMgr.GameStart();
         if (PlayerPrefs.GetInt("Tutorial", 0) == 1)
         {
             tutorial.TutorialSkip();
@@ -376,15 +360,15 @@ public class GameMgr : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
-            DiceMgr.Instance.Artifact2();
+            diceMgr.Artifact2();
             Debug.Log("2번유물");
 
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            DiceMgr.Instance.manipulList[0] = 1;
-            DiceMgr.Instance.manipulList[1] = 2;
-            DiceMgr.Instance.manipulList[2] = 3;
+            diceMgr.manipulList[0] = 1;
+            diceMgr.manipulList[1] = 2;
+            diceMgr.manipulList[2] = 3;
             Debug.Log("3번유물");
         }
 
@@ -436,9 +420,9 @@ public class GameMgr : MonoBehaviour
     {
         if (!enemyDiceRoll)
         {
-            if (StageMgr.Instance.currentField == 1 || StageMgr.Instance.currentField == 2)
+            if (stageMgr.currentField == 1 || stageMgr.currentField == 2)
             {
-                foreach (var enemy in StageMgr.Instance.enemies)
+                foreach (var enemy in stageMgr.enemies)
                 {
                     if (enemy.isBoss)
                     {
@@ -447,7 +431,7 @@ public class GameMgr : MonoBehaviour
                 }
             }
             enemyDiceRoll = true;
-            DiceMgr.Instance.EnemyDiceRoll();
+            diceMgr.EnemyDiceRoll();
         }
     }
 
@@ -484,7 +468,7 @@ public class GameMgr : MonoBehaviour
         }
 
 
-        if (monsterSignal == StageMgr.Instance.enemies.Count && AttackCount > 1)
+        if (monsterSignal == stageMgr.enemies.Count && AttackCount > 1)
         {
             onMonsterAttack = false;
             monsterSignal = 0;
@@ -495,11 +479,11 @@ public class GameMgr : MonoBehaviour
 
         if (artifact.playersArtifacts[0] == 1)
         {
-            if (monsterSignal == StageMgr.Instance.enemies.Count && !onTicWait)
+            if (monsterSignal == stageMgr.enemies.Count && !onTicWait)
             {
                 monsterSignal = 0;
-                ticCount = StageMgr.Instance.enemies.Count;
-                foreach (var enemy in StageMgr.Instance.enemies)
+                ticCount = stageMgr.enemies.Count;
+                foreach (var enemy in stageMgr.enemies)
                 {
                     enemy.OnTicDamage(curruntBonusStat); //유물 1번
                 }
@@ -551,20 +535,20 @@ public class GameMgr : MonoBehaviour
                     switch (currentDiceCount)
                     {
                         case DiceCount.two:
-                            DiceMgr.Instance.DiceTwo();
-                            DiceMgr.Instance.DiceRoll(true);
+                            diceMgr.DiceTwo();
+                            diceMgr.DiceRoll(true);
                             break;
                         case DiceCount.three:
-                            DiceMgr.Instance.DiceThree();
-                            DiceMgr.Instance.DiceRoll(true);
+                            diceMgr.DiceThree();
+                            diceMgr.DiceRoll(true);
                             break;
                         case DiceCount.four:
-                            DiceMgr.Instance.DiceFour();
-                            DiceMgr.Instance.DiceRoll(true);
+                            diceMgr.DiceFour();
+                            diceMgr.DiceRoll(true);
                             break;
                         case DiceCount.five:
-                            DiceMgr.Instance.DiceFive();
-                            DiceMgr.Instance.DiceRoll(true);
+                            diceMgr.DiceFive();
+                            diceMgr.DiceRoll(true);
                             break;
                     }
                 }
@@ -573,7 +557,7 @@ public class GameMgr : MonoBehaviour
         }
         else
         {
-            if (monsterSignal == StageMgr.Instance.enemies.Count)
+            if (monsterSignal == stageMgr.enemies.Count)
             {
                 monsterSignal = 0;
 
@@ -603,20 +587,20 @@ public class GameMgr : MonoBehaviour
                 switch (currentDiceCount)
                 {
                     case DiceCount.two:
-                        DiceMgr.Instance.DiceTwo();
-                        DiceMgr.Instance.DiceRoll(true);
+                        diceMgr.DiceTwo();
+                        diceMgr.DiceRoll(true);
                         break;
                     case DiceCount.three:
-                        DiceMgr.Instance.DiceThree();
-                        DiceMgr.Instance.DiceRoll(true);
+                        diceMgr.DiceThree();
+                        diceMgr.DiceRoll(true);
                         break;
                     case DiceCount.four:
-                        DiceMgr.Instance.DiceFour();
-                        DiceMgr.Instance.DiceRoll(true);
+                        diceMgr.DiceFour();
+                        diceMgr.DiceRoll(true);
                         break;
                     case DiceCount.five:
-                        DiceMgr.Instance.DiceFive();
-                        DiceMgr.Instance.DiceRoll(true);
+                        diceMgr.DiceFive();
+                        diceMgr.DiceRoll(true);
                         break;
                 }
             }
@@ -799,9 +783,9 @@ public class GameMgr : MonoBehaviour
         turnInfo.text = currentTurn.ToString();
         currentStatus = TurnStatus.PlayerDice;
 
-        if (StageMgr.Instance.currentField == 4 && currentTurn == 5)
+        if (stageMgr.currentField == 4 && currentTurn == 5)
         {
-            foreach (var boss in StageMgr.Instance.enemies)
+            foreach (var boss in stageMgr.enemies)
             {
                 boss.isimmune = false;
                 boss.ImmuneEffect(false);
@@ -809,7 +793,7 @@ public class GameMgr : MonoBehaviour
                 bossDoubleAttack = true;
                 AttackCount = 2;
             }
-            DiceMgr.Instance.SetEnemyDiceCount(3);
+            diceMgr.SetEnemyDiceCount(3);
 
         }
 
@@ -817,7 +801,7 @@ public class GameMgr : MonoBehaviour
 
     public void PlayerAttackEffect()
     {
-        livingMonster = Math.Min(StageMgr.Instance.enemies.Count, currentTarget);
+        livingMonster = Math.Min(stageMgr.enemies.Count, currentTarget);
         CurrentStatus = TurnStatus.PlayerAttack;
         audioSource.PlayOneShot(audioClips[2]);
         if (currentRecovery > 0)
@@ -832,9 +816,9 @@ public class GameMgr : MonoBehaviour
         //이펙트 관리자가 필요할까?
         enemyDiceRoll = false;
         monsterSignal = 0;
-        for (int i = 0; i < StageMgr.Instance.enemies.Count; i++)
+        for (int i = 0; i < stageMgr.enemies.Count; i++)
         {
-            StageMgr.Instance.enemies[i].animator.SetTrigger("Attack");
+            stageMgr.enemies[i].animator.SetTrigger("Attack");
             yield return new WaitForSeconds(0.3f);
         }
     }
@@ -874,7 +858,7 @@ public class GameMgr : MonoBehaviour
         if (bossSignal == 1)
         {
             List<Enemy> indicesToRemove = new List<Enemy>();
-            foreach (var e in StageMgr.Instance.enemies)
+            foreach (var e in stageMgr.enemies)
             {
                 indicesToRemove.Add(e);
             }
@@ -886,19 +870,19 @@ public class GameMgr : MonoBehaviour
             bossSignal = 0;
             monsterSignal = 0;
         }
-        if (StageMgr.Instance.enemies.Count == 0)
+        if (stageMgr.enemies.Count == 0)
         {
             onMonsterAttack = false;
-            foreach (var deadEnemy in StageMgr.Instance.DeadEnemies)
+            foreach (var deadEnemy in stageMgr.DeadEnemies)
             {
                 Destroy(deadEnemy.gameObject);
             }
-            StageMgr.Instance.DeadEnemies.Clear();
+            stageMgr.DeadEnemies.Clear();
 
             PlayerBarrier = 0;
             LifeUpdate();
 
-            if (StageMgr.Instance.currentStage == StageMgr.Instance.latStage && StageMgr.Instance.currentField == StageMgr.Instance.lastField)
+            if (stageMgr.currentStage == stageMgr.latStage && stageMgr.currentField == stageMgr.lastField)
             {
                 BGM.Instance.PlayBGM(BGM.Instance.bgm[1], 2);
                 SaveLoadSystem.DeleteSaveData();
@@ -906,13 +890,13 @@ public class GameMgr : MonoBehaviour
                 return;
             }
             currentStatus = TurnStatus.GetRewards;
-            if (StageMgr.Instance.TutorialStage == StageMgr.Instance.currentStage)
+            if (stageMgr.TutorialStage == stageMgr.currentStage)
             {
                 PlayerPrefs.SetInt("Tutorial", 1);
                 ui.GetDice();
                 return;
             }
-            if (StageMgr.Instance.currentStage == StageMgr.Instance.latStage)
+            if (stageMgr.currentStage == stageMgr.latStage)
             {
                 ui.OnArtifactReward();
                 return;
@@ -1071,12 +1055,12 @@ public class GameMgr : MonoBehaviour
             return false;
         }
 
-        Instance.tutorialMode = false;
+        tutorialMode = false;
         tutorial.tutorialPanel.gameObject.SetActive(false);
         tutorial.skipButton.gameObject.SetActive(false);
 
-        StageMgr.Instance.currentField = SaveLoadSystem.CurrSaveData.savePlay.Stage / 10;
-        StageMgr.Instance.currentStage = SaveLoadSystem.CurrSaveData.savePlay.Stage % 10;
+        stageMgr.currentField = SaveLoadSystem.CurrSaveData.savePlay.Stage / 10;
+        stageMgr.currentStage = SaveLoadSystem.CurrSaveData.savePlay.Stage % 10;
         currentDiceCount = (DiceCount)SaveLoadSystem.CurrSaveData.savePlay.DiceCount;
         curruntBonusStat = SaveLoadSystem.CurrSaveData.savePlay.Damage;
         PlayerHp = SaveLoadSystem.CurrSaveData.savePlay.Hp;
@@ -1119,11 +1103,11 @@ public class GameMgr : MonoBehaviour
             }
         } // 초월마법등록
 
-        foreach (var artifact in GameMgr.Instance.artifact.artifacts)
+        foreach (var artifact in artifact.artifacts)
         {
             if (artifact.ID == 0)
             {
-                artifact.Set(0, "방화광", $"매턴 모든 적에게 '기본 공격력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지");
+                artifact.Set(0, "방화광", $"매턴 모든 적에게 '기본 공격력'(<color=purple>{curruntBonusStat}</color>) 만큼의 데미지");
             }
         } //유물상점 업데이트
 
@@ -1176,7 +1160,7 @@ public class GameMgr : MonoBehaviour
             }
         }
 
-        StageMgr.Instance.NextStage(true);
+        stageMgr.NextStage(true);
         return true;
     }
 
@@ -1184,13 +1168,13 @@ public class GameMgr : MonoBehaviour
     {
         if (id == 1)
         {
-            DiceMgr.Instance.Artifact2();
+            diceMgr.Artifact2();
         }
         else if (id == 2)
         {
-            DiceMgr.Instance.manipulList[0] = 1;
-            DiceMgr.Instance.manipulList[1] = 2;
-            DiceMgr.Instance.manipulList[2] = 3;
+            diceMgr.manipulList[0] = 1;
+            diceMgr.manipulList[1] = 2;
+            diceMgr.manipulList[2] = 3;
         }
     }
 

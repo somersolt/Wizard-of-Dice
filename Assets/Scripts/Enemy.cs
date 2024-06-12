@@ -1,10 +1,13 @@
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
+    private Mediator mediator;
+
     public Animator animator;
     public Canvas canvas;
     public PlayerMessage damagePrefab;
@@ -37,12 +40,13 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
+        mediator = FindObjectOfType<Mediator>();
         animator = GetComponentInChildren<Animator>();
         canvas.sortingLayerName = "UI";
         canvas.sortingOrder = 10;
         effectPos = canvas.transform.Find("effectPos").GetComponent<Transform>();
 
-        if(isimmune && StageMgr.Instance.currentField == 4)
+        if(isimmune && mediator.stageMgr.currentField == 4)
         {
             ImmuneEffect(true);
         }
@@ -87,7 +91,7 @@ public class Enemy : MonoBehaviour
         Hp -= d;
         var DamageMessage = Instantiate(damagePrefab, canvas.transform);
         DamageMessage.Setup(d, Color.red, true);
-        if (GameMgr.Instance.scrollsound >= 3)
+        if (mediator.gameMgr.scrollsound >= 3)
         {
             particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 4")), effectPos.transform);
         }
@@ -187,27 +191,27 @@ public class Enemy : MonoBehaviour
 
     public void OnAttack()
     {
-        int enemyDamage = GameMgr.Instance.enemyValue + Damage;
-        GameMgr.Instance.PlayerOndamage(enemyDamage);
-        GameMgr.Instance.monsterSignal++;
+        int enemyDamage = mediator.gameMgr.enemyValue + Damage;
+        mediator.gameMgr.PlayerOndamage(enemyDamage);
+        mediator.gameMgr.monsterSignal++;
     }
 
     public void Die()
     {
-        StageMgr.Instance.DeadEnemies.Add(this);
-        StageMgr.Instance.enemies.Remove(this);
+        mediator.stageMgr.DeadEnemies.Add(this);
+        mediator.stageMgr.enemies.Remove(this);
         onDead = true;
         time = Time.time;
         if (isBoss)
         {
-            GameMgr.Instance.bossSignal++;
+            mediator.gameMgr.bossSignal++;
             return;
         }
         Signal();
     }
     public void Signal()
     {
-        GameMgr.Instance.monsterSignal++;
+        mediator.gameMgr.monsterSignal++;
     }
 
 

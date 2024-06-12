@@ -2,7 +2,13 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    private Mediator mediator;
     public GameObject[] Pos = new GameObject[3];
+
+    private void Awake()
+    {
+        mediator = FindObjectOfType<Mediator>();
+    }
 
     public void Spawn(Enemy enemy, int num, MonsterData data = null)
     {
@@ -15,6 +21,6 @@ public class EnemySpawner : MonoBehaviour
         {
             Enemy.TutoSet(); //TO-DO ªË¡¶
         }
-        StageMgr.Instance.enemies.Add(Enemy);
+        mediator.stageMgr.enemies.Add(Enemy);
     }
 }

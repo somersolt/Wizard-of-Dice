@@ -1,30 +1,19 @@
 using System.Collections.Generic;
-using System.Drawing;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class StageMgr : MonoBehaviour
 {
-    private static StageMgr instance;
-    public static StageMgr Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<StageMgr>();
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject("StageMgr");
-                    instance = obj.AddComponent<StageMgr>();
-                }
-            }
-            return instance;
-        }
+    private Mediator mediator;
 
-    }// 싱글톤 패턴
+    public void Initialize(Mediator mediator)
+    {
+        this.mediator = mediator;
+    }
+
+    private GameMgr gameMgr;
+    private DiceMgr diceMgr;
 
     private enum PosNum
     {
@@ -59,14 +48,10 @@ public class StageMgr : MonoBehaviour
     public EnemySpawner enemySpawner;
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
+
+        gameMgr = mediator.gameMgr;
+        diceMgr = mediator.diceMgr;
+
         latStage = 7;
         lastField = 4;
         bossGimic.onValueChanged.AddListener((isOn) => OnToggleValueChanged(isOn));
@@ -108,10 +93,10 @@ public class StageMgr : MonoBehaviour
 
         if (currentField == 3 || currentField == 4)
         {
-            GameMgr.Instance.artifact.valueData.Stat1 = 5;
+            gameMgr.artifact.valueData.Stat1 = 5;
         }
 
-        GameMgr.Instance.ui.ArtifactInfoUpdate();
+        gameMgr.ui.ArtifactInfoUpdate();
 
         StageInfo.text = $"Stage \n {currentField} - {currentStage}";
         var path = currentField.ToString() + currentStage.ToString();
@@ -124,17 +109,17 @@ public class StageMgr : MonoBehaviour
         {
             BGM.Instance.PlayBGM(BGM.Instance.ChangeBgm(currentField, currentStage), 3);
         }
-        GameMgr.Instance.TurnUpdate(10);
+        gameMgr.TurnUpdate(10);
         if (currentStage == 1 && currentField == 1)
         {
-            GameMgr.Instance.tutorial.skipButton.gameObject.SetActive(false);
-            GameMgr.Instance.LifeMax();
-            GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.three;
+            gameMgr.tutorial.skipButton.gameObject.SetActive(false);
+            gameMgr.LifeMax();
+            gameMgr.currentDiceCount = GameMgr.DiceCount.three;
             SetEnemy();
         }
         else if (currentStage == 6)
         {
-            GameMgr.Instance.ui.EventStage();
+            gameMgr.ui.EventStage();
             return;
         }
         else
@@ -143,19 +128,19 @@ public class StageMgr : MonoBehaviour
         }
 
 
-        switch (GameMgr.Instance.currentDiceCount)
+        switch (gameMgr.currentDiceCount)
         {
             case GameMgr.DiceCount.three:
-                DiceMgr.Instance.DiceThree();
-                DiceMgr.Instance.DiceRoll(true);
+                diceMgr.DiceThree();
+                diceMgr.DiceRoll(true);
                 break;
             case GameMgr.DiceCount.four:
-                DiceMgr.Instance.DiceFour();
-                DiceMgr.Instance.DiceRoll(true);
+                diceMgr.DiceFour();
+                diceMgr.DiceRoll(true);
                 break;
             case GameMgr.DiceCount.five:
-                DiceMgr.Instance.DiceFive();
-                DiceMgr.Instance.DiceRoll(true);
+                diceMgr.DiceFive();
+                diceMgr.DiceRoll(true);
                 break;
         }
     }
@@ -175,35 +160,35 @@ public class StageMgr : MonoBehaviour
             if (currentField == 2)
             {
                 bossGimicText.text = "<size=50> 사악한 마법사 \n <size=35><color=red> -매 턴 체력 10 회복 \n-2회 공격";
-                DiceMgr.Instance.SetEnemyDiceCount(1);
-                GameMgr.Instance.bossDoubleAttack = true;
-                GameMgr.Instance.AttackCount = 2;
+                diceMgr.SetEnemyDiceCount(1);
+                gameMgr.bossDoubleAttack = true;
+                gameMgr.AttackCount = 2;
 
             }
 
             if (currentField == 3)
             {
                 bossGimicText.text = "<size=50> 데스 \n <size=35><color=red> -주사위 개수 +1 \n-2회 공격";
-                DiceMgr.Instance.SetEnemyDiceCount(2);
-                GameMgr.Instance.bossDoubleAttack = true;
-                GameMgr.Instance.AttackCount = 2;
+                diceMgr.SetEnemyDiceCount(2);
+                gameMgr.bossDoubleAttack = true;
+                gameMgr.AttackCount = 2;
 
             }
             else if (currentField == 4)
             {
                 bossGimicText.text = "<size=50> 데스 메이지 \n <size=35><color=red> -5턴 동안 데미지 면역 \n-주사위 개수 +1\n-5턴 이후 주사위 개수 +2, 2회 공격";
-                DiceMgr.Instance.SetEnemyDiceCount(2);
-                GameMgr.Instance.bossDoubleAttack = false;
-                GameMgr.Instance.AttackCount = 1;
+                diceMgr.SetEnemyDiceCount(2);
+                gameMgr.bossDoubleAttack = false;
+                gameMgr.AttackCount = 1;
             }
         }
         else
         {
             bossGimic.isOn = false;
             bossGimic.gameObject.SetActive(false);
-            DiceMgr.Instance.SetEnemyDiceCount(1);
-            GameMgr.Instance.bossDoubleAttack = false;
-            GameMgr.Instance.AttackCount = 1;
+            diceMgr.SetEnemyDiceCount(1);
+            gameMgr.bossDoubleAttack = false;
+            gameMgr.AttackCount = 1;
         }
 
         foreach (int i in keyList)
