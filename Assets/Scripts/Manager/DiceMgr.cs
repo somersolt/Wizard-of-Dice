@@ -8,13 +8,7 @@ using UnityEngine.UI;
 public class DiceMgr : MonoBehaviour
 {
 
-    private Mediator mediator;
-
-    public void Initialize(Mediator mediator)
-    {
-        this.mediator = mediator;
-    }
-
+    public Mediator mediator;
     private GameMgr gameMgr;
     private StageMgr stageMgr;
 
@@ -79,9 +73,6 @@ public class DiceMgr : MonoBehaviour
 
     private void Awake()
     {
-        gameMgr = mediator.gameMgr;
-        stageMgr = mediator.stageMgr;
-
         for (int i = 0; i < constant.diceNumberMax; i++)
         {
             diceNumbers.Add(i + 1);  // 1부터 6까지 추가
@@ -93,9 +84,15 @@ public class DiceMgr : MonoBehaviour
             dices[index].onClick.AddListener(() => ButtonSelect(index));  // 버튼 세팅
         }
         reRoll.onClick.AddListener(() => DiceRoll());
-        confirm.onClick.AddListener(() => { gameMgr.PlayerAttackEffect(); onDiceRoll = true; });
+        confirm.onClick.AddListener(() => { EventBus.Publish(EventType.PlayerAttack); onDiceRoll = true; });
 
         currentEnemyDice = 1;
+    }
+
+    private void Start()
+    {
+        gameMgr = mediator.gameMgr;
+        stageMgr = mediator.stageMgr;
     }
 
     public void InfoClear()
@@ -363,22 +360,22 @@ public class DiceMgr : MonoBehaviour
             switch (gameMgr.currentDiceCount)
             {
                 case GameMgr.DiceCount.two:
-                    SpinControlers[index].DiceSpin(30 + index * 24, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
+                    SpinControlers[index].DiceSpin(30 + index * 24, RotatePos.posList[dicesValues[index] - 1], this, () => callback(index));
                     break;
                 case GameMgr.DiceCount.three:
-                    SpinControlers[index].DiceSpin(30 + index * 16, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
+                    SpinControlers[index].DiceSpin(30 + index * 16, RotatePos.posList[dicesValues[index] - 1], this, () => callback(index));
                     break;
                 case GameMgr.DiceCount.four:
-                    SpinControlers[index].DiceSpin(30 + index * 12, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
+                    SpinControlers[index].DiceSpin(30 + index * 12, RotatePos.posList[dicesValues[index] - 1], this, () => callback(index));
                     break;
                 case GameMgr.DiceCount.five:
-                    SpinControlers[index].DiceSpin(30 + index * 9, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
+                    SpinControlers[index].DiceSpin(30 + index * 9, RotatePos.posList[dicesValues[index] - 1], this, () => callback(index));
                     break;
             }
         }
         else
         {
-            SpinControlers[index].DiceSpin(30, RotatePos.posList[dicesValues[index] - 1], () => callback(index));
+            SpinControlers[index].DiceSpin(30, RotatePos.posList[dicesValues[index] - 1], this, () => callback(index));
         }
         yield return null;
     }
@@ -473,15 +470,15 @@ public class DiceMgr : MonoBehaviour
                 enemyValue = UnityEngine.Random.Range(1, 7);
                 gameMgr.enemyValue = enemyValue;
                 Action enemySpincallback = () => { gameMgr.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
-                enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], () => enemySpincallback());
+                enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], this, () => enemySpincallback());
                 break;
             case 2:
                 enemyValue = UnityEngine.Random.Range(1, 7);
                 enemyValue2 = UnityEngine.Random.Range(1, 7);   
                 gameMgr.enemyValue = enemyValue + enemyValue2;
                 Action enemySpincallback2 = () => { gameMgr.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
-                enemyDiceTwin1.DiceSpin(30, RotatePos.posList[enemyValue - 1]);
-                enemyDiceTwin2.DiceSpin(30, RotatePos.posList[enemyValue2 - 1], () => enemySpincallback2());
+                enemyDiceTwin1.DiceSpin(30, RotatePos.posList[enemyValue - 1], this);
+                enemyDiceTwin2.DiceSpin(30, RotatePos.posList[enemyValue2 - 1], this, () => enemySpincallback2());
                 break;
             case 3:
                 enemyValue = UnityEngine.Random.Range(1, 7);
@@ -489,9 +486,9 @@ public class DiceMgr : MonoBehaviour
                 enemyValue3 = UnityEngine.Random.Range(1, 7);
                 gameMgr.enemyValue = enemyValue + enemyValue2 + enemyValue3;
                 Action enemySpincallback3 = () => { gameMgr.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
-                enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1]);
-                enemyDiceTriple1.DiceSpin(30, RotatePos.posList[enemyValue2 - 1]);
-                enemyDiceTriple2.DiceSpin(30, RotatePos.posList[enemyValue3 - 1], () => enemySpincallback3());
+                enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], this);
+                enemyDiceTriple1.DiceSpin(30, RotatePos.posList[enemyValue2 - 1], this);
+                enemyDiceTriple2.DiceSpin(30, RotatePos.posList[enemyValue3 - 1], this, () => enemySpincallback3());
                 break;
         }
     }

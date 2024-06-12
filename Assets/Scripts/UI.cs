@@ -8,6 +8,11 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
+    private Mediator mediator;
+    private DiceMgr diceMgr;
+    private StageMgr stageMgr;
+    private GameMgr gameMgr;
+
     public List<SpellData> rewardList = new List<SpellData>();
 
     [SerializeField]
@@ -134,14 +139,16 @@ public class UI : MonoBehaviour
 
     private void Awake()
     {
+        mediator = FindObjectOfType<Mediator>();
+
         titleButton.onClick.AddListener(() => ReturnTitle());
         titleButton2.onClick.AddListener(() => ReturnTitle());
         diceRewardConfirm.onClick.AddListener(() =>
         {
             getDicePanel.gameObject.SetActive(false);
             BackGroundPanel.gameObject.SetActive(false);
-            GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
-            StageMgr.Instance.NextStage();
+            gameMgr.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
+            stageMgr.NextStage();
         });
         ReturnButton.onClick.AddListener(() => { PausePanel.gameObject.SetActive(false); Time.timeScale = 1; });
         QuitGame.onClick.AddListener(() => { QuitPanel.gameObject.SetActive(true); });
@@ -178,13 +185,13 @@ public class UI : MonoBehaviour
             maxSpellLevels[i].text = "초월";
             maxSpells[i].onClick.AddListener(() =>
             {
-                GameMgr.Instance.SetRankList(index);
+                gameMgr.SetRankList(index);
                 maxSpells[index].gameObject.SetActive(false);
                 maxSpellRewardPanel.gameObject.SetActive(false);
                 BackGroundPanel.gameObject.SetActive(false);
-                GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
-                GameMgr.Instance.RanksListUpdate();
-                StageMgr.Instance.NextStage();
+                gameMgr.audioSource.PlayOneShot(gameMgr.audioClips[8]);
+                gameMgr.RanksListUpdate();
+                stageMgr.NextStage();
             });
             maxSpells[i].gameObject.SetActive(false);
         } //초월 강화
@@ -242,6 +249,13 @@ public class UI : MonoBehaviour
         magicInfoToggle.onValueChanged.AddListener((isOn) => { toggleMagicInfo(isOn); });
 
     }
+
+    private void Start()
+    {
+        gameMgr = mediator.gameMgr;
+        diceMgr = mediator.diceMgr;
+        stageMgr = mediator.stageMgr;
+    }
     public void OnReward(RewardMode mode = RewardMode.Normal  , int count = 0)
     {
         audioSource.PlayOneShot(audioClips[0]);
@@ -294,15 +308,15 @@ public class UI : MonoBehaviour
         }
 
         spellNames[2].text = "신체 강화";
-        spellInfos[2].text = $"기본 공격력 + <color=red>{GameMgr.Instance.artifact.valueData.Stat1}</color> \n 주사위 개수 x {GameMgr.Instance.artifact.valueData.Stat3} (<color=green>{(int)GameMgr.Instance.currentDiceCount * GameMgr.Instance.artifact.valueData.Stat3}</color>) 만큼 회복";
+        spellInfos[2].text = $"기본 공격력 + <color=red>{gameMgr.artifact.valueData.Stat1}</color> \n 주사위 개수 x {gameMgr.artifact.valueData.Stat3} (<color=green>{(int)gameMgr.currentDiceCount * gameMgr.artifact.valueData.Stat3}</color>) 만큼 회복";
         spellLevels[2].text = " ";
         if (mode == RewardMode.Artifact && count > 0)
         {
-            rewards[2].onClick.AddListener(() => GetStatus( GameMgr.Instance.artifact.valueData.Stat1,RewardMode.Artifact, count));
+            rewards[2].onClick.AddListener(() => GetStatus( gameMgr.artifact.valueData.Stat1,RewardMode.Artifact, count));
         }
         else
         {
-            rewards[2].onClick.AddListener(() => GetStatus(GameMgr.Instance.artifact.valueData.Stat1));
+            rewards[2].onClick.AddListener(() => GetStatus(gameMgr.artifact.valueData.Stat1));
         }
         BackGroundPanel.gameObject.SetActive(true);
         rewardPanel.gameObject.SetActive(true);
@@ -315,13 +329,13 @@ public class UI : MonoBehaviour
         audioSource.PlayOneShot(audioClips[0]);
         DiceRewardClear();
 
-        switch (GameMgr.Instance.currentDiceCount)
+        switch (gameMgr.currentDiceCount)
         {
             case GameMgr.DiceCount.three:
                 diceRewards[0].onClick.AddListener(() =>
                 {
-                    GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.four;
-                    GameMgr.Instance.GetDice4Ranks();
+                    gameMgr.currentDiceCount = GameMgr.DiceCount.four;
+                    gameMgr.GetDice4Ranks();
                     diceRewardPanel.gameObject.SetActive(false);
                     GetDice();
                 });
@@ -332,8 +346,8 @@ public class UI : MonoBehaviour
             case GameMgr.DiceCount.four:
                 diceRewards[0].onClick.AddListener(() =>
                 {
-                    GameMgr.Instance.currentDiceCount = GameMgr.DiceCount.five;
-                    GameMgr.Instance.GetDice5Ranks();
+                    gameMgr.currentDiceCount = GameMgr.DiceCount.five;
+                    gameMgr.GetDice5Ranks();
                     diceRewardPanel.gameObject.SetActive(false);
                     GetDice();
                 });
@@ -350,13 +364,13 @@ public class UI : MonoBehaviour
 
         diceRewards[1].onClick.AddListener(() =>
         {
-            GetStatus(GameMgr.Instance.artifact.valueData.Stat2, RewardMode.Event);
+            GetStatus(gameMgr.artifact.valueData.Stat2, RewardMode.Event);
         });
 
         diceRewardNames[1].text = "마나 증량";
-        diceRewardInfos[1].text = $"주사위 개수를 늘리지 않고 공격력 <color=red>{GameMgr.Instance.artifact.valueData.Stat2}</color> 증가 \n 주사위 눈금 총합에 <color=red>{GameMgr.Instance.artifact.valueData.Stat2}</color>을 더합니다.";
+        diceRewardInfos[1].text = $"주사위 개수를 늘리지 않고 공격력 <color=red>{gameMgr.artifact.valueData.Stat2}</color> 증가 \n 주사위 눈금 총합에 <color=red>{gameMgr.artifact.valueData.Stat2}</color>을 더합니다.";
 
-        foreach (var ranks in GameMgr.Instance.GetRankList())
+        foreach (var ranks in gameMgr.GetRankList())
         {
             if (ranks == 3)
             {
@@ -392,15 +406,15 @@ public class UI : MonoBehaviour
         {
             int index = i;
             artifacts[i].onClick.AddListener(() => { GetArifact(artifactDatas[index], index); });
-            int a = Random.Range(0, GameMgr.Instance.artifact.artifacts.Count);
-            if (GameMgr.Instance.artifact.artifacts.Count != 0)
+            int a = Random.Range(0, gameMgr.artifact.artifacts.Count);
+            if (gameMgr.artifact.artifacts.Count != 0)
             {
-                artifactDatas[i] = GameMgr.Instance.artifact.artifacts[a];
+                artifactDatas[i] = gameMgr.artifact.artifacts[a];
                 artifactsNames[i].text = artifactDatas[i].NAME;
                 artifactsInfos[i].text = artifactDatas[i].DESC;
-                GameMgr.Instance.artifact.artifacts.Remove(GameMgr.Instance.artifact.artifacts[a]);
+                gameMgr.artifact.artifacts.Remove(gameMgr.artifact.artifacts[a]);
             }
-            else if (GameMgr.Instance.artifact.artifacts.Count == 0)
+            else if (gameMgr.artifact.artifacts.Count == 0)
             {
                 Debug.Log("오류");
             }
@@ -417,7 +431,7 @@ public class UI : MonoBehaviour
     {
         audioSource.PlayOneShot(audioClips[1]);
 
-        switch (GameMgr.Instance.currentDiceCount)
+        switch (gameMgr.currentDiceCount)
         {
             case GameMgr.DiceCount.two:
                 getDiceImage.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Got_Dice_2to3"));
@@ -475,18 +489,18 @@ public class UI : MonoBehaviour
 
         if (rewardSpells[index].LEVEL != 0)
         {
-            GameMgr.Instance.SetRankList((spellData.ID % 100) / 10 - 1);
+            gameMgr.SetRankList((spellData.ID % 100) / 10 - 1);
             if (rewardSpells[index].LEVEL == 3)
             {
                 maxSpells[(spellData.ID % 100) / 10 - 1].gameObject.SetActive(true);
             }
         }
 
-        GameMgr.Instance.RanksListUpdate();
-        GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
+        gameMgr.RanksListUpdate();
+        gameMgr.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         rewardPanel.gameObject.SetActive(false);
         BackGroundPanel.gameObject.SetActive(false);
-        GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
+        gameMgr.audioSource.PlayOneShot(gameMgr.audioClips[8]);
 
         if (mode == RewardMode.Artifact && count > 0)
         {
@@ -494,7 +508,7 @@ public class UI : MonoBehaviour
         }
         else
         {
-            StageMgr.Instance.NextStage();
+            stageMgr.NextStage();
         }
     }
 
@@ -510,18 +524,18 @@ public class UI : MonoBehaviour
                 }
             }
 
-            GameMgr.Instance.Heal((int)GameMgr.Instance.currentDiceCount * GameMgr.Instance.artifact.valueData.Stat3, 0);
+            gameMgr.Heal((int)gameMgr.currentDiceCount * gameMgr.artifact.valueData.Stat3, 0);
         }
 
-        GameMgr.Instance.curruntBonusStat += value;
-        foreach (var artifact in GameMgr.Instance.artifact.artifacts)
+        gameMgr.curruntBonusStat += value;
+        foreach (var artifact in gameMgr.artifact.artifacts)
         {
             if(artifact.ID == 0)
             {
-                artifact.Set(0, "방화광", $"매턴 모든 적에게 '기본 공격력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지");
+                artifact.Set(0, "방화광", $"매턴 모든 적에게 '기본 공격력'(<color=purple>{gameMgr.curruntBonusStat}</color>) 만큼의 데미지");
             }
         }
-        GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
+        gameMgr.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         BackGroundPanel.gameObject.SetActive(false);
 
         if (mode != RewardMode.Event)
@@ -532,13 +546,13 @@ public class UI : MonoBehaviour
         {
             diceRewardPanel.gameObject.SetActive(false);
         }
-        GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
+        gameMgr.audioSource.PlayOneShot(gameMgr.audioClips[8]);
         if(mode == RewardMode.Artifact)
         {
             OnReward(RewardMode.Artifact, count - 1);
             return;
         }
-        StageMgr.Instance.NextStage();
+        stageMgr.NextStage();
     }
 
 
@@ -550,8 +564,8 @@ public class UI : MonoBehaviour
             if (i == index)
             {
                 artifactData.ONARTIFACT = true;
-                GameMgr.Instance.artifact.playersArtifacts[artifactData.ID]++;
-                switch (StageMgr.Instance.currentField)
+                gameMgr.artifact.playersArtifacts[artifactData.ID]++;
+                switch (stageMgr.currentField)
                 {
                     case 1:
                         ArtifactUpdate(artifactData, 0);
@@ -568,27 +582,27 @@ public class UI : MonoBehaviour
 
             if (i != index)
             {
-                GameMgr.Instance.artifact.artifacts.Add(artifactDatas[i]);
+                gameMgr.artifact.artifacts.Add(artifactDatas[i]);
             }
         }
         GetArtifactEffect(artifactData.ID);
-        GameMgr.Instance.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
+        gameMgr.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
         BackGroundPanel.gameObject.SetActive(false);
         artifactRewardPanel.gameObject.SetActive(false);
-        GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[8]);
+        gameMgr.audioSource.PlayOneShot(gameMgr.audioClips[8]);
         if (artifactData.ID == 3)
         {
             OnReward(RewardMode.Artifact
-                ,GameMgr.Instance.artifact.valueData.Value3 - 1);
+                ,gameMgr.artifact.valueData.Value3 - 1);
             return;
         }
 
-        StageMgr.Instance.NextStage();
+        stageMgr.NextStage();
     }
 
     public void ArtifactUpdate(ArtifactData artifactData, int index)
     {
-        GameMgr.Instance.artifact.playersArtifactsNumber[index] = artifactData.ID;
+        gameMgr.artifact.playersArtifactsNumber[index] = artifactData.ID;
         playerArtifacts[index].gameObject.SetActive(true);
         playerArtifactName[index].text = artifactData.NAME;
         playerArtifactInfo[index].text = artifactData.DESC;
@@ -601,7 +615,7 @@ public class UI : MonoBehaviour
         {
             if (playerArtifactName[i].text == "방화광")
             {
-                playerArtifactInfo[i].text = $"매턴 모든 적에게 '기본 공격력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지";
+                playerArtifactInfo[i].text = $"매턴 모든 적에게 '기본 공격력'(<color=purple>{gameMgr.curruntBonusStat}</color>) 만큼의 데미지";
             }
         }
     }
@@ -630,12 +644,12 @@ public class UI : MonoBehaviour
             case 0:
                 break;
             case 1:
-                DiceMgr.Instance.Artifact2();
+                diceMgr.Artifact2();
                 break;
             case 2:
-                DiceMgr.Instance.manipulList[0] = 1;
-                DiceMgr.Instance.manipulList[1] = 2;
-                DiceMgr.Instance.manipulList[2] = 3;
+                diceMgr.manipulList[0] = 1;
+                diceMgr.manipulList[1] = 2;
+                diceMgr.manipulList[2] = 3;
                 break;
             case 3:
                 break;
@@ -650,9 +664,9 @@ public class UI : MonoBehaviour
             case 8:
                 break;
             case 9:
-                GameMgr.Instance.MaxLifeSet(GameMgr.Instance.artifact.valueData.Value9);
-                GameMgr.Instance.audioSource.PlayOneShot(GameMgr.Instance.audioClips[5]);
-                GameMgr.Instance.LifeMax();
+                gameMgr.MaxLifeSet(gameMgr.artifact.valueData.Value9);
+                gameMgr.audioSource.PlayOneShot(gameMgr.audioClips[5]);
+                gameMgr.LifeMax();
                 break;
         }
     }
@@ -711,7 +725,7 @@ public class UI : MonoBehaviour
     public void EventStage()
     {
         BackGroundPanel.gameObject.SetActive(true);
-        switch (StageMgr.Instance.currentField)
+        switch (stageMgr.currentField)
         {
             case 1:
                 eventFace.sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "merchant"));
@@ -758,7 +772,7 @@ public class UI : MonoBehaviour
         {
             for (int i = 0; i < infoMagics.Length; i++)
             {
-                if(GameMgr.Instance.GetRank(i) > 0)
+                if(gameMgr.GetRank(i) > 0)
                 {
                     infoMagics[i].gameObject.SetActive(true);
                 }
@@ -769,7 +783,7 @@ public class UI : MonoBehaviour
             for (int i = 0; i < infoMagics.Length; i++)
             {
                 RanksFlag currentFlag = (RanksFlag)(1 << i);
-                if ((DiceMgr.Instance.CheckedRanksList & currentFlag) != 0)
+                if ((diceMgr.CheckedRanksList & currentFlag) != 0)
                 {
                     infoMagics[i].gameObject.SetActive(true);
                 }

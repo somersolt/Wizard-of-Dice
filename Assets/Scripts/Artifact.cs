@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Artifact : MonoBehaviour
 {
+    private Mediator mediator;
+
     public ValueData valueData;
     public List<ArtifactData> artifacts = new List<ArtifactData>();
     public int[] playersArtifacts = new int[10];
@@ -10,8 +12,10 @@ public class Artifact : MonoBehaviour
 
     private void Awake()
     {
+        mediator = FindObjectOfType<Mediator>();
+
         ArtifactData data1 = new ArtifactData();
-        data1.Set(0, "방화광", $"매턴 모든 적에게 '기본 공격력'(<color=purple>{GameMgr.Instance.curruntBonusStat}</color>) 만큼의 데미지");
+        data1.Set(0, "방화광", $"매턴 모든 적에게 '기본 공격력'(<color=purple>{mediator.gameMgr.curruntBonusStat}</color>) 만큼의 데미지");
         artifacts.Add(data1);
 
         ArtifactData data2 = new ArtifactData();

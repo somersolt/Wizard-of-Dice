@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static GameMgr;
 
 public class Tutorial : MonoBehaviour
 {
+    private Mediator mediator;
+    private DiceMgr diceMgr;
+    private StageMgr stageMgr;
+    private GameMgr gameMgr;
+
     public GameObject tutorialPanel;
     [SerializeField]
     private GameObject skipPanel;
@@ -68,6 +73,11 @@ public class Tutorial : MonoBehaviour
 
     private void Awake()
     {
+        mediator = FindObjectOfType<Mediator>();
+        gameMgr = mediator.gameMgr;
+        diceMgr = mediator.diceMgr;
+        stageMgr = mediator.stageMgr;
+
         skipButton.onClick.AddListener(() => { skipPanel.gameObject.SetActive(true); });
         skipYes.onClick.AddListener(() => TutorialSkip());
         skipNo.onClick.AddListener(() => { skipPanel.gameObject.SetActive(false); });
@@ -92,7 +102,7 @@ public class Tutorial : MonoBehaviour
             case TutorialStep.Welcome:
                 if (!eventTrigger)
                 {
-                    DiceMgr.Instance.onDiceRoll = true;
+                    diceMgr.onDiceRoll = true;
                     eventTrigger = true;
                 }
                 break;
@@ -107,7 +117,7 @@ public class Tutorial : MonoBehaviour
                 }
                 break;
             case TutorialStep.RollDicePrompt:
-                DiceMgr.Instance.onDiceRoll = true;
+                diceMgr.onDiceRoll = true;
                 break;
             case TutorialStep.RollDice:
                 if (!eventTrigger)
@@ -115,12 +125,12 @@ public class Tutorial : MonoBehaviour
                     dices.CrossFadeColor(UsedColor.usedColor, 1, true, true);
                     nextButton.interactable = false;
                     eventTrigger = true;
-                    DiceMgr.Instance.DiceRoll(true, GameMode.Tutorial);
+                    diceMgr.DiceRoll(true, GameMode.Tutorial);
                 }
                 if (eventCount == 2)
                 {
                     nextButton.interactable = true;
-                    DiceMgr.Instance.onDiceRoll = true;
+                    diceMgr.onDiceRoll = true;
                 }
                 break;
             case TutorialStep.ShowMagicPower:
@@ -142,15 +152,15 @@ public class Tutorial : MonoBehaviour
                 break;
             case TutorialStep.LockAndRerollDice:
 
-                DiceMgr.Instance.onDiceRoll = false;
+                diceMgr.onDiceRoll = false;
                 if (!eventTrigger)
                 {
                     eventTrigger = true;
 
-                    DiceMgr.Instance.ButtonSelect(0);
-                    DiceMgr.Instance.tutorialControl = true;
-                    DiceMgr.Instance.tutorialControlMode = 1;
-                    DiceMgr.Instance.TutorialButtonControl(true);
+                    diceMgr.ButtonSelect(0);
+                    diceMgr.tutorialControl = true;
+                    diceMgr.tutorialControlMode = 1;
+                    diceMgr.TutorialButtonControl(true);
                 }
                 nextButton.interactable = false;
                 break;
@@ -158,16 +168,16 @@ public class Tutorial : MonoBehaviour
                 if (!eventTrigger)
                 {
                     eventTrigger = true;
-                    DiceMgr.Instance.onDiceRoll = true;
+                    diceMgr.onDiceRoll = true;
                     //DiceMgr.Instance.TutorialButtonControl(false);
-                    DiceMgr.Instance.manipulList[1] = 4;
+                    diceMgr.manipulList[1] = 4;
                 }
 
                 if (eventCount == 1)
                 {
                     nextButton.interactable = true;
-                    DiceMgr.Instance.tutorialControlMode = 0;
-                    DiceMgr.Instance.onDiceRoll = true;
+                    diceMgr.tutorialControlMode = 0;
+                    diceMgr.onDiceRoll = true;
                 }
                 break;
             case TutorialStep.ShowMagicDescription:
@@ -190,8 +200,8 @@ public class Tutorial : MonoBehaviour
                 break;
             case TutorialStep.ShowPlayerAttack:
                 nextButton.interactable = false;
-                DiceMgr.Instance.tutorialControl = true;
-                DiceMgr.Instance.tutorialControlMode = 2;
+                diceMgr.tutorialControl = true;
+                diceMgr.tutorialControlMode = 2;
                 break;
             case TutorialStep.ShowEnemyAttack:
                 if (!eventTrigger)
@@ -199,14 +209,14 @@ public class Tutorial : MonoBehaviour
                     tutorialText.gameObject.SetActive(false);
                     eventTrigger = true;
                     tutorialPanel.gameObject.transform.position = panelPos.gameObject.transform.position;
-                    GameMgr.Instance.tutorialMode = true;
+                    gameMgr.tutorialMode = true;
                 }
                 if (eventCount == 1)
                 {
                     tutorialText.gameObject.SetActive(true);
                     nextButton.interactable = true;
-                    DiceMgr.Instance.tutorialControlMode = 0;
-                    DiceMgr.Instance.onDiceRoll = true;
+                    diceMgr.tutorialControlMode = 0;
+                    diceMgr.onDiceRoll = true;
                 }
                 break;
             case TutorialStep.ShowEnemyDamageCalculation:
@@ -225,13 +235,13 @@ public class Tutorial : MonoBehaviour
                 if (!eventTrigger)
                 {
                     eventTrigger = true;
-                    DiceMgr.Instance.manipulList[1] = 0;
-                    DiceMgr.Instance.TutorialButtonControl(false);
-                    DiceMgr.Instance.tutorialControl = false;
-                    GameMgr.Instance.tutorialMode = false;
+                    diceMgr.manipulList[1] = 0;
+                    diceMgr.TutorialButtonControl(false);
+                    diceMgr.tutorialControl = false;
+                    gameMgr.tutorialMode = false;
                     tutorialPanel.gameObject.SetActive(false);
-                    DiceMgr.Instance.DiceTwo();
-                    DiceMgr.Instance.DiceRoll(true);
+                    diceMgr.DiceTwo();
+                    diceMgr.DiceRoll(true);
                 }
                 break;
 
@@ -280,31 +290,31 @@ public class Tutorial : MonoBehaviour
         textCount = -1;
         eventTrigger = false;
         eventCount = 0;
-        DiceMgr.Instance.StopAllActiveCoroutines();
+        diceMgr.StopAllActiveCoroutines();
 
         dices.color = UsedColor.usedColor;
         damage.color = UsedColor.whiteColor;
         ranks.color = UsedColor.whiteColor;
 
-        DiceMgr.Instance.tutorialControl = false;
-        Instance.tutorialMode = false;
+        diceMgr.tutorialControl = false;
+        gameMgr.tutorialMode = false;
         //DiceMgr.Instance.onDiceRoll = false;
         tutorialPanel.gameObject.SetActive(false);
         skipButton.gameObject.SetActive(false);
         skipPanel.gameObject.SetActive(false);
 
-        DiceMgr.Instance.TutorialButtonControl(false);
-        DiceMgr.Instance.manipulList[1] = 0;
+        diceMgr.TutorialButtonControl(false);
+        diceMgr.manipulList[1] = 0;
         //DiceMgr.Instance.selectedDice.Clear();
 
-        Destroy(StageMgr.Instance.enemies[0].gameObject);
-        StageMgr.Instance.enemies.Clear();
+        Destroy(stageMgr.enemies[0].gameObject);
+        stageMgr.enemies.Clear();
         PlayerPrefs.SetInt("Tutorial", 1);
         //DiceMgr.Instance.InfoClear();
         //Instance.currentDiceCount = DiceCount.three;
         //DiceMgr.Instance.DiceThree();
         //DiceMgr.Instance.DiceRoll();
-        Instance.ui.GetDice();
+        gameMgr.ui.GetDice();
     }
 
 }

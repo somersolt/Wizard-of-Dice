@@ -5,64 +5,11 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-public class AttackEventArgs : EventArgs
-{
-    public int value { get; }
-    public int target { get; }
 
-    public AttackEventArgs(int param1, int param2)
-    {
-        value = param1;
-        target = param2;
-    }
-
-}
-
-public delegate void AttackEventHandler(object sender, AttackEventArgs e);
-
-public class AttackEventPublisher
-{
-    public event AttackEventHandler AttackEvent;
-
-    public void RaiseEvent(int param1, int param2)
-    {
-        AttackEvent?.Invoke(this, new AttackEventArgs(param1, param2));
-    }
-}
-
-
-
-public class AttackEventListener
-{
-    public void AttackHandleEvent(object sender, AttackEventArgs e)
-    {
-        GameMgr.Heal(GameMgr.Instance.currentRecovery, GameMgr.Instance.currentBarrier);
-        GameMgr.Instance.HpUpText.text = " ";
-        GameMgr.Instance.BarrierUpText.text = " ";
-        Enemy[] targets = new Enemy[Math.Min(GameMgr.Instance.currentTarget, StageMgr.Instance.enemies.Count)];
-
-        for (int i = 0; i < targets.Length; i++)
-        {
-            targets[i] = StageMgr.Instance.enemies[i];
-        }
-
-        for (int i = 0; i < targets.Length; i++)
-        {
-            targets[i].OnDamage(e.value);
-        }
-
-    }
-}
 
 public class GameMgr : MonoBehaviour
 {
-    private Mediator mediator;
-
-    public void Initialize(Mediator mediator)
-    {
-        this.mediator = mediator;
-    }
-
+    public Mediator mediator;
     private DiceMgr diceMgr;
     private StageMgr stageMgr;
 
@@ -90,9 +37,6 @@ public class GameMgr : MonoBehaviour
         get { return currentStatus; }
         set { currentStatus = value; }
     }
-
-    AttackEventPublisher publisher = new AttackEventPublisher();
-    AttackEventListener listener = new AttackEventListener();
 
     public int currentTurn = 1;
     [SerializeField]
@@ -186,8 +130,6 @@ public class GameMgr : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        diceMgr = mediator.diceMgr;
-        stageMgr = mediator.stageMgr;
 
         for (int i = 0; i < ranksInfo.Length; i++)
         {
@@ -210,8 +152,8 @@ public class GameMgr : MonoBehaviour
             ui.rewardList.Add(spells);
         }
 
-        TurnUpdate(10);
-        publisher.AttackEvent += listener.AttackHandleEvent;// 이벤트에 이벤트 핸들러 메서드를 추가
+        EventBus.Subscribe(EventType.PlayerAttack, PlayerAttackEffect);
+
         option.onClick.AddListener(() => pauseGame());
         currentMagicInfo.onClick.AddListener(() => { ui.magicInfoPanel.SetActive(true); ui.BackGroundPanel.SetActive(true); ui.toggleMagicInfo(false); ui.magicInfoToggle.isOn = false; });
         getMagicInfo.onClick.AddListener(() => { ui.magicInfoPanel.SetActive(true); ui.BackGroundPanel.SetActive(true); ui.toggleMagicInfo(true); ui.magicInfoToggle.isOn = true; });
@@ -223,6 +165,10 @@ public class GameMgr : MonoBehaviour
 
     private void Start()
     {
+        diceMgr = mediator.diceMgr;
+        stageMgr = mediator.stageMgr;
+
+        TurnUpdate(10);
         currentDiceCount = DiceCount.two;
         diceMgr.DiceTwo();
         ScrollsClear();
@@ -665,7 +611,7 @@ public class GameMgr : MonoBehaviour
         currentRanks = ranks;
         currentValue = value;
 
-        currentDamage = DamageCheckSystem.DamageCheck(currentValue, RankList, currentRanks);
+        currentDamage = DamageCheckSystem.DamageCheck(currentValue, RankList, currentRanks, this, diceMgr);
         damageInfo.text = currentDamage.ToString();
         targetInfo.text = currentTarget.ToString();
 
@@ -808,7 +754,22 @@ public class GameMgr : MonoBehaviour
         {
             audioSource.PlayOneShot(audioClips[5]);
         }
-        publisher.RaiseEvent(currentDamage, currentTarget);
+
+        Heal(currentRecovery, currentBarrier);
+        HpUpText.text = " ";
+        BarrierUpText.text = " ";
+        Enemy[] targets = new Enemy[Math.Min(currentTarget, stageMgr.enemies.Count)];
+
+        for (int i = 0; i < targets.Length; i++)
+        {
+            targets[i] = stageMgr.enemies[i];
+        }
+
+        for (int i = 0; i < targets.Length; i++)
+        {
+            targets[i].OnDamage(currentDamage);
+        }
+
     }
 
     IEnumerator MonsterEffect()

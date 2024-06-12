@@ -5,13 +5,7 @@ using UnityEngine.UI;
 
 public class StageMgr : MonoBehaviour
 {
-    private Mediator mediator;
-
-    public void Initialize(Mediator mediator)
-    {
-        this.mediator = mediator;
-    }
-
+    public Mediator mediator;
     private GameMgr gameMgr;
     private DiceMgr diceMgr;
 
@@ -48,13 +42,15 @@ public class StageMgr : MonoBehaviour
     public EnemySpawner enemySpawner;
     private void Awake()
     {
-
-        gameMgr = mediator.gameMgr;
-        diceMgr = mediator.diceMgr;
-
         latStage = 7;
         lastField = 4;
         bossGimic.onValueChanged.AddListener((isOn) => OnToggleValueChanged(isOn));
+    }
+
+    private void Start()
+    {
+        gameMgr = mediator.gameMgr;
+        diceMgr = mediator.diceMgr;
     }
     public void GameStart()
     {
@@ -88,7 +84,7 @@ public class StageMgr : MonoBehaviour
                 currentField++;
             }
 
-            SaveLoadSystem.Save();
+            SaveLoadSystem.Save(gameMgr, this);
         }
 
         if (currentField == 3 || currentField == 4)

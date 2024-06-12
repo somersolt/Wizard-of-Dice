@@ -19,7 +19,7 @@ public static class DamageCheckSystem
         rankids.Add((int)RanksIds.KindOf5);
     }
 
-    public static int DamageCheck(int value, int[] ranks, RanksFlag checkedlist)
+    public static int DamageCheck(int value, int[] ranks, RanksFlag checkedlist, GameMgr gameMgr, DiceMgr diceMgr)
     {
         int totalvalue = value;
         int sum = 0;
@@ -28,9 +28,9 @@ public static class DamageCheckSystem
         int recovery = 0;
         int target = 1;
 
-        if (GameMgr.Instance.artifact.playersArtifacts[6] == 1) //7번 유물
+        if (gameMgr.artifact.playersArtifacts[6] == 1) //7번 유물
         {
-            totalvalue += DiceMgr.Instance.numbersCount[0] * GameMgr.Instance.artifact.valueData.Value6;
+            totalvalue += diceMgr.numbersCount[0] * gameMgr.artifact.valueData.Value6;
         }
         for (int i = 0; i < ranks.Length; i++)
         {
@@ -50,24 +50,24 @@ public static class DamageCheckSystem
             }
         }
 
-        if (GameMgr.Instance.artifact.playersArtifacts[4] == 1 && GameMgr.Instance.currentDiceCount == GameMgr.DiceCount.three)
+        if (gameMgr.artifact.playersArtifacts[4] == 1 && gameMgr.currentDiceCount == GameMgr.DiceCount.three)
         {
-            multiple += GameMgr.Instance.artifact.valueData.Value4; // 유물 5번
+            multiple += gameMgr.artifact.valueData.Value4; // 유물 5번
         }
 
 
-        GameMgr.Instance.ui.damages[0].text = totalvalue.ToString();
-        GameMgr.Instance.ui.damages[1].text = GameMgr.Instance.curruntBonusStat.ToString();
-        GameMgr.Instance.ui.damages[2].text = sum.ToString();
-        GameMgr.Instance.ui.damages[3].text = multiple.ToString() + '%';
+        gameMgr.ui.damages[0].text = totalvalue.ToString();
+        gameMgr.ui.damages[1].text = gameMgr.curruntBonusStat.ToString();
+        gameMgr.ui.damages[2].text = sum.ToString();
+        gameMgr.ui.damages[3].text = multiple.ToString() + '%';
 
-        sum += GameMgr.Instance.curruntBonusStat;
+        sum += gameMgr.curruntBonusStat;
 
-        GameMgr.Instance.ui.damages[4].text = ((totalvalue + sum) * (100 + multiple) / 100).ToString();
+        gameMgr.ui.damages[4].text = ((totalvalue + sum) * (100 + multiple) / 100).ToString();
 
-        GameMgr.Instance.currentTarget = target;
-        GameMgr.Instance.currentBarrier = barrier;
-        GameMgr.Instance.currentRecovery = recovery;
+        gameMgr.currentTarget = target;
+        gameMgr.currentBarrier = barrier;
+        gameMgr.currentRecovery = recovery;
 
         return (totalvalue + sum) * (100 + multiple) / 100;
 

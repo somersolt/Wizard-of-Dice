@@ -15,11 +15,6 @@ public class Mediator : MonoBehaviour
         gameMgr = FindObjectOfType<GameMgr>();
         stageMgr = FindObjectOfType<StageMgr>();
         diceMgr = FindObjectOfType<DiceMgr>();
-
-        gameMgr.Initialize(this);
-        stageMgr.Initialize(this);
-        diceMgr.Initialize(this);
-
     }
 
 }

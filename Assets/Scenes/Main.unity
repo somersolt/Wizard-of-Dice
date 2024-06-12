@@ -15699,6 +15699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8047508003bcc8744a94cab2099f81ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mediator: {fileID: 714457847}
   tutorial: {fileID: 878964856}
   tutorialMode: 0
   ui: {fileID: 395071574}
@@ -21430,6 +21431,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &714457845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 714457846}
+  - component: {fileID: 714457847}
+  m_Layer: 0
+  m_Name: Mediator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &714457846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714457845}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 858180976}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &714457847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714457845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8710484a7359b194dbe8fe991a9a875d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameMgr: {fileID: 0}
+  stageMgr: {fileID: 0}
+  diceMgr: {fileID: 0}
 --- !u!1 &719761574
 GameObject:
   m_ObjectHideFlags: 0
@@ -25907,6 +25955,7 @@ Transform:
   - {fileID: 958029244}
   - {fileID: 1499820767}
   - {fileID: 528497430}
+  - {fileID: 714457846}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &859678209
@@ -35961,6 +36010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2af77792a099654884d397308a684da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mediator: {fileID: 714457847}
   StageInfo: {fileID: 1735134947}
   currentStage: 0
   currentField: 0
@@ -44209,6 +44259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127510344c17058478440c8cc2a73379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mediator: {fileID: 714457847}
   onDiceRoll: 0
   SpinControlers:
   - {fileID: 2090748552}
