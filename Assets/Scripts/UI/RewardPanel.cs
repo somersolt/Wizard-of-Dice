@@ -102,7 +102,7 @@ public class RewardPanel : Panel
         {
             rewards[2].onClick.AddListener(() => GetStatus(mediator.gameMgr.artifact.valueData.Stat1));
         }
-        OpenPanel();
+        SlideOpenPanel();
     }
 
 
@@ -177,7 +177,7 @@ public class RewardPanel : Panel
             }
         }
         mediator.gameMgr.CurrentStatus = GameMgr.TurnStatus.PlayerDice;
-        mediator.ui.BackGroundPanel.gameObject.SetActive(false);
+        mediator.ui.backGroundPanel.gameObject.SetActive(false);
 
         if (mode != RewardMode.Event)
         {

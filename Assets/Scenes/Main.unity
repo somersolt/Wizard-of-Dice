@@ -1050,6 +1050,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediator: {fileID: 0}
+  eventTextPanelButton: {fileID: 544400423}
+  eventFace: {fileID: 1779531220}
+  eventText: {fileID: 1218424252}
+  eventName: {fileID: 419621466}
 --- !u!1 &23177388
 GameObject:
   m_ObjectHideFlags: 0
@@ -2152,6 +2156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediator: {fileID: 0}
+  eventPanelButton: {fileID: 41350144}
 --- !u!1 &45170227
 GameObject:
   m_ObjectHideFlags: 0
@@ -2798,7 +2803,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 460, y: -553.813}
+  m_AnchoredPosition: {x: 460, y: -553.8855}
   m_SizeDelta: {x: 820, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &70626624
@@ -10820,6 +10825,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediator: {fileID: 0}
+  getDiceImage: {fileID: 1587743031}
+  diceRewardConfirm: {fileID: 163821639}
 --- !u!1 &366089943
 GameObject:
   m_ObjectHideFlags: 0
@@ -12257,98 +12264,17 @@ MonoBehaviour:
   maxSpellRewardPanel: {fileID: 211748146}
   diceRewardPanel: {fileID: 1310011775}
   artifactRewardPanel: {fileID: 620138713}
-  getDicePanel: {fileID: 348038058}
-  getDiceImage: {fileID: 1587743031}
-  diceRewardConfirm: {fileID: 163821639}
-  magicInfoToggle: {fileID: 2055578221}
-  magicInfoToggleText: {fileID: 1645240348}
-  magicInfoPanel: {fileID: 1755673386}
-  DamageInfoButton: {fileID: 666418766}
-  infoMagics:
-  - {fileID: 1475763838}
-  - {fileID: 917820684}
-  - {fileID: 733278676}
-  - {fileID: 1740820127}
-  - {fileID: 1060366158}
-  - {fileID: 865746536}
-  - {fileID: 1793055711}
-  - {fileID: 1278615177}
-  - {fileID: 1099333428}
-  infoMagicnames:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  infoMagicInfos:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  infoMagicLevels:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  infoMagicstars:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  magicExitButton: {fileID: 1594914452}
-  damageInfoPanel: {fileID: 1094446326}
-  damages:
-  - {fileID: 803157482}
-  - {fileID: 1531089785}
-  - {fileID: 1892318639}
-  - {fileID: 1730694878}
-  - {fileID: 1152850591}
-  damageExitButton: {fileID: 1897467079}
-  evenetPanel: {fileID: 44299356}
-  evenetTextPanel: {fileID: 20910846}
-  eventPanelButton: {fileID: 41350144}
-  eventTextPanelButton: {fileID: 544400423}
-  eventFace: {fileID: 1779531220}
-  eventText: {fileID: 1218424252}
-  eventName: {fileID: 419621466}
-  rewardText: {fileID: 1671236810}
-  artifactInfo:
-  - {fileID: 1048785853}
-  - {fileID: 1938009603}
-  - {fileID: 23177390}
-  playerArtifactPanel: {fileID: 1762972508}
-  playerArtifacts:
-  - {fileID: 10731971}
-  - {fileID: 287449718}
-  - {fileID: 1999355778}
-  playerArtifactButton: {fileID: 383985114}
-  playerArtifactQuitButton: {fileID: 216662992}
-  PausePanel: {fileID: 1753722628}
-  ReturnButton: {fileID: 1772966203}
-  QuitGame: {fileID: 789417001}
-  QuitPanel: {fileID: 605667522}
-  QuitYes: {fileID: 1051854488}
-  QuitNo: {fileID: 1696649302}
-  BackGroundPanel: {fileID: 2077191143}
+  magicInfoPanel: {fileID: 1755673392}
+  damageInfoPanel: {fileID: 1094446332}
+  getDicePanel: {fileID: 348038063}
+  playerArtifactPanel: {fileID: 1762972514}
+  evenetPanel: {fileID: 44299361}
+  evenetTextPanel: {fileID: 20910851}
+  pausePanel: {fileID: 1753722633}
+  titlePanel: {fileID: 605667527}
+  backGroundPanel: {fileID: 2077191143}
+  currentMagicInfo: {fileID: 1353808457}
+  getMagicInfo: {fileID: 976115398}
   audioSource: {fileID: 395071575}
   uiAudioClips:
   - {fileID: 8300000, guid: e1e89998bfcd6844f9141a05c8f53869, type: 3}
@@ -15049,7 +14975,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 460, y: -341.9065}
+  m_AnchoredPosition: {x: 460, y: -341.95}
   m_SizeDelta: {x: 820, y: 223.813}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &494088340
@@ -15770,8 +15696,6 @@ MonoBehaviour:
   - {fileID: 227934378}
   damageInfo: {fileID: 288371096}
   targetInfo: {fileID: 1401865474}
-  currentMagicInfo: {fileID: 1353808457}
-  getMagicInfo: {fileID: 976115398}
   currentDamage: 0
   currentBarrier: 0
   currentRecovery: 0
@@ -18215,6 +18139,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediator: {fileID: 0}
+  QuitYes: {fileID: 1051854488}
+  QuitNo: {fileID: 1696649302}
 --- !u!1 &612735251
 GameObject:
   m_ObjectHideFlags: 0
@@ -31406,7 +31332,7 @@ GameObject:
   - component: {fileID: 1094446331}
   - component: {fileID: 1094446332}
   m_Layer: 5
-  m_Name: InfomationPanel
+  m_Name: DamageInfoPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31510,6 +31436,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediator: {fileID: 0}
+  damages:
+  - {fileID: 803157482}
+  - {fileID: 1531089785}
+  - {fileID: 1892318639}
+  - {fileID: 1730694878}
+  - {fileID: 1152850591}
+  damageExitButton: {fileID: 1897467079}
 --- !u!1 &1099333423
 GameObject:
   m_ObjectHideFlags: 0
@@ -36586,7 +36519,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 515.419, y: -1078.2598}
+  m_AnchoredPosition: {x: 515.419, y: -1092.5098}
   m_SizeDelta: {x: 930.838, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1292468403
@@ -36777,6 +36710,7 @@ MonoBehaviour:
   - {fileID: 1711232030}
   - {fileID: 1885614415}
   - {fileID: 1633919376}
+  rewardText: {fileID: 1671236810}
 --- !u!1 &1313012294
 GameObject:
   m_ObjectHideFlags: 0
@@ -40165,7 +40099,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 460, y: -130}
+  m_AnchoredPosition: {x: 460, y: -130.01451}
   m_SizeDelta: {x: 820, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1450216211
@@ -43474,7 +43408,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 515.419, y: -382.26227}
+  m_AnchoredPosition: {x: 515.419, y: -387.01227}
   m_SizeDelta: {x: 930.838, y: 355.116}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1583085199
@@ -48715,6 +48649,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediator: {fileID: 0}
+  ReturnButton: {fileID: 1772966203}
+  QuitGame: {fileID: 789417001}
 --- !u!1 &1755673386
 GameObject:
   m_ObjectHideFlags: 0
@@ -48848,6 +48784,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediator: {fileID: 0}
+  magicInfoToggle: {fileID: 2055578221}
+  magicInfoToggleText: {fileID: 1645240348}
+  DamageInfoButton: {fileID: 666418766}
+  infoMagics:
+  - {fileID: 1475763838}
+  - {fileID: 917820684}
+  - {fileID: 733278676}
+  - {fileID: 1740820127}
+  - {fileID: 1060366158}
+  - {fileID: 865746536}
+  - {fileID: 1793055711}
+  - {fileID: 1278615177}
+  - {fileID: 1099333428}
+  infoMagicstars:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  magicExitButton: {fileID: 1594914452}
 --- !u!1 &1757319990
 GameObject:
   m_ObjectHideFlags: 0
@@ -49014,6 +48974,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediator: {fileID: 0}
+  playerArtifacts:
+  - {fileID: 10731971}
+  - {fileID: 287449718}
+  - {fileID: 1999355778}
+  playerArtifactButton: {fileID: 383985114}
+  playerArtifactQuitButton: {fileID: 216662992}
+  artifactInfo:
+  - {fileID: 1048785853}
+  - {fileID: 1938009603}
+  - {fileID: 23177390}
 --- !u!1 &1765152472
 GameObject:
   m_ObjectHideFlags: 0
@@ -59772,7 +59742,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 515.419, y: -794.04004}
+  m_AnchoredPosition: {x: 515.419, y: -803.54004}
   m_SizeDelta: {x: 930.838, y: 359.031}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2147169099

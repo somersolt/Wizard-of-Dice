@@ -80,8 +80,7 @@ public class GameMgr : MonoBehaviour
     private TextMeshProUGUI damageInfo;
     [SerializeField]
     private TextMeshProUGUI targetInfo;
-    public Button currentMagicInfo;
-    public Button getMagicInfo;
+
     [HideInInspector]
     public int currentDamage;
     [HideInInspector]
@@ -159,8 +158,6 @@ public class GameMgr : MonoBehaviour
         EventBus.Subscribe(EventType.MonsterAttack, MonsterAttack);
 
         option.onClick.AddListener(() => pauseGame());
-        currentMagicInfo.onClick.AddListener(() => { mediator.ui.magicInfoPanel.SetActive(true); mediator.ui.BackGroundPanel.SetActive(true); mediator.ui.toggleMagicInfo(false); mediator.ui.magicInfoToggle.isOn = false; });
-        getMagicInfo.onClick.AddListener(() => { mediator.ui.magicInfoPanel.SetActive(true); mediator.ui.BackGroundPanel.SetActive(true); mediator.ui.toggleMagicInfo(true); mediator.ui.magicInfoToggle.isOn = true; });
         quit.onClick.AddListener(() => QuitGame());
         cancle.onClick.AddListener(() => { onBackButton = false; QuitPanel.gameObject.SetActive(false); });
         enemyDiceCount = 1;
@@ -585,9 +582,7 @@ public class GameMgr : MonoBehaviour
             BarrierUpText.text = string.Empty;
         }
 
-        currentMagicInfo.interactable = true;
-        mediator.ui.magicInfoToggle.interactable = true;
-
+        mediator.ui.SetInfomationButton(true);
 
         for (int i = 0; i < ranksInfo.Length; i++)
         {
@@ -616,40 +611,8 @@ public class GameMgr : MonoBehaviour
         {
             if (rankList[i] != 0)
             {
-                var magic = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(RankIdsToInt.rankids[i] + rankList[i] - 1);
-                mediator.ui.infoMagicnames[i].text = magic.GetName;
-                mediator.ui.infoMagicInfos[i].text = magic.GetDesc;
-                StringBuilder newText = new StringBuilder();
-                newText.Append(magic.GetName);
-
-                switch (rankList[i])
-                {
-                    case 1:
-                        newText.Append("- 일반");
-                        mediator.ui.infoMagicLevels[i].text = "일반";
-                        mediator.ui.infoMagicLevels[i].color = Color.white;
-                        mediator.ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_1"));
-                        break;
-                    case 2:
-                        newText.Append("- 강화");
-                        mediator.ui.infoMagicLevels[i].text = "강화";
-                        mediator.ui.infoMagicLevels[i].color = Color.green;
-                        mediator.ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_2"));
-                        break;
-                    case 3:
-                        newText.Append("- 숙련");
-                        mediator.ui.infoMagicLevels[i].text = "숙련";
-                        mediator.ui.infoMagicLevels[i].color = Color.yellow;
-                        mediator.ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_3"));
-                        break;
-                    case 4:
-                        newText.Append("- 초월");
-                        mediator.ui.infoMagicLevels[i].text = "초월";
-                        mediator.ui.infoMagicLevels[i].color = Color.red;
-                        mediator.ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_4"));
-                        break;
-                }
-                ranksInfo[i].text = newText.ToString();
+                var spell = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(RankIdsToInt.rankids[i] + rankList[i] - 1);
+                ranksInfo[i].text = mediator.ui.magicInfoPanel.MagicInfomationUpdate(i, spell, rankList[i]);
             }
         }
     }
@@ -729,17 +692,8 @@ public class GameMgr : MonoBehaviour
         }
         damageInfo.text = "공격력";
         targetInfo.text = "타겟";
-        currentMagicInfo.interactable = false;
-            mediator.ui.magicInfoToggle.interactable = false;
-
-        for (int i = 0; i < 5; i++)
-        {
-            mediator.ui.damages[i].text = string.Empty;
-        }
-        for (int i = 0; i < 9; i++)
-        {
-            mediator.ui.infoMagics[i].gameObject.SetActive(false);
-        }
+        mediator.ui.SetInfomationButton(false);
+        mediator.ui.InfomationClear();
         scrollsound = 0;
     }
 
@@ -794,7 +748,7 @@ public class GameMgr : MonoBehaviour
         if (stageMgr.tutorialStage == stageMgr.currentStage)
         {
             PlayerPrefs.SetInt("Tutorial", 1);
-            mediator.ui.GetDice();
+            mediator.ui.getDicePanel.GetDice();
             return;
         }
         if (stageMgr.currentStage == stageMgr.lastStage)
@@ -905,10 +859,17 @@ public class GameMgr : MonoBehaviour
         PlayerHpMax += i;
     }
 
+    public void StatusEffectsUpdate(int target, int barrier, int recovery)
+    {
+        currentTarget = target;
+        currentBarrier = barrier;
+        currentRecovery = recovery;
+    }
+
     public void UseArtifact8()
     {
         artifact.playersArtifacts[7] = 2;
-        foreach (var a in mediator.ui.artifactInfo)
+        foreach (var a in mediator.ui.playerArtifactPanel.artifactInfo)
         {
             if (a.text == "원코인 추가")
             {
@@ -988,7 +949,7 @@ public class GameMgr : MonoBehaviour
                 if (a.ID == artifact.playersArtifactsNumber[0])
                 {
                     artifact.artifacts.Remove(a);
-                    mediator.ui.ArtifactUpdate(a, 0);
+                    mediator.ui.playerArtifactPanel.ArtifactUpdate(a, 0);
                     LoadArtifactCheck(a.ID);
                     break;
                 }
@@ -1001,7 +962,7 @@ public class GameMgr : MonoBehaviour
                     if (a.ID == artifact.playersArtifactsNumber[1])
                     {
                         artifact.artifacts.Remove(a);
-                        mediator.ui.ArtifactUpdate(a, 1);
+                        mediator.ui.playerArtifactPanel.ArtifactUpdate(a, 1);
                         LoadArtifactCheck(a.ID);
                         break;
                     }
@@ -1013,7 +974,7 @@ public class GameMgr : MonoBehaviour
                         if (a.ID == artifact.playersArtifactsNumber[2])
                         {
                             artifact.artifacts.Remove(a);
-                            mediator.ui.ArtifactUpdate(a, 2);
+                            mediator.ui.playerArtifactPanel.ArtifactUpdate(a, 2);
                             LoadArtifactCheck(a.ID);
                             break;
                         }
@@ -1052,8 +1013,8 @@ public class GameMgr : MonoBehaviour
     private void pauseGame()
     {
         Time.timeScale = 0;
-        mediator.ui.PausePanel.gameObject.SetActive(true);
-        mediator.ui.BackGroundPanel.gameObject.SetActive(true);
+        mediator.ui.pausePanel.gameObject.SetActive(true);
+        mediator.ui.backGroundPanel.gameObject.SetActive(true);
     }
 
 

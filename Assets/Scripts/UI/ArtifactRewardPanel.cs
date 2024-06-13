@@ -44,7 +44,7 @@ public class ArtifactRewardPanel : Panel
             }
         }
 
-        OpenPanel();
+        SlideOpenPanel();
     }
 
 
@@ -57,7 +57,7 @@ public class ArtifactRewardPanel : Panel
             {
                 artifactData.ONARTIFACT = true;
                 mediator.gameMgr.artifact.playersArtifacts[artifactData.ID]++;
-                mediator.ui.ArtifactUpdate(artifactData, mediator.stageMgr.currentField - 1);
+                mediator.ui.playerArtifactPanel.ArtifactUpdate(artifactData, mediator.stageMgr.currentField - 1);
                 continue;
             }
 

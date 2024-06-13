@@ -12,6 +12,7 @@ public static class DamageCheckSystem
         int barrier = 0;
         int recovery = 0;
         int target = 1;
+        int result = 0;
 
         if (gameMgr.artifact.playersArtifacts[6] == 1) //7번 유물
         {
@@ -40,21 +41,11 @@ public static class DamageCheckSystem
             multiple += gameMgr.artifact.valueData.Value4; // 유물 5번
         }
 
+        result = (totalvalue + sum + gameMgr.curruntBonusStat) * (100 + multiple) / 100;
+        ui.damageInfoPanel.DamageInfoUpdate(totalvalue, gameMgr.curruntBonusStat, sum, multiple, result);
+        gameMgr.StatusEffectsUpdate(target, barrier, recovery);
 
-        ui.damages[0].text = totalvalue.ToString(); //TO-DO 직접
-        ui.damages[1].text = gameMgr.curruntBonusStat.ToString();
-        ui.damages[2].text = sum.ToString();
-        ui.damages[3].text = multiple.ToString() + '%';
-
-        sum += gameMgr.curruntBonusStat;
-
-        ui.damages[4].text = ((totalvalue + sum) * (100 + multiple) / 100).ToString();
-
-        gameMgr.currentTarget = target;
-        gameMgr.currentBarrier = barrier;
-        gameMgr.currentRecovery = recovery;
-
-        return (totalvalue + sum) * (100 + multiple) / 100;
+        return result;
 
         //( 주사위 눈금 총합 + 마법서 합연산 추가 값 ) x (100 + 마법서 곱연산 추가 값) / 100
     }

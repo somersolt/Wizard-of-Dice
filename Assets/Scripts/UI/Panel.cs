@@ -12,23 +12,26 @@ public class Panel : MonoBehaviour
         mediator = FindObjectOfType<Mediator>();
     }
 
-    protected virtual void OpenPanel()
+
+    public virtual void SlideOpenPanel()
     {
-        mediator = FindObjectOfType<Mediator>();
         gameObject.SetActive(true);
-        mediator.ui.BackGroundPanel.gameObject.SetActive(true);
+        mediator.ui.backGroundPanel.gameObject.SetActive(true);
         StartCoroutine(PanelSlide(this));
+    }
+    public virtual void OpenPanel()
+    {
+        gameObject.SetActive(true);
+        mediator.ui.backGroundPanel.gameObject.SetActive(true);
     }
 
     protected virtual void ClosePanel()
     {
-        mediator = FindObjectOfType<Mediator>();
         gameObject.SetActive(false);
-        mediator.ui.BackGroundPanel.gameObject.SetActive(false);
+        mediator.ui.backGroundPanel.gameObject.SetActive(false);
     }
     protected void RewardSound(int i)
     {
-        mediator = FindObjectOfType<Mediator>();
         mediator.ui.audioSource.PlayOneShot(mediator.ui.uiAudioClips[i]);
     }
 

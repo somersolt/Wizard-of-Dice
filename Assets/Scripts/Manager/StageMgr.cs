@@ -105,7 +105,7 @@ public class StageMgr : MonoBehaviour
             gameMgr.artifact.valueData.Stat1 = 5;
         }
 
-        mediator.ui.ArtifactInfoUpdate();
+        mediator.ui.playerArtifactPanel.ArtifactInfoUpdate();
 
         stageInfo.text = $"Stage \n {currentField} - {currentStage}";
         var path = currentField.ToString() + currentStage.ToString();
@@ -122,7 +122,7 @@ public class StageMgr : MonoBehaviour
         }
         else if (currentStage == eventStage)
         {
-            mediator.ui.EventStage();
+            mediator.ui.evenetPanel.SlideOpenPanel();
             return;
         }
         else

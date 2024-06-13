@@ -33,7 +33,7 @@ public class MaxSpellPanel: Panel
             {
                 mediator.gameMgr.SetRankList(index);
                 maxSpells[index].gameObject.SetActive(false);
-                OpenPanel();
+                SlideOpenPanel();
                 RewardSound(2);
                 mediator.gameMgr.RanksListUpdate();
                 mediator.stageMgr.NextStage();

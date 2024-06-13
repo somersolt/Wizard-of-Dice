@@ -12,6 +12,7 @@ public class DIceRewardPanel : Panel
     private Button[] diceRewards = new Button[3];
     private TextMeshProUGUI[] diceRewardNames = new TextMeshProUGUI[3];
     private TextMeshProUGUI[] diceRewardInfos = new TextMeshProUGUI[3];
+    public TextMeshProUGUI rewardText;
 
     public override void Init()
     {
@@ -37,7 +38,7 @@ public class DIceRewardPanel : Panel
                     mediator.gameMgr.currentDiceCount = GameMgr.DiceCount.four;
                     mediator.gameMgr.GetDice4Ranks();
                     gameObject.SetActive(false);
-                    mediator.ui.GetDice();
+                    mediator.ui.getDicePanel.GetDice();
                 });
 
                 diceRewardNames[0].text = "주사위 개수 추가";
@@ -49,7 +50,7 @@ public class DIceRewardPanel : Panel
                     mediator.gameMgr.currentDiceCount = GameMgr.DiceCount.five;
                     mediator.gameMgr.GetDice5Ranks();
                     gameObject.SetActive(false);
-                    mediator.ui.GetDice();
+                    mediator.ui.getDicePanel.GetDice();
                 });
 
                 diceRewardNames[0].text = "주사위 개수 추가";
@@ -92,7 +93,7 @@ public class DIceRewardPanel : Panel
             }
         }
 
-        OpenPanel();
+        SlideOpenPanel();
     }
 
     private void DiceRewardClear()

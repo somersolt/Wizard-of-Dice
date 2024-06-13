@@ -307,7 +307,7 @@ public class Tutorial : MonoBehaviour
         Destroy(stageMgr.enemies[0].gameObject);
         stageMgr.enemies.Clear();
         PlayerPrefs.SetInt("Tutorial", 1);
-        mediator.ui.GetDice();
+        mediator.ui.getDicePanel.GetDice();
     }
 
 }
