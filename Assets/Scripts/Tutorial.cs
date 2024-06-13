@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +24,7 @@ public class Tutorial : MonoBehaviour
     private Button skipYes;
     [SerializeField]
     private Button skipNo;
+    [HideInInspector]
     public int textCount;
 
     [SerializeField]
@@ -37,6 +37,7 @@ public class Tutorial : MonoBehaviour
     private List<Coroutine> tutoCorutines = new List<Coroutine>(); // 内风凭包府磊
 
     bool eventTrigger;
+    [HideInInspector]
     public int eventCount = 0;
     private TutorialStep currentStep;
 
@@ -83,7 +84,7 @@ public class Tutorial : MonoBehaviour
         skipNo.onClick.AddListener(() => { skipPanel.gameObject.SetActive(false); });
         nextButton.onClick.AddListener(() => NextStep());
         textCount = 30005;
-        dices.color = UsedColor.usedColor;
+        dices.color = UsedColor.grayColor;
     }
 
     public void NextStep()
@@ -102,7 +103,7 @@ public class Tutorial : MonoBehaviour
             case TutorialStep.Welcome:
                 if (!eventTrigger)
                 {
-                    diceMgr.onDiceRoll = true;
+                    diceMgr.AllDIceAndButtonLock();
                     eventTrigger = true;
                 }
                 break;
@@ -117,12 +118,12 @@ public class Tutorial : MonoBehaviour
                 }
                 break;
             case TutorialStep.RollDicePrompt:
-                diceMgr.onDiceRoll = true;
+                diceMgr.AllDIceAndButtonLock();
                 break;
             case TutorialStep.RollDice:
                 if (!eventTrigger)
                 {
-                    dices.CrossFadeColor(UsedColor.usedColor, 1, true, true);
+                    dices.CrossFadeColor(UsedColor.grayColor, 1, true, true);
                     nextButton.interactable = false;
                     eventTrigger = true;
                     diceMgr.DiceRoll(true, GameMode.Tutorial);
@@ -130,7 +131,7 @@ public class Tutorial : MonoBehaviour
                 if (eventCount == 2)
                 {
                     nextButton.interactable = true;
-                    diceMgr.onDiceRoll = true;
+                    diceMgr.AllDIceAndButtonLock();
                 }
                 break;
             case TutorialStep.ShowMagicPower:
@@ -152,14 +153,13 @@ public class Tutorial : MonoBehaviour
                 break;
             case TutorialStep.LockAndRerollDice:
 
-                diceMgr.onDiceRoll = false;
                 if (!eventTrigger)
                 {
                     eventTrigger = true;
 
-                    diceMgr.ButtonSelect(0);
-                    diceMgr.tutorialControl = true;
-                    diceMgr.tutorialControlMode = 1;
+                    diceMgr.OnDiceButtonClick(0);
+                    diceMgr.tutorialMode = true;
+                    diceMgr.TutorialModeControl(1);
                     diceMgr.TutorialButtonControl(true);
                 }
                 nextButton.interactable = false;
@@ -168,16 +168,15 @@ public class Tutorial : MonoBehaviour
                 if (!eventTrigger)
                 {
                     eventTrigger = true;
-                    diceMgr.onDiceRoll = true;
-                    //DiceMgr.Instance.TutorialButtonControl(false);
+                    diceMgr.AllDIceAndButtonLock();
                     diceMgr.manipulList[1] = 4;
                 }
 
                 if (eventCount == 1)
                 {
                     nextButton.interactable = true;
-                    diceMgr.tutorialControlMode = 0;
-                    diceMgr.onDiceRoll = true;
+                    diceMgr.TutorialModeControl(0);
+                    diceMgr.AllDIceAndButtonLock();
                 }
                 break;
             case TutorialStep.ShowMagicDescription:
@@ -200,8 +199,8 @@ public class Tutorial : MonoBehaviour
                 break;
             case TutorialStep.ShowPlayerAttack:
                 nextButton.interactable = false;
-                diceMgr.tutorialControl = true;
-                diceMgr.tutorialControlMode = 2;
+                diceMgr.tutorialMode = true;
+                diceMgr.TutorialModeControl(2);
                 break;
             case TutorialStep.ShowEnemyAttack:
                 if (!eventTrigger)
@@ -215,8 +214,8 @@ public class Tutorial : MonoBehaviour
                 {
                     tutorialText.gameObject.SetActive(true);
                     nextButton.interactable = true;
-                    diceMgr.tutorialControlMode = 0;
-                    diceMgr.onDiceRoll = true;
+                    diceMgr.TutorialModeControl(0);
+                    diceMgr.AllDIceAndButtonLock();
                 }
                 break;
             case TutorialStep.ShowEnemyDamageCalculation:
@@ -237,10 +236,10 @@ public class Tutorial : MonoBehaviour
                     eventTrigger = true;
                     diceMgr.manipulList[1] = 0;
                     diceMgr.TutorialButtonControl(false);
-                    diceMgr.tutorialControl = false;
+                    diceMgr.tutorialMode = false;
                     gameMgr.tutorialMode = false;
                     tutorialPanel.gameObject.SetActive(false);
-                    diceMgr.DiceTwo();
+                    diceMgr.DiceSet();
                     diceMgr.DiceRoll(true);
                 }
                 break;
@@ -253,10 +252,10 @@ public class Tutorial : MonoBehaviour
     {
         while (currentStep == TutorialStep.ShowDice)
         {
-            dices.CrossFadeColor(new Color(113 / 255f, 255 / 255f, 0 / 255f), 1, true, true);
+            dices.CrossFadeColor(UsedColor.greenColor, 1, true, true);
             yield return new WaitForSecondsRealtime(1);
 
-            dices.CrossFadeColor(UsedColor.usedColor, 1, true, true);
+            dices.CrossFadeColor(UsedColor.grayColor, 1, true, true);
             yield return new WaitForSecondsRealtime(1);
         }
     }
@@ -265,7 +264,7 @@ public class Tutorial : MonoBehaviour
     {
         while (currentStep == TutorialStep.ShowMagicPower)
         {
-            damage.CrossFadeColor(new Color(113 / 255f, 255 / 255f, 0 / 255f), 1, true, true);
+            damage.CrossFadeColor(UsedColor.greenColor, 1, true, true);
             yield return new WaitForSecondsRealtime(1);
 
             damage.CrossFadeColor(Color.white, 1, true, true);
@@ -276,7 +275,7 @@ public class Tutorial : MonoBehaviour
     {
         while (currentStep == TutorialStep.ShowMagicDescription)
         {
-            ranks.CrossFadeColor(new Color(113 / 255f, 255 / 255f, 0 / 255f), 1, true, true);
+            ranks.CrossFadeColor(UsedColor.greenColor, 1, true, true);
             yield return new WaitForSecondsRealtime(1);
 
             ranks.CrossFadeColor(Color.white, 1, true, true);
@@ -292,29 +291,23 @@ public class Tutorial : MonoBehaviour
         eventCount = 0;
         diceMgr.StopAllActiveCoroutines();
 
-        dices.color = UsedColor.usedColor;
+        dices.color = UsedColor.grayColor;
         damage.color = UsedColor.whiteColor;
         ranks.color = UsedColor.whiteColor;
 
-        diceMgr.tutorialControl = false;
+        diceMgr.tutorialMode = false;
         gameMgr.tutorialMode = false;
-        //DiceMgr.Instance.onDiceRoll = false;
         tutorialPanel.gameObject.SetActive(false);
         skipButton.gameObject.SetActive(false);
         skipPanel.gameObject.SetActive(false);
 
         diceMgr.TutorialButtonControl(false);
         diceMgr.manipulList[1] = 0;
-        //DiceMgr.Instance.selectedDice.Clear();
 
         Destroy(stageMgr.enemies[0].gameObject);
         stageMgr.enemies.Clear();
         PlayerPrefs.SetInt("Tutorial", 1);
-        //DiceMgr.Instance.InfoClear();
-        //Instance.currentDiceCount = DiceCount.three;
-        //DiceMgr.Instance.DiceThree();
-        //DiceMgr.Instance.DiceRoll();
-        gameMgr.ui.GetDice();
+        mediator.ui.GetDice();
     }
 
 }

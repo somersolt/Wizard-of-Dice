@@ -28,6 +28,9 @@ public class Title : MonoBehaviour
 
     public Button returnTitle;
 
+    public BGM titleBgm;
+
+
     private void Awake()
     {
         startGame.onClick.AddListener(StartGame);
@@ -100,8 +103,8 @@ public class Title : MonoBehaviour
 
     private void GameScene()
     {
-        PlayerPrefs.SetFloat("BGM", BGM.Instance.masterVolume);
-        PlayerPrefs.SetFloat("SFX", BGM.Instance.SFXsound);
+        PlayerPrefs.SetFloat("BGM", titleBgm.masterVolume);
+        PlayerPrefs.SetFloat("SFX", titleBgm.SFXsound);
         SceneManager.LoadScene("Main");
     }
 

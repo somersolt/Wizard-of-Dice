@@ -5,25 +5,6 @@ using UnityEngine.UI;
 
 public class BGM : MonoBehaviour
 {
-    private static BGM instance;
-
-    public static BGM Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<BGM>();
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject("BGM");
-                    instance = obj.AddComponent<BGM>();
-                }
-            }
-            return instance;
-        }
-
-    }    // ΩÃ±€≈Ê ∆–≈œ
     [SerializeField]
     private Slider BGMsoundBar;
     public float SFXsound;
@@ -32,7 +13,7 @@ public class BGM : MonoBehaviour
 
     public AudioSource currentAudio;
     public AudioSource nextAudio;
-    public AudioClip[] bgm = new AudioClip[10];
+    public AudioClip[] bgmList = new AudioClip[10];
     private bool isFading = false;
     public float masterVolume = 1f;
 
@@ -46,14 +27,6 @@ public class BGM : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
         SoundValueUpdate();
         UpdateVolume();
         soundsetting = true;
@@ -71,129 +44,32 @@ public class BGM : MonoBehaviour
         }
     }
 
-    public AudioClip StartBgm(int i, int j)
+    public AudioClip GetBgmOnGameStart(int i, int j)
     {
-        if (i == 1)
+        if (j == 7)
         {
-            if (j == 7)
-            {
-                return bgm[2];
-            }
-            else
-            {
-                return bgm[3];
-            }
+            return bgmList[i*2 + 1];
         }
-
-        if (i == 2)
+        else
         {
-            if (j == 7)
-            {
-                return bgm[5];
-            }
-            else
-            {
-                return bgm[4];
-            }
+            return bgmList[i * 2];
         }
-
-        if (i == 3)
-        {
-            if (j == 7)
-            {
-                return bgm[7];
-            }
-            else
-            {
-                return bgm[6];
-            }
-        }
-
-        if (i == 4)
-        {
-            if (j == 7)
-            {
-                return bgm[9];
-            }
-            else
-            {
-                return bgm[8];
-            }
-        }
-
-        return null;
     }
 
-    public AudioClip ChangeBgm(int i, int j)
+    public AudioClip GetBgmOnNextStage(int i, int j)
     {
-        if (i == 1)
+        if (j == 7)
         {
-            if (j == 7)
-            {
-                return bgm[2];
-            }
-            else if (j == 1)
-            {
-                return bgm[3];
-            }
-            else
-            {
-                return null;
-            }
+            return bgmList[i * 2 + 1];
         }
-
-
-        if (i == 2)
+        else if(j == 1)
         {
-            if (j == 7)
-            {
-                return bgm[5];
-
-            }
-            else if (j == 1)
-            {
-                return bgm[4];
-            }
-            else
-            {
-                return null;
-            }
+            return bgmList[i * 2];
         }
-
-        if (i == 3)
+        else
         {
-            if (j == 7)
-            {
-                return bgm[7];
-
-            }
-            else if (j == 1)
-            {
-                return bgm[6];
-            }
-            else
-            {
-                return null;
-            }
+            return null;
         }
-
-        if (i == 4)
-        {
-            if (j == 7)
-            {
-                return bgm[9];
-            }
-            else if (j == 1)
-            {
-                return bgm[8];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        return null;
     }
 
     public void PlayBGM(AudioClip newClip, float fadeDuration)

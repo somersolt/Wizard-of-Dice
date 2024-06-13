@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,14 +14,19 @@ public class GameMgr : MonoBehaviour
     private DiceMgr diceMgr;
     private StageMgr stageMgr;
 
+    public void mediatorCaching()
+    {
+        diceMgr = mediator.diceMgr;
+        stageMgr = mediator.stageMgr;
+    }
 
     public Tutorial tutorial;
+    [HideInInspector]
     public bool tutorialMode;
-    public UI ui;
     public Artifact artifact;
 
     private bool onTicWait;
-    private int dodgeNuber;
+    private int dodgeNumber;
     public enum TurnStatus
     {
         PlayerDice = 0,
@@ -37,7 +43,7 @@ public class GameMgr : MonoBehaviour
         get { return currentStatus; }
         set { currentStatus = value; }
     }
-
+    [HideInInspector]
     public int currentTurn = 1;
     [SerializeField]
     private TextMeshProUGUI turnInfo;
@@ -58,10 +64,12 @@ public class GameMgr : MonoBehaviour
         five = 5,
     }
 
+    [HideInInspector]
     public DiceCount currentDiceCount;
-    int[] RankList = new int[(int)Ranks.count]; // 플레이어의 족보 리스트
+    int[] rankList = new int[(int)Ranks.count]; // 플레이어의 족보 리스트
     private RanksFlag currentRanks; //현재 주사위로 나온 족보
 
+    [HideInInspector]
     public int curruntBonusStat; // 추가 스탯 . 이거까지 저장해야됨
 
     [SerializeField]
@@ -74,15 +82,19 @@ public class GameMgr : MonoBehaviour
     private TextMeshProUGUI targetInfo;
     public Button currentMagicInfo;
     public Button getMagicInfo;
+    [HideInInspector]
     public int currentDamage;
+    [HideInInspector]
     public int currentBarrier;
+    [HideInInspector]
     public int currentRecovery;
+    [HideInInspector]
     public int currentTarget;
 
     public TextMeshProUGUI HpUpText;
     public TextMeshProUGUI BarrierUpText;
 
-
+    [HideInInspector]
     public int enemyValue;
     [SerializeField]
     private Image PlayerHpBarInfo;
@@ -101,15 +113,17 @@ public class GameMgr : MonoBehaviour
     /// </summary>
     private int livingMonster = 0;
     private int ticCount = 0;
+    [HideInInspector]
     public int monsterSignal = 0;
+    [HideInInspector]
     public int bossSignal = 0;
 
-    private bool onMonsterAttack = false;
-
-    public int AttackCount;
+    [HideInInspector]
+    public int attackCount;
+    [HideInInspector]
     public bool bossDoubleAttack;
-    private int BossShieldCount;
-    public int EnemyDiceCount;
+    [HideInInspector]
+    public int enemyDiceCount;
 
     [SerializeField]
     private Button option;
@@ -126,6 +140,7 @@ public class GameMgr : MonoBehaviour
     /// 소리 관련
     public AudioSource audioSource;
     public List<AudioClip> audioClips;
+    [HideInInspector]
     public int scrollsound = 0;
     /// </summary>
     private void Awake()
@@ -138,59 +153,61 @@ public class GameMgr : MonoBehaviour
         PlayerHp = PlayerHpMax;
         PlayerBarrier = PlayerBarrierStart;
         LifeUpdate();
-        RankList[0] = 1; // 원페어 등록
-        RanksListUpdate();
 
-        var onepair2 = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[0] + 1);
-        ui.rewardList.Add(onepair2);
 
-        // 상점 원페어 2레벨 등록
-        for (int i = 1; i < (int)Ranks.TwoPair; i++)
-        {
-            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]);
-            // 상점 트리플, 3스트레이트 1레벨 등록
-            ui.rewardList.Add(spells);
-        }
-
-        EventBus.Subscribe(EventType.PlayerAttack, PlayerAttackEffect);
+        EventBus.Subscribe(EventType.PlayerAttack, PlayerAttack);
+        EventBus.Subscribe(EventType.MonsterAttack, MonsterAttack);
 
         option.onClick.AddListener(() => pauseGame());
-        currentMagicInfo.onClick.AddListener(() => { ui.magicInfoPanel.SetActive(true); ui.BackGroundPanel.SetActive(true); ui.toggleMagicInfo(false); ui.magicInfoToggle.isOn = false; });
-        getMagicInfo.onClick.AddListener(() => { ui.magicInfoPanel.SetActive(true); ui.BackGroundPanel.SetActive(true); ui.toggleMagicInfo(true); ui.magicInfoToggle.isOn = true; });
+        currentMagicInfo.onClick.AddListener(() => { mediator.ui.magicInfoPanel.SetActive(true); mediator.ui.BackGroundPanel.SetActive(true); mediator.ui.toggleMagicInfo(false); mediator.ui.magicInfoToggle.isOn = false; });
+        getMagicInfo.onClick.AddListener(() => { mediator.ui.magicInfoPanel.SetActive(true); mediator.ui.BackGroundPanel.SetActive(true); mediator.ui.toggleMagicInfo(true); mediator.ui.magicInfoToggle.isOn = true; });
         quit.onClick.AddListener(() => QuitGame());
         cancle.onClick.AddListener(() => { onBackButton = false; QuitPanel.gameObject.SetActive(false); });
-        EnemyDiceCount = 1;
+        enemyDiceCount = 1;
     }
 
 
     private void Start()
     {
-        diceMgr = mediator.diceMgr;
-        stageMgr = mediator.stageMgr;
+        mediatorCaching();
 
         TurnUpdate(10);
         currentDiceCount = DiceCount.two;
-        diceMgr.DiceTwo();
+        diceMgr.DiceSet();
         ScrollsClear();
         RanksListUpdate();
+
+        rankList[0] = 1; // 원페어 등록
+
+        var onepair2 = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(RankIdsToInt.rankids[0] + 1);
+        mediator.ui.rewardPanel.rewardList.Add(onepair2);
+        // 상점 원페어 2레벨 등록
+
+        for (int i = 1; i < (int)Ranks.TwoPair; i++)
+        {
+            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(RankIdsToInt.rankids[i]);
+            // 상점 트리플, 3스트레이트 1레벨 등록
+            mediator.ui.rewardPanel.rewardList.Add(spells);
+        }
+
 
         if (LoadData())
         {
             return;
         }
 
-        stageMgr.GameStart();
+        stageMgr.StartGameSet();
         if (PlayerPrefs.GetInt("Tutorial", 0) == 1)
         {
             tutorial.TutorialSkip();
             return;
         }
-        BGM.Instance.currentAudio.Play();
+        mediator.bgm.currentAudio.Play();
     }
     private void Update()
     {
-        audioSource.volume = BGM.Instance.SFXsound;
-        ui.audioSource.volume = BGM.Instance.SFXsound;
+        audioSource.volume = mediator.bgm.SFXsound;
+        mediator.ui.audioSource.volume = mediator.bgm.SFXsound;
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
@@ -263,7 +280,7 @@ public class GameMgr : MonoBehaviour
         //}
         if (Input.GetKeyDown(KeyCode.X))
         {
-            ui.OnArtifactReward();
+            mediator.ui.artifactRewardPanel.OnArtifactReward();
         }
 
 
@@ -360,13 +377,13 @@ public class GameMgr : MonoBehaviour
     }
     private void GetRewardsUpdate()
     {
-
+        return;
     }
     private void MonsterDiceUpdate()
     {
         if (!enemyDiceRoll)
         {
-            if (stageMgr.currentField == 1 || stageMgr.currentField == 2)
+            if (stageMgr.currentField < 3)
             {
                 foreach (var enemy in stageMgr.enemies)
                 {
@@ -383,11 +400,6 @@ public class GameMgr : MonoBehaviour
 
     private void MonsterAttackUpdate()
     {
-        if (!onMonsterAttack)
-        {
-            onMonsterAttack = true;
-            StartCoroutine(MonsterEffect());
-        }
         if (PlayerHp <= 0)
         {
             if (artifact.playersArtifacts[7] == 1) //8번 유물
@@ -405,7 +417,7 @@ public class GameMgr : MonoBehaviour
             {
                 SaveLoadSystem.DeleteSaveData();
                 currentStatus = TurnStatus.PlayerLose;
-                BGM.Instance.currentAudio.Stop();
+                mediator.bgm.currentAudio.Stop();
                 audioSource.PlayOneShot(audioClips[4]);
 
                 return;
@@ -414,11 +426,10 @@ public class GameMgr : MonoBehaviour
         }
 
 
-        if (monsterSignal == stageMgr.enemies.Count && AttackCount > 1)
+        if (monsterSignal == stageMgr.enemies.Count && attackCount > 1)
         {
-            onMonsterAttack = false;
-            monsterSignal = 0;
-            AttackCount--;
+            EventBus.Publish(EventType.MonsterAttack);
+            attackCount--;
             return;
         }
 
@@ -452,51 +463,7 @@ public class GameMgr : MonoBehaviour
 
                 if (CurrentStatus != TurnStatus.GetRewards)
                 {
-                    monsterSignal = 0;
-
-                    TurnUpdate(--currentTurn);
-                    if (currentTurn < 0)
-                    {
-                        currentStatus = TurnStatus.PlayerLose;
-                        return;
-                    }
-
-                    PlayerBarrier = 0;
-                    LifeUpdate();
-
-                    currentStatus = TurnStatus.PlayerDice;
-
-                    onMonsterAttack = false;
-                    if (bossDoubleAttack)
-                    {
-                        AttackCount = 2;
-                    }
-
-                    if (tutorialMode)
-                    {
-                        tutorial.eventCount++;
-                        return;
-                    }
-
-                    switch (currentDiceCount)
-                    {
-                        case DiceCount.two:
-                            diceMgr.DiceTwo();
-                            diceMgr.DiceRoll(true);
-                            break;
-                        case DiceCount.three:
-                            diceMgr.DiceThree();
-                            diceMgr.DiceRoll(true);
-                            break;
-                        case DiceCount.four:
-                            diceMgr.DiceFour();
-                            diceMgr.DiceRoll(true);
-                            break;
-                        case DiceCount.five:
-                            diceMgr.DiceFive();
-                            diceMgr.DiceRoll(true);
-                            break;
-                    }
+                    NextTurn();
                 }
             }
 
@@ -505,86 +472,71 @@ public class GameMgr : MonoBehaviour
         {
             if (monsterSignal == stageMgr.enemies.Count)
             {
-                monsterSignal = 0;
-
-                TurnUpdate(--currentTurn);
-                if (currentTurn < 0)
-                {
-                    currentStatus = TurnStatus.PlayerLose;
-                    return;
-                }
-
-                PlayerBarrier = 0;
-                LifeUpdate();
-
-                currentStatus = TurnStatus.PlayerDice;
-                onMonsterAttack = false;
-                if (bossDoubleAttack)
-                {
-                    AttackCount = 2;
-                }
-
-                if (tutorialMode)
-                {
-                    tutorial.eventCount++;
-                    return;
-                }
-
-                switch (currentDiceCount)
-                {
-                    case DiceCount.two:
-                        diceMgr.DiceTwo();
-                        diceMgr.DiceRoll(true);
-                        break;
-                    case DiceCount.three:
-                        diceMgr.DiceThree();
-                        diceMgr.DiceRoll(true);
-                        break;
-                    case DiceCount.four:
-                        diceMgr.DiceFour();
-                        diceMgr.DiceRoll(true);
-                        break;
-                    case DiceCount.five:
-                        diceMgr.DiceFive();
-                        diceMgr.DiceRoll(true);
-                        break;
-                }
+                NextTurn();
             }
         }
 
     }
     private void PlayerLoseUpdate()
     {
-        ui.GameOver();
+        mediator.ui.GameOver();
     }
 
+    private void NextTurn()
+    {
+        monsterSignal = 0;
+        TurnUpdate(--currentTurn);
+        if (currentTurn < 0)
+        {
+            currentStatus = TurnStatus.PlayerLose;
+            return;
+        }
 
+        PlayerBarrier = 0;
+        LifeUpdate();
+
+        currentStatus = TurnStatus.PlayerDice;
+
+        if (bossDoubleAttack)
+        {
+            attackCount = 2;
+        }
+
+        if (tutorialMode)
+        {
+            tutorial.eventCount++;
+            return;
+        }
+
+        diceMgr.DiceSet();
+        diceMgr.DiceRoll(true);
+    }
 
     public int[] GetRankList()
     {
-        int[] copy = new int[RankList.Length];
-        Array.Copy(RankList, copy, RankList.Length);
+        int[] copy = new int[rankList.Length];
+        Array.Copy(rankList, copy, rankList.Length);
         return copy; // 배열 확인용 복사본 반환
     }
 
     public int GetRank(int i)
     {
-        return RankList[i];
+        return rankList[i];
     }
     public void SetRank(int i, int j)
     {
-        RankList[i] = j;
+        rankList[i] = j;
     }
 
     public void SetRankList(int i)
     {
-        if (RankList[i] == 4)
+        if (rankList[i] == 4)
         {
             return;
             //max level
         }
 
-        RankList[i] += 1;
+        rankList[i] += 1;
     }
 
     public void GetDice4Ranks()
@@ -592,8 +544,8 @@ public class GameMgr : MonoBehaviour
         for (int i = (int)Ranks.TwoPair; i < (int)Ranks.FullHouse; i++)
         {
             // 투페어 4스트레이트, 카인드4 1레벨 등록
-            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]);
-            ui.rewardList.Add(spells);
+            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(RankIdsToInt.rankids[i]);
+            mediator.ui.rewardPanel.rewardList.Add(spells);
         }
     }
     public void GetDice5Ranks()
@@ -601,8 +553,8 @@ public class GameMgr : MonoBehaviour
         for (int i = (int)Ranks.FullHouse; i < (int)Ranks.count; i++)
         {
             // 풀하우스 5스트레이트, 카인드5 1레벨 등록
-            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i]);
-            ui.rewardList.Add(spells);
+            var spells = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(RankIdsToInt.rankids[i]);
+            mediator.ui.rewardPanel.rewardList.Add(spells);
         }
     }
 
@@ -611,7 +563,7 @@ public class GameMgr : MonoBehaviour
         currentRanks = ranks;
         currentValue = value;
 
-        currentDamage = DamageCheckSystem.DamageCheck(currentValue, RankList, currentRanks, this, diceMgr);
+        currentDamage = DamageCheckSystem.DamageCheck(currentValue, rankList, currentRanks, this, diceMgr, mediator.ui);
         damageInfo.text = currentDamage.ToString();
         targetInfo.text = currentTarget.ToString();
 
@@ -621,7 +573,7 @@ public class GameMgr : MonoBehaviour
         }
         else
         {
-            HpUpText.text = " ";
+            HpUpText.text = string.Empty;
         }
 
         if (currentBarrier > 0)
@@ -630,32 +582,11 @@ public class GameMgr : MonoBehaviour
         }
         else
         {
-            BarrierUpText.text = " ";
+            BarrierUpText.text = string.Empty;
         }
 
         currentMagicInfo.interactable = true;
-        ui.magicInfoToggle.interactable = true;
-
-        /*
-        int r = 0;
-        for (int i = 0; i < scrolls.Length; i++)
-        {
-            scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text = " ";
-            for (int j = 8 - r; j >= 0; j--)
-            {
-                RanksFlag currentFlag = (RanksFlag)(1 << j);
-
-                r++;
-
-                if ((currentRanks & currentFlag) != 0)
-                {
-                    scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text =
-                        DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[j]).GetName;
-                    break;
-                }
-            }
-        }
-        */ // 스크롤 순서대로 띄워주던 코드
+        mediator.ui.magicInfoToggle.interactable = true;
 
 
         for (int i = 0; i < ranksInfo.Length; i++)
@@ -680,42 +611,42 @@ public class GameMgr : MonoBehaviour
 
     public void RanksListUpdate()
     {
-        RankCheckSystem.ranksList = RankList;
+        RankCheckSystem.ranksList = rankList;
         for (int i = 0; i < ranksInfo.Length; i++)
         {
-            if (RankList[i] != 0)
+            if (rankList[i] != 0)
             {
-                var magic = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(DamageCheckSystem.rankids[i] + RankList[i] - 1);
-                ui.infoMagicnames[i].text = magic.GetName;
-                ui.infoMagicInfos[i].text = magic.GetDesc;
+                var magic = DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(RankIdsToInt.rankids[i] + rankList[i] - 1);
+                mediator.ui.infoMagicnames[i].text = magic.GetName;
+                mediator.ui.infoMagicInfos[i].text = magic.GetDesc;
                 StringBuilder newText = new StringBuilder();
                 newText.Append(magic.GetName);
 
-                switch (RankList[i])
+                switch (rankList[i])
                 {
                     case 1:
                         newText.Append("- 일반");
-                        ui.infoMagicLevels[i].text = "일반";
-                        ui.infoMagicLevels[i].color = Color.white;
-                        ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_1"));
+                        mediator.ui.infoMagicLevels[i].text = "일반";
+                        mediator.ui.infoMagicLevels[i].color = Color.white;
+                        mediator.ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_1"));
                         break;
                     case 2:
                         newText.Append("- 강화");
-                        ui.infoMagicLevels[i].text = "강화";
-                        ui.infoMagicLevels[i].color = Color.green;
-                        ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_2"));
+                        mediator.ui.infoMagicLevels[i].text = "강화";
+                        mediator.ui.infoMagicLevels[i].color = Color.green;
+                        mediator.ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_2"));
                         break;
                     case 3:
                         newText.Append("- 숙련");
-                        ui.infoMagicLevels[i].text = "숙련";
-                        ui.infoMagicLevels[i].color = Color.yellow;
-                        ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_3"));
+                        mediator.ui.infoMagicLevels[i].text = "숙련";
+                        mediator.ui.infoMagicLevels[i].color = Color.yellow;
+                        mediator.ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_3"));
                         break;
                     case 4:
                         newText.Append("- 초월");
-                        ui.infoMagicLevels[i].text = "초월";
-                        ui.infoMagicLevels[i].color = Color.red;
-                        ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_4"));
+                        mediator.ui.infoMagicLevels[i].text = "초월";
+                        mediator.ui.infoMagicLevels[i].color = Color.red;
+                        mediator.ui.infoMagicstars[i].sprite = Resources.Load<Sprite>(string.Format("Image/{0}", "Level_4"));
                         break;
                 }
                 ranksInfo[i].text = newText.ToString();
@@ -729,7 +660,7 @@ public class GameMgr : MonoBehaviour
         turnInfo.text = currentTurn.ToString();
         currentStatus = TurnStatus.PlayerDice;
 
-        if (stageMgr.currentField == 4 && currentTurn == 5)
+        if (stageMgr.currentField == stageMgr.lastField && currentTurn == 5)
         {
             foreach (var boss in stageMgr.enemies)
             {
@@ -737,15 +668,13 @@ public class GameMgr : MonoBehaviour
                 boss.ImmuneEffect(false);
                 boss.BloodEffect();
                 bossDoubleAttack = true;
-                AttackCount = 2;
+                attackCount = 2;
             }
             diceMgr.SetEnemyDiceCount(3);
-
         }
-
     }
 
-    public void PlayerAttackEffect()
+    public void PlayerAttack()
     {
         livingMonster = Math.Min(stageMgr.enemies.Count, currentTarget);
         CurrentStatus = TurnStatus.PlayerAttack;
@@ -755,9 +684,9 @@ public class GameMgr : MonoBehaviour
             audioSource.PlayOneShot(audioClips[5]);
         }
 
-        Heal(currentRecovery, currentBarrier);
-        HpUpText.text = " ";
-        BarrierUpText.text = " ";
+        PlayerHeal(currentRecovery, currentBarrier);
+        HpUpText.text = string.Empty;
+        BarrierUpText.text = string.Empty;
         Enemy[] targets = new Enemy[Math.Min(currentTarget, stageMgr.enemies.Count)];
 
         for (int i = 0; i < targets.Length; i++)
@@ -772,9 +701,17 @@ public class GameMgr : MonoBehaviour
 
     }
 
-    IEnumerator MonsterEffect()
+    private void MonsterAttack()
     {
-        //이펙트 관리자가 필요할까?
+        currentStatus = TurnStatus.MonsterAttack;
+        enemyDiceRoll = false;
+        monsterSignal = 0;
+        StartCoroutine(CoMonsterAttackMotion());
+    }
+
+
+    IEnumerator CoMonsterAttackMotion()
+    {
         enemyDiceRoll = false;
         monsterSignal = 0;
         for (int i = 0; i < stageMgr.enemies.Count; i++)
@@ -786,13 +723,6 @@ public class GameMgr : MonoBehaviour
 
     public void ScrollsClear()
     {
-        /*
-        for (int i = 0; i < 3; i++)
-        {
-            scrolls[i].GetComponentInChildren<TextMeshProUGUI>().text = " ";
-        }
-        damageInfo.text = " ";
-        */ // 마법서 스크롤 띄우던거
         for (int i = 0; i < ranksInfo.Length; i++)
         {
             ranksInfo[i].color = Color.gray;
@@ -800,15 +730,15 @@ public class GameMgr : MonoBehaviour
         damageInfo.text = "공격력";
         targetInfo.text = "타겟";
         currentMagicInfo.interactable = false;
-        ui.magicInfoToggle.interactable = false;
+            mediator.ui.magicInfoToggle.interactable = false;
 
         for (int i = 0; i < 5; i++)
         {
-            ui.damages[i].text = " ";
+            mediator.ui.damages[i].text = string.Empty;
         }
         for (int i = 0; i < 9; i++)
         {
-            ui.infoMagics[i].gameObject.SetActive(false);
+            mediator.ui.infoMagics[i].gameObject.SetActive(false);
         }
         scrollsound = 0;
     }
@@ -833,36 +763,15 @@ public class GameMgr : MonoBehaviour
         }
         if (stageMgr.enemies.Count == 0)
         {
-            onMonsterAttack = false;
-            foreach (var deadEnemy in stageMgr.DeadEnemies)
+            foreach (var deadEnemy in stageMgr.deadEnemies)
             {
                 Destroy(deadEnemy.gameObject);
             }
-            stageMgr.DeadEnemies.Clear();
+            stageMgr.deadEnemies.Clear();
 
             PlayerBarrier = 0;
             LifeUpdate();
-
-            if (stageMgr.currentStage == stageMgr.latStage && stageMgr.currentField == stageMgr.lastField)
-            {
-                BGM.Instance.PlayBGM(BGM.Instance.bgm[1], 2);
-                SaveLoadSystem.DeleteSaveData();
-                ui.Victory();
-                return;
-            }
-            currentStatus = TurnStatus.GetRewards;
-            if (stageMgr.TutorialStage == stageMgr.currentStage)
-            {
-                PlayerPrefs.SetInt("Tutorial", 1);
-                ui.GetDice();
-                return;
-            }
-            if (stageMgr.currentStage == stageMgr.latStage)
-            {
-                ui.OnArtifactReward();
-                return;
-            }
-            ui.OnReward();
+            RewardCheck();
             return;
         }
         else
@@ -871,50 +780,48 @@ public class GameMgr : MonoBehaviour
         }
     }
 
+    public void RewardCheck()
+    {
+        if (stageMgr.currentStage == stageMgr.lastStage && stageMgr.currentField == stageMgr.lastField)
+        {
+            mediator.bgm.PlayBGM(mediator.bgm.bgmList[1], 2);
+            SaveLoadSystem.DeleteSaveData();
+            mediator.ui.Victory();
+            return;
+        }
+
+        currentStatus = TurnStatus.GetRewards;
+        if (stageMgr.tutorialStage == stageMgr.currentStage)
+        {
+            PlayerPrefs.SetInt("Tutorial", 1);
+            mediator.ui.GetDice();
+            return;
+        }
+        if (stageMgr.currentStage == stageMgr.lastStage)
+        {
+            mediator.ui.artifactRewardPanel.OnArtifactReward();
+            return;
+        }
+        mediator.ui.rewardPanel.OnReward();
+    }
+
+
     public void PlayerOndamage(int enemyDamage)
     {
+        dodgeNumber = 100;
         if (artifact.playersArtifacts[5] == 1)
         {
-            dodgeNuber = UnityEngine.Random.Range(0, 100);
-            if (dodgeNuber < artifact.valueData.Value5)
-            {
-                var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
-                audioSource.PlayOneShot(audioClips[3]);
-                DamageMessage.Setup("Miss!", Color.magenta);
-                DamageMessage.GetComponent<RectTransform>().anchoredPosition =
-                    messagePos.GetComponent<RectTransform>().anchoredPosition;
-            }
-            else
-            {
-                if (PlayerBarrier >= enemyDamage)
-                {
-                    PlayerBarrier -= enemyDamage;
+            dodgeNumber = UnityEngine.Random.Range(0, 100);
+        }
 
-                    var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
-                    DamageMessage.Setup(enemyDamage, Color.blue);
-                    DamageMessage.GetComponent<RectTransform>().anchoredPosition =
-                        messagePos.GetComponent<RectTransform>().anchoredPosition;
-                    var main = playerHitParticleS.main;
-                    main.loop = false;
-                    audioSource.Play();
-                    playerHitParticleS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-                    playerHitParticleS.Play();
-                }
-                else
-                {
-                    enemyDamage -= PlayerBarrier;
-                    PlayerBarrier = 0;
-                    PlayerHp -= enemyDamage;
-                    var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
-                    DamageMessage.Setup(enemyDamage, Color.red);
-                    DamageMessage.GetComponent<RectTransform>().anchoredPosition =
-                         messagePos.GetComponent<RectTransform>().anchoredPosition;
-                    audioSource.Play();
-                    playerHitParticleL.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-                    playerHitParticleL.Play();
-                }
-            }
 
+        if (dodgeNumber < artifact.valueData.Value5)
+        {
+            var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
+            audioSource.PlayOneShot(audioClips[3]);
+            DamageMessage.Setup("Miss!", Color.magenta);
+            DamageMessage.GetComponent<RectTransform>().anchoredPosition =
+                messagePos.GetComponent<RectTransform>().anchoredPosition;
         }
         else
         {
@@ -926,10 +833,11 @@ public class GameMgr : MonoBehaviour
                 DamageMessage.Setup(enemyDamage, Color.blue);
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                     messagePos.GetComponent<RectTransform>().anchoredPosition;
+                var main = playerHitParticleS.main;
+                main.loop = false;
                 audioSource.Play();
                 playerHitParticleS.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 playerHitParticleS.Play();
-
             }
             else
             {
@@ -941,14 +849,15 @@ public class GameMgr : MonoBehaviour
                 DamageMessage.GetComponent<RectTransform>().anchoredPosition =
                      messagePos.GetComponent<RectTransform>().anchoredPosition;
                 audioSource.Play();
-                //playerHitParticleL.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                playerHitParticleL.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 playerHitParticleL.Play();
             }
         }
+
         LifeUpdate();
     }
 
-    public void Heal(int recovery, int barrier)
+    public void PlayerHeal(int recovery, int barrier)
     {
         PlayerHp += recovery;
         if (PlayerHp > PlayerHpMax)
@@ -999,7 +908,7 @@ public class GameMgr : MonoBehaviour
     public void UseArtifact8()
     {
         artifact.playersArtifacts[7] = 2;
-        foreach (var a in ui.artifactInfo)
+        foreach (var a in mediator.ui.artifactInfo)
         {
             if (a.text == "원코인 추가")
             {
@@ -1026,12 +935,12 @@ public class GameMgr : MonoBehaviour
         curruntBonusStat = SaveLoadSystem.CurrSaveData.savePlay.Damage;
         PlayerHp = SaveLoadSystem.CurrSaveData.savePlay.Hp;
         PlayerHpMax = SaveLoadSystem.CurrSaveData.savePlay.MaxHp;
-        RankList = SaveLoadSystem.CurrSaveData.savePlay.RankList;
+        rankList = SaveLoadSystem.CurrSaveData.savePlay.RankList;
 
         LifeUpdate();
         RanksListUpdate();
 
-        ui.rewardList.Clear();
+        mediator.ui.rewardPanel.rewardList.Clear();
         for (int i = 0; i < 9; i++)
         {
             if (SaveLoadSystem.CurrSaveData.savePlay.RankRewardList[i] == 0)
@@ -1040,7 +949,7 @@ public class GameMgr : MonoBehaviour
             }
             else
             {
-                ui.rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(SaveLoadSystem.CurrSaveData.savePlay.RankRewardList[i]));
+                mediator.ui.rewardPanel.rewardList.Add(DataTableMgr.Get<SpellTable>(DataTableIds.SpellBook).Get(SaveLoadSystem.CurrSaveData.savePlay.RankRewardList[i]));
             }
         }
 
@@ -1056,11 +965,11 @@ public class GameMgr : MonoBehaviour
 
 
 
-        for (int i = 0; i < RankList.Length; i++)
+        for (int i = 0; i < rankList.Length; i++)
         {
-            if (RankList[i] == 3)
+            if (rankList[i] == 3)
             {
-                ui.maxSpells[i].gameObject.SetActive(true);
+                mediator.ui.maxSpellRewardPanel.maxSpells[i].gameObject.SetActive(true);
             }
         } // 초월마법등록
 
@@ -1079,7 +988,7 @@ public class GameMgr : MonoBehaviour
                 if (a.ID == artifact.playersArtifactsNumber[0])
                 {
                     artifact.artifacts.Remove(a);
-                    ui.ArtifactUpdate(a, 0);
+                    mediator.ui.ArtifactUpdate(a, 0);
                     LoadArtifactCheck(a.ID);
                     break;
                 }
@@ -1092,7 +1001,7 @@ public class GameMgr : MonoBehaviour
                     if (a.ID == artifact.playersArtifactsNumber[1])
                     {
                         artifact.artifacts.Remove(a);
-                        ui.ArtifactUpdate(a, 1);
+                        mediator.ui.ArtifactUpdate(a, 1);
                         LoadArtifactCheck(a.ID);
                         break;
                     }
@@ -1104,7 +1013,7 @@ public class GameMgr : MonoBehaviour
                         if (a.ID == artifact.playersArtifactsNumber[2])
                         {
                             artifact.artifacts.Remove(a);
-                            ui.ArtifactUpdate(a, 2);
+                            mediator.ui.ArtifactUpdate(a, 2);
                             LoadArtifactCheck(a.ID);
                             break;
                         }
@@ -1143,7 +1052,8 @@ public class GameMgr : MonoBehaviour
     private void pauseGame()
     {
         Time.timeScale = 0;
-        ui.PausePanel.gameObject.SetActive(true);
+        mediator.ui.PausePanel.gameObject.SetActive(true);
+        mediator.ui.BackGroundPanel.gameObject.SetActive(true);
     }
 
 

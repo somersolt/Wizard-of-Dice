@@ -3,30 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class DiceMgr : MonoBehaviour
 {
-
     public Mediator mediator;
     private GameMgr gameMgr;
     private StageMgr stageMgr;
 
+    public void mediatorCaching()
+    {
+        gameMgr = mediator.gameMgr;
+        stageMgr = mediator.stageMgr;
+    }
 
-    public bool onDiceRoll;
     [SerializeField]
-    private SpinControl[] SpinControlers = new SpinControl[5];
+    private SpinControl[] spinControlers = new SpinControl[5];
     private bool[] buttonToggle = new bool[5];
     [SerializeField]
     private Image[] buttonLock = new Image[5];
-
     public Button[] dices = new Button[constant.diceMax]; // 주사위들
     private int[] dicesValues = new int[constant.diceMax]; // 주사위 눈 결과값
-
+    [HideInInspector]
     public int[] numbersCount = new int[constant.diceNumberMax]; // 랭크 체크 list
-
     private List<int> diceNumbers = new List<int>(); // 주사위 눈 1~6 리스트 (변동가능)
-
+    [HideInInspector]
     public List<int> selectedDice = new List<int>();
 
     private RanksFlag checkedRanksList; // 랭크 체크 후 9개 족보 활성화 여부 저장
@@ -34,24 +36,27 @@ public class DiceMgr : MonoBehaviour
     {
         get { return checkedRanksList; }
     }
-
+    [HideInInspector]
     public int[] manipulList = new int[constant.diceMax]; // 주사위 조작용 리스트
 
-    public bool tutorialControl;
-    public int tutorialControlMode = 0;
+    [HideInInspector]
+    public bool tutorialMode;
 
     [SerializeField]
     private Button reRoll; // 재굴림
     [SerializeField]
     private Button confirm; // 확정
 
+    [HideInInspector]
     public int countToResult;
-    private int rerollCount = 1;
-    private bool onResult;
+    private int rerollCount;
+    private int maxRerollCount = 2;
+    private bool showResult;
 
-    private int totalValue;
+    private int totalPlayerDamageValue;
 
-
+    private List<SpinControl> enemyDiceList = new List<SpinControl>();
+    private List<SpinControl> currentEnemyDiceList = new List<SpinControl>();
     [SerializeField]
     private SpinControl enemyDice;
     [SerializeField]
@@ -62,12 +67,13 @@ public class DiceMgr : MonoBehaviour
     private SpinControl enemyDiceTriple1;
     [SerializeField]
     private SpinControl enemyDiceTriple2;
-    public int enemyValue;
-    public int enemyValue2;
-    public int enemyValue3;
+    private int[] enemyValue = new int[3];
+    [HideInInspector]
     public int currentEnemyDice;
 
+    [HideInInspector]
     public List<Coroutine> activeCoroutines = new List<Coroutine>(); // 코루틴관리자
+    [HideInInspector]
     public List<SpinControl> coroutineList = new List<SpinControl>(); // 코루틴관리자2
 
 
@@ -81,124 +87,113 @@ public class DiceMgr : MonoBehaviour
         for (int i = 0; i < constant.diceMax; i++)
         {
             int index = i;
-            dices[index].onClick.AddListener(() => ButtonSelect(index));  // 버튼 세팅
+            dices[index].onClick.AddListener(() => OnDiceButtonClick(index));  // 버튼 세팅
         }
         reRoll.onClick.AddListener(() => DiceRoll());
-        confirm.onClick.AddListener(() => { EventBus.Publish(EventType.PlayerAttack); onDiceRoll = true; });
+        confirm.onClick.AddListener(() => { EventBus.Publish(EventType.PlayerAttack); AllDIceAndButtonLock(); });
+
+        enemyDiceList.Add(enemyDice);
+        enemyDiceList.Add(enemyDiceTwin1);
+        enemyDiceList.Add(enemyDiceTwin2);
+        enemyDiceList.Add(enemyDiceTriple1);
+        enemyDiceList.Add(enemyDiceTriple2);
 
         currentEnemyDice = 1;
     }
 
     private void Start()
     {
-        gameMgr = mediator.gameMgr;
-        stageMgr = mediator.stageMgr;
+        mediatorCaching();
     }
 
     public void InfoClear()
     {
         selectedDice.Clear();
-        onResult = false;
-        onDiceRoll = false;
-        totalValue = 0;
+        showResult = false;
+        totalPlayerDamageValue = 0;
         for (int i = 0; i < (int)gameMgr.currentDiceCount; i++)
         {
-            totalValue += dicesValues[i];
+            totalPlayerDamageValue += dicesValues[i];
             //buttonToggle[i] = false; // 전부 고정 푸는 코드
             if (buttonToggle[i] == false)
             {
-                dices[i].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
+                dices[i].GetComponent<Image>().color = UsedColor.buttonSelectedColor;
                 selectedDice.Add(i);
             }
         }
     }
 
-    private void Update()
+    public void DiceResult()
     {
-        if (countToResult == selectedDice.Count && onResult)
-        {
-            checkedRanksList = RankCheckSystem.RankCheck(numbersCount);
+        checkedRanksList = RankCheckSystem.RankCheck(numbersCount);
 
-            selectedDice.Clear();
-            onResult = false;
-            onDiceRoll = false;
-            totalValue = 0;
-            for (int i = 0; i < (int)gameMgr.currentDiceCount; i++)
+        selectedDice.Clear();
+        showResult = false;
+        totalPlayerDamageValue = 0;
+        for (int i = 0; i < (int)gameMgr.currentDiceCount; i++)
+        {
+            totalPlayerDamageValue += dicesValues[i];
+            //buttonToggle[i] = false; // 전부 고정 푸는 코드
+            if (buttonToggle[i] == false)
             {
-                totalValue += dicesValues[i];
-                //buttonToggle[i] = false; // 전부 고정 푸는 코드
-                if (buttonToggle[i] == false)
-                {
-                    dices[i].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
-                    selectedDice.Add(i);
-                }
+                dices[i].GetComponent<Image>().color = UsedColor.buttonUnSelectedColor;
+                selectedDice.Add(i);
             }
-            gameMgr.SetResult(checkedRanksList, totalValue);
         }
+        gameMgr.SetResult(checkedRanksList, totalPlayerDamageValue);
+        confirm.interactable = true;
 
-        if (!tutorialControl)
+        if (!tutorialMode)
         {
-            if (onDiceRoll)
+            if (rerollCount > 0)
             {
                 for (int i = 0; i < constant.diceMax; i++)
                 {
-                    dices[i].interactable = false;
+                    if (buttonToggle[i] == false)
+                    {
+                        dices[i].interactable = true;
+                    }
                 }
-                confirm.interactable = false;
-                reRoll.interactable = false;
+                reRoll.interactable = true;
             }
             else
             {
-
-                if (selectedDice.Count == 0 || Time.timeScale == 0)
-                {
-                    reRoll.interactable = false;
-                }
-
-                if (selectedDice.Count != 0 && rerollCount > 0 && Time.timeScale != 0)
-                {
-                    for (int i = 0; i < constant.diceMax; i++)
-                    {
-                        if (buttonToggle[i] == false)
-                        {
-                            dices[i].interactable = true;
-                        }
-
-                    }
-                    reRoll.interactable = true;
-                }
-
-                if (Time.timeScale != 0)
-                {
-                    confirm.interactable = true;
-                }
-                else if (Time.timeScale == 0)
-                {
-                    confirm.interactable = false;
-                }
-            }
-        }
-        else if (tutorialControl)
-        {
-            dices[0].interactable = false;
-            dices[1].interactable = false;
-            switch (tutorialControlMode)
-            {
-                case 0:
-                    confirm.interactable = false;
-                    reRoll.interactable = false;
-                    break;
-                case 1:
-                    confirm.interactable = false;
-                    reRoll.interactable = true;
-                    break;
-                case 2:
-                    confirm.interactable = true;
-                    reRoll.interactable = false;
-                    break;
+                reRoll.interactable = false;
             }
         }
     }
+
+    public void AllDIceAndButtonLock()
+    {
+        for (int i = 0; i < constant.diceMax; i++)
+        {
+            dices[i].interactable = false;
+        }
+        confirm.interactable = false;
+        reRoll.interactable = false;
+    }
+
+    public void TutorialModeControl(int Mode)
+    {
+        dices[0].interactable = false;
+        dices[1].interactable = false;
+        switch (Mode)
+        {
+            case 0:
+                confirm.interactable = false;
+                reRoll.interactable = false;
+                break;
+            case 1:
+                confirm.interactable = false;
+                reRoll.interactable = true;
+                break;
+            case 2:
+                confirm.interactable = true;
+                reRoll.interactable = false;
+                break;
+        }
+    }
+
 
     public void TutorialButtonControl(bool control)
     {
@@ -211,12 +206,12 @@ public class DiceMgr : MonoBehaviour
                 IncrementTutorialTextCount();
                 DiceRoll(false, GameMode.Tutorial2);
             });
-            confirm.onClick.AddListener(() => { IncrementTutorialTextCount(); gameMgr.PlayerAttackEffect(); onDiceRoll = true; });
+            confirm.onClick.AddListener(() => { IncrementTutorialTextCount(); gameMgr.PlayerAttack(); AllDIceAndButtonLock(); });
         }
         else
         {
             reRoll.onClick.AddListener(() => DiceRoll());
-            confirm.onClick.AddListener(() => { gameMgr.PlayerAttackEffect(); onDiceRoll = true; });
+            confirm.onClick.AddListener(() => { gameMgr.PlayerAttack(); AllDIceAndButtonLock(); });
         }
     }
     private void IncrementTutorialTextCount()
@@ -227,8 +222,8 @@ public class DiceMgr : MonoBehaviour
     {
         gameMgr.ScrollsClear();
         gameMgr.audioSource.PlayOneShot(gameMgr.audioClips[6]);
-        onDiceRoll = true;
-        onResult = true;
+        AllDIceAndButtonLock();
+        showResult = true;
         countToResult = 0;
         for (int i = 0; i < numbersCount.Length; i++)
         {
@@ -245,21 +240,19 @@ public class DiceMgr : MonoBehaviour
 
             if (gameMgr.artifact.playersArtifacts[8] == 1)//9번 유물
             {
-                rerollCount = gameMgr.artifact.valueData.Value8 + 2;
+                rerollCount = gameMgr.artifact.valueData.Value8 + maxRerollCount;
             }
             else
             {
-                rerollCount = 2;
+                rerollCount = maxRerollCount;
             }
-            reRoll.GetComponentInChildren<TextMeshProUGUI>().text = "재굴림 : " + rerollCount.ToString();
         }
         else
         {
             rerollCount--;
-            reRoll.GetComponentInChildren<TextMeshProUGUI>().text = "재굴림 : " + rerollCount.ToString();
         }
 
-
+        reRoll.GetComponentInChildren<TextMeshProUGUI>().text = "재굴림 : " + rerollCount.ToString();
 
         for (int i = 0; i < selectedDiceCount; i++)
         {
@@ -267,6 +260,10 @@ public class DiceMgr : MonoBehaviour
             {
                 dices[diceIndex].GetComponentInChildren<TextMeshProUGUI>().text = dicesValues[diceIndex].ToString();
                 countToResult++;
+                if (countToResult == selectedDice.Count && showResult)
+                {
+                    DiceResult();
+                }
             };
 
             Action<int> tutorialCallback = (diceIndex) =>
@@ -274,6 +271,10 @@ public class DiceMgr : MonoBehaviour
                 dices[diceIndex].GetComponentInChildren<TextMeshProUGUI>().text = dicesValues[diceIndex].ToString();
                 countToResult++;
                 gameMgr.tutorial.eventCount++;
+                if (countToResult == selectedDice.Count && showResult)
+                {
+                    DiceResult();
+                }
             };
 
             if (mode == GameMode.Default)
@@ -329,21 +330,12 @@ public class DiceMgr : MonoBehaviour
 
     private IEnumerator SelectDiceRoll(int index, bool starting, Action<int> callback, int manipul = 0)
     {
-        if (gameMgr.currentDiceCount == GameMgr.DiceCount.two && (index == 2 || index == 3 || index == 4))
+        if ((int)gameMgr.currentDiceCount <= index)
         {
             dicesValues[index] = 0;
             yield break;
         }
-        if (gameMgr.currentDiceCount == GameMgr.DiceCount.three && (index == 3 || index == 4))
-        {
-            dicesValues[index] = 0;
-            yield break;
-        }
-        if (gameMgr.currentDiceCount == GameMgr.DiceCount.four && index == 4)
-        {
-            dicesValues[index] = 0;
-            yield break;
-        }
+
         dices[index].GetComponentInChildren<TextMeshProUGUI>().text = string.Empty;
         dices[index].interactable = false;
         if (manipul == 0)
@@ -357,142 +349,91 @@ public class DiceMgr : MonoBehaviour
 
         if (starting)
         {
-            switch (gameMgr.currentDiceCount)
-            {
-                case GameMgr.DiceCount.two:
-                    SpinControlers[index].DiceSpin(30 + index * 24, RotatePos.posList[dicesValues[index] - 1], this, () => callback(index));
-                    break;
-                case GameMgr.DiceCount.three:
-                    SpinControlers[index].DiceSpin(30 + index * 16, RotatePos.posList[dicesValues[index] - 1], this, () => callback(index));
-                    break;
-                case GameMgr.DiceCount.four:
-                    SpinControlers[index].DiceSpin(30 + index * 12, RotatePos.posList[dicesValues[index] - 1], this, () => callback(index));
-                    break;
-                case GameMgr.DiceCount.five:
-                    SpinControlers[index].DiceSpin(30 + index * 9, RotatePos.posList[dicesValues[index] - 1], this, () => callback(index));
-                    break;
-            }
+            spinControlers[index].DiceSpin(25 + index * 48 / (int)gameMgr.currentDiceCount, RotatePos.dicesPosList[dicesValues[index] - 1], this, () => callback(index));
         }
         else
         {
-            SpinControlers[index].DiceSpin(30, RotatePos.posList[dicesValues[index] - 1], this, () => callback(index));
+            spinControlers[index].DiceSpin(25, RotatePos.dicesPosList[dicesValues[index] - 1], this, () => callback(index));
         }
         yield return null;
     }
 
-    public void ButtonSelect(int i)
+    public void OnDiceButtonClick(int i)
     {
-        if (!onDiceRoll)
+        if (!buttonToggle[i])
         {
-            if (!buttonToggle[i])
+            selectedDice.Remove(i);
+            if (selectedDice.Count == 0)
             {
-                selectedDice.Remove(i);
-                dices[i].GetComponent<Image>().color = new Color(0x57 / 255f, 0x57 / 255f, 0x57 / 255f);
-                buttonToggle[i] = true;
-                buttonLock[i].gameObject.SetActive(true);
+                reRoll.interactable = false;
             }
-            else if (buttonToggle[i])
+            dices[i].GetComponent<Image>().color = UsedColor.diceUnSelectedColor;
+            buttonToggle[i] = true;
+            buttonLock[i].gameObject.SetActive(true);
+        }
+        else if (buttonToggle[i])
+        {
+            selectedDice.Add(i);
+            if (selectedDice.Count != 0)
             {
-                selectedDice.Add(i);
-                dices[i].GetComponent<Image>().color = new Color(0x214 / 255f, 0x214 / 255f, 0x214 / 255f);
-                buttonToggle[i] = false;
-                buttonLock[i].gameObject.SetActive(false);
+                reRoll.interactable = true;
             }
-            gameMgr.audioSource.PlayOneShot(gameMgr.audioClips[7]);
+            dices[i].GetComponent<Image>().color = UsedColor.diceSelectedColor;
+            buttonToggle[i] = false;
+            buttonLock[i].gameObject.SetActive(false);
         }
+        gameMgr.audioSource.PlayOneShot(gameMgr.audioClips[7]);
     }
 
-    public void DiceTwo()
-    {
-        dices[2].gameObject.SetActive(false);
-        dices[3].gameObject.SetActive(false);
-        dices[4].gameObject.SetActive(false);
-        selectedDice.Clear();
-        for (int i = 0; i < 2; i++)
-        {
-            selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
-        }
-    }
 
-    public void DiceThree()
+    public void DiceSet()
     {
-        dices[2].gameObject.SetActive(true);
-        dices[3].gameObject.SetActive(false);
-        dices[4].gameObject.SetActive(false);
-        selectedDice.Clear();
-        for (int i = 0; i < 3; i++)
+        foreach (var dice in dices)
         {
-            selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
+            dice.gameObject.SetActive(false);
         }
-    }
-    public void DiceFour()
-    {
-        dices[2].gameObject.SetActive(true);
-        dices[3].gameObject.SetActive(true);
-        dices[4].gameObject.SetActive(false);
-        selectedDice.Clear();
-        for (int i = 0; i < 4; i++)
-        {
-            selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
-        }
-    }
-    public void DiceFive()
-    {
-        dices[2].gameObject.SetActive(true);
-        dices[3].gameObject.SetActive(true);
-        dices[4].gameObject.SetActive(true);
-        selectedDice.Clear();
-        for (int i = 0; i < 5; i++)
-        {
-            selectedDice.Add(i);     // 시작할때 기본 숫자 세팅
-        }
-    }
 
+        selectedDice.Clear();
+        for (int i = 0; i < (int)mediator.gameMgr.currentDiceCount; i++)
+        {
+            dices[i].gameObject.SetActive(true);
+            selectedDice.Add(i);
+        }
+
+    }
 
     public void EnemyDiceRoll()
     {
-        if (stageMgr.currentStage == 7)
+        if (stageMgr.currentStage == stageMgr.lastStage)
         {
-            if (stageMgr.currentField == 2 || stageMgr.currentField == 3)
+            if (gameMgr.bossDoubleAttack)
             {
-                foreach (var boss in stageMgr.enemies) 
+                foreach (var boss in stageMgr.enemies)
                 {
-                    if(boss.isBoss)
+                    if (boss.isBoss)
                     {
                         boss.WindEffect();
                     }
                 }
             }
         }
-        switch (currentEnemyDice)
+        Action enemySpincallback = () => { EventBus.Publish(EventType.MonsterAttack); };
+        gameMgr.enemyValue = 0;
+        for (int i = 0; i < currentEnemyDice; i++)
         {
-            case 1:
-                enemyValue = UnityEngine.Random.Range(1, 7);
-                gameMgr.enemyValue = enemyValue;
-                Action enemySpincallback = () => { gameMgr.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
-                enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], this, () => enemySpincallback());
-                break;
-            case 2:
-                enemyValue = UnityEngine.Random.Range(1, 7);
-                enemyValue2 = UnityEngine.Random.Range(1, 7);   
-                gameMgr.enemyValue = enemyValue + enemyValue2;
-                Action enemySpincallback2 = () => { gameMgr.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
-                enemyDiceTwin1.DiceSpin(30, RotatePos.posList[enemyValue - 1], this);
-                enemyDiceTwin2.DiceSpin(30, RotatePos.posList[enemyValue2 - 1], this, () => enemySpincallback2());
-                break;
-            case 3:
-                enemyValue = UnityEngine.Random.Range(1, 7);
-                enemyValue2 = UnityEngine.Random.Range(1, 7);
-                enemyValue3 = UnityEngine.Random.Range(1, 7);
-                gameMgr.enemyValue = enemyValue + enemyValue2 + enemyValue3;
-                Action enemySpincallback3 = () => { gameMgr.CurrentStatus = GameMgr.TurnStatus.MonsterAttack; };
-                enemyDice.DiceSpin(30, RotatePos.posList[enemyValue - 1], this);
-                enemyDiceTriple1.DiceSpin(30, RotatePos.posList[enemyValue2 - 1], this);
-                enemyDiceTriple2.DiceSpin(30, RotatePos.posList[enemyValue3 - 1], this, () => enemySpincallback3());
-                break;
+            enemyValue[i] = UnityEngine.Random.Range(1, 7);
+            gameMgr.enemyValue += enemyValue[i];
+
+            if (i+1 == currentEnemyDice)
+            {
+                currentEnemyDiceList[i].DiceSpin(30, RotatePos.dicesPosList[enemyValue[i] - 1], this, () => enemySpincallback());
+            }
+            else
+            {
+                currentEnemyDiceList[i].DiceSpin(30, RotatePos.dicesPosList[enemyValue[i] - 1], this);
+            }
         }
     }
-
     public void Artifact2()
     {
         diceNumbers.Remove(3);
@@ -515,32 +456,33 @@ public class DiceMgr : MonoBehaviour
     }
 
     public void SetEnemyDiceCount(int i)
-    {
+    { 
+        foreach(SpinControl dice in enemyDiceList)
+        {
+            dice.gameObject.SetActive(false);
+        }
+        currentEnemyDiceList.Clear();
         currentEnemyDice = i;
         switch (i)
         {
             case 1:
-                enemyDice.gameObject.SetActive(true);
-                enemyDiceTwin1.gameObject.SetActive(false);
-                enemyDiceTwin2.gameObject.SetActive(false);
-                enemyDiceTriple1.gameObject.SetActive(false);
-                enemyDiceTriple2.gameObject.SetActive(false);
+                currentEnemyDiceList.Add(enemyDice);
                 break;
             case 2:
-                enemyDice.gameObject.SetActive(false);
-                enemyDiceTwin1.gameObject.SetActive(true);
-                enemyDiceTwin2.gameObject.SetActive(true);
-                enemyDiceTriple1.gameObject.SetActive(false);
-                enemyDiceTriple2.gameObject.SetActive(false);
+                currentEnemyDiceList.Add(enemyDiceTwin1);
+                currentEnemyDiceList.Add(enemyDiceTwin2);
                 break;
             case 3:
-                enemyDice.gameObject.SetActive(true);
-                enemyDiceTwin1.gameObject.SetActive(false);
-                enemyDiceTwin2.gameObject.SetActive(false);
-                enemyDiceTriple1.gameObject.SetActive(true);
-                enemyDiceTriple2.gameObject.SetActive(true);
+                currentEnemyDiceList.Add(enemyDice);
+                currentEnemyDiceList.Add(enemyDiceTriple1);
+                currentEnemyDiceList.Add(enemyDiceTriple2);
                 break;
+        }
+        foreach (SpinControl dice in currentEnemyDiceList)
+        {
+            dice.gameObject.SetActive(true);
         }
     }
 
 }
+

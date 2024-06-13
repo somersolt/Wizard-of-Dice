@@ -1062,7 +1062,17 @@ MonoBehaviour:
   SFXsoundBar: {fileID: 415718952}
   currentAudio: {fileID: 94772747}
   nextAudio: {fileID: 94772746}
-  bgm: []
+  bgmList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   masterVolume: 1
 --- !u!4 &94772749
 Transform:
@@ -3992,6 +4002,7 @@ MonoBehaviour:
   nextStory: {fileID: 1963058623}
   nextButtonText: {fileID: 359013618}
   returnTitle: {fileID: 415944719}
+  titleBgm: {fileID: 94772748}
 --- !u!1 &1172486723
 GameObject:
   m_ObjectHideFlags: 0

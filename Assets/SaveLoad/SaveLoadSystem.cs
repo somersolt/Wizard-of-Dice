@@ -45,7 +45,7 @@ public class SaveLoadSystem
         }
     }
 
-    public static bool Save(GameMgr gameMgr, StageMgr stageMgr)
+    public static bool Save(GameMgr gameMgr, StageMgr stageMgr, UI ui)
     {
 
         PlayerPrefs.SetInt("Save", 1);
@@ -61,13 +61,13 @@ public class SaveLoadSystem
         CurrSaveData.savePlay.RankRewardList.Clear();
         for (int i = 0; i < 9; i++)
         {
-            if (i >= gameMgr.ui.rewardList.Count)
+            if (i >= ui.rewardPanel.rewardList.Count)
             {
                 CurrSaveData.savePlay.RankRewardList.Add(0);
             }
             else
             {
-                CurrSaveData.savePlay.RankRewardList.Add(gameMgr.ui.rewardList[i].ID);
+                CurrSaveData.savePlay.RankRewardList.Add(ui.rewardPanel.rewardList[i].ID);
             }
         }
         CurrSaveData.savePlay.ArtifactList = new List<int>();

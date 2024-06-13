@@ -942,6 +942,7 @@ GameObject:
   - component: {fileID: 20910850}
   - component: {fileID: 20910849}
   - component: {fileID: 20910848}
+  - component: {fileID: 20910851}
   m_Layer: 5
   m_Name: EventTextPanel
   m_TagString: Untagged
@@ -1036,6 +1037,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 20910846}
   m_CullTransparentMesh: 1
+--- !u!114 &20910851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20910846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc36f30f3c02c174386d53d848f3a536, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
 --- !u!1 &23177388
 GameObject:
   m_ObjectHideFlags: 0
@@ -2031,6 +2045,7 @@ GameObject:
   - component: {fileID: 44299360}
   - component: {fileID: 44299359}
   - component: {fileID: 44299358}
+  - component: {fileID: 44299361}
   m_Layer: 5
   m_Name: EventPanel
   m_TagString: Untagged
@@ -2124,6 +2139,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 44299356}
   m_CullTransparentMesh: 1
+--- !u!114 &44299361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44299356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8493b01ad9192e439f8b73f5649f380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
 --- !u!1 &45170227
 GameObject:
   m_ObjectHideFlags: 0
@@ -6448,8 +6476,9 @@ GameObject:
   - component: {fileID: 211748144}
   - component: {fileID: 211748143}
   - component: {fileID: 211748142}
+  - component: {fileID: 211748146}
   m_Layer: 5
-  m_Name: UpgradePanel
+  m_Name: MaxSpellPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6474,7 +6503,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 63.654297}
-  m_SizeDelta: {x: -91.0829, y: -408.31128}
+  m_SizeDelta: {x: -91.0829, y: -427.31128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &211748142
 MonoBehaviour:
@@ -6554,6 +6583,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 211748140}
   m_CullTransparentMesh: 1
+--- !u!114 &211748146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 211748140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56bd77092091aa54b8e51972fe211944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
+  maxSpells:
+  - {fileID: 1614503551}
+  - {fileID: 1724688773}
+  - {fileID: 1206339489}
+  - {fileID: 2129404972}
+  - {fileID: 946253326}
+  - {fileID: 122765578}
+  - {fileID: 2054047693}
+  - {fileID: 1447791299}
+  - {fileID: 2145047321}
 --- !u!1 &214215339
 GameObject:
   m_ObjectHideFlags: 0
@@ -10661,6 +10713,7 @@ GameObject:
   - component: {fileID: 348038062}
   - component: {fileID: 348038061}
   - component: {fileID: 348038060}
+  - component: {fileID: 348038063}
   m_Layer: 5
   m_Name: GetDiceRewardPanel
   m_TagString: Untagged
@@ -10754,6 +10807,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 348038058}
   m_CullTransparentMesh: 1
+--- !u!114 &348038063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348038058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34d0e710b93416147bdef1c3ce89e873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
 --- !u!1 &366089943
 GameObject:
   m_ObjectHideFlags: 0
@@ -12187,35 +12253,13 @@ MonoBehaviour:
   titleButton: {fileID: 1152187612}
   victoryPanel: {fileID: 934310511}
   titleButton2: {fileID: 526390146}
-  rewardPanel: {fileID: 1261700857}
-  rewards:
-  - {fileID: 1090284151}
-  - {fileID: 309304182}
-  - {fileID: 836891853}
+  rewardPanel: {fileID: 1261700864}
+  maxSpellRewardPanel: {fileID: 211748146}
+  diceRewardPanel: {fileID: 1310011775}
+  artifactRewardPanel: {fileID: 620138713}
   getDicePanel: {fileID: 348038058}
   getDiceImage: {fileID: 1587743031}
   diceRewardConfirm: {fileID: 163821639}
-  maxSpellRewardPanel: {fileID: 211748140}
-  maxSpells:
-  - {fileID: 1614503551}
-  - {fileID: 1724688773}
-  - {fileID: 1206339489}
-  - {fileID: 2129404972}
-  - {fileID: 946253326}
-  - {fileID: 122765578}
-  - {fileID: 2054047693}
-  - {fileID: 1447791299}
-  - {fileID: 2145047321}
-  diceRewardPanel: {fileID: 1310011769}
-  diceRewards:
-  - {fileID: 1711232030}
-  - {fileID: 1885614415}
-  - {fileID: 1633919376}
-  artifactRewardPanel: {fileID: 620138707}
-  artifacts:
-  - {fileID: 2061020149}
-  - {fileID: 1131303316}
-  - {fileID: 581399734}
   magicInfoToggle: {fileID: 2055578221}
   magicInfoToggleText: {fileID: 1645240348}
   magicInfoPanel: {fileID: 1755673386}
@@ -12306,9 +12350,11 @@ MonoBehaviour:
   QuitNo: {fileID: 1696649302}
   BackGroundPanel: {fileID: 2077191143}
   audioSource: {fileID: 395071575}
-  audioClips:
+  uiAudioClips:
   - {fileID: 8300000, guid: e1e89998bfcd6844f9141a05c8f53869, type: 3}
   - {fileID: 8300000, guid: 50d82657609964245be41da118678791, type: 3}
+  - {fileID: 8300000, guid: 8f07cba5b3660b04381bc72e4d76a838, type: 3}
+  - {fileID: 8300000, guid: 003497b301c4b384e815b3308f247926, type: 3}
 --- !u!82 &395071575
 AudioSource:
   m_ObjectHideFlags: 0
@@ -12319,7 +12365,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: e1e89998bfcd6844f9141a05c8f53869, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -15702,7 +15748,6 @@ MonoBehaviour:
   mediator: {fileID: 714457847}
   tutorial: {fileID: 878964856}
   tutorialMode: 0
-  ui: {fileID: 395071574}
   artifact: {fileID: 1499820768}
   currentTurn: 1
   turnInfo: {fileID: 339694776}
@@ -15740,9 +15785,9 @@ MonoBehaviour:
   PlayerBarrierInfo: {fileID: 637320932}
   monsterSignal: 0
   bossSignal: 0
-  AttackCount: 0
+  attackCount: 0
   bossDoubleAttack: 0
-  EnemyDiceCount: 0
+  enemyDiceCount: 0
   option: {fileID: 483629545}
   QuitPanel: {fileID: 1181936082}
   quit: {fileID: 1093963946}
@@ -16530,18 +16575,17 @@ MonoBehaviour:
   SFXsoundBar: {fileID: 842028895}
   currentAudio: {fileID: 528497433}
   nextAudio: {fileID: 528497432}
-  bgm:
+  bgmList:
   - {fileID: 8300000, guid: e44d50ad19c976b4ea5bcd9eb82ee08a, type: 3}
   - {fileID: 8300000, guid: 428f90237c8ed2c49a6b9b8d6fbf1f14, type: 3}
-  - {fileID: 8300000, guid: 2694b4c4b367beb4f95d1ec98cd3ae37, type: 3}
   - {fileID: 8300000, guid: 9819f40a38cfe024480957168ff29c11, type: 3}
-  - {fileID: 8300000, guid: 6600618b2b80bda4abe59e3a2bc93306, type: 3}
+  - {fileID: 8300000, guid: 2694b4c4b367beb4f95d1ec98cd3ae37, type: 3}
   - {fileID: 8300000, guid: 9796bdbc3e16874419fc04548449a84f, type: 3}
-  - {fileID: 8300000, guid: 64ff913b5913fc046ab4dc0d0f613c57, type: 3}
+  - {fileID: 8300000, guid: 6600618b2b80bda4abe59e3a2bc93306, type: 3}
   - {fileID: 8300000, guid: 080867a349bc6f947a1effa4be71b866, type: 3}
-  - {fileID: 8300000, guid: e8f5e5e17fd393b41bffe646082eb3e2, type: 3}
+  - {fileID: 8300000, guid: 64ff913b5913fc046ab4dc0d0f613c57, type: 3}
   - {fileID: 8300000, guid: 414cbc5ecc9ed3c41bdc39ad0189b393, type: 3}
-  - {fileID: 8300000, guid: 2404ed8d7302c2a4aa6a1981c97ba740, type: 3}
+  - {fileID: 8300000, guid: e8f5e5e17fd393b41bffe646082eb3e2, type: 3}
   masterVolume: 1
 --- !u!1 &533015108
 GameObject:
@@ -18064,6 +18108,7 @@ GameObject:
   - component: {fileID: 605667526}
   - component: {fileID: 605667525}
   - component: {fileID: 605667524}
+  - component: {fileID: 605667527}
   m_Layer: 5
   m_Name: TitlePanel
   m_TagString: Untagged
@@ -18157,6 +18202,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 605667522}
   m_CullTransparentMesh: 1
+--- !u!114 &605667527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605667522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f8322843be75e4cb45608f6711fc9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
 --- !u!1 &612735251
 GameObject:
   m_ObjectHideFlags: 0
@@ -18517,8 +18575,9 @@ GameObject:
   - component: {fileID: 620138711}
   - component: {fileID: 620138710}
   - component: {fileID: 620138709}
+  - component: {fileID: 620138713}
   m_Layer: 5
-  m_Name: ArtifactPanel
+  m_Name: ArtifactRewardPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18626,6 +18685,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 620138707}
   m_CullTransparentMesh: 1
+--- !u!114 &620138713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620138707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8553e6edb935a3e4ca2f12312ea1b7c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
+  artifacts:
+  - {fileID: 2061020149}
+  - {fileID: 1131303316}
+  - {fileID: 581399734}
 --- !u!1 &621713876
 GameObject:
   m_ObjectHideFlags: 0
@@ -21478,6 +21554,8 @@ MonoBehaviour:
   gameMgr: {fileID: 0}
   stageMgr: {fileID: 0}
   diceMgr: {fileID: 0}
+  bgm: {fileID: 0}
+  ui: {fileID: 0}
 --- !u!1 &719761574
 GameObject:
   m_ObjectHideFlags: 0
@@ -31326,6 +31404,7 @@ GameObject:
   - component: {fileID: 1094446330}
   - component: {fileID: 1094446329}
   - component: {fileID: 1094446331}
+  - component: {fileID: 1094446332}
   m_Layer: 5
   m_Name: InfomationPanel
   m_TagString: Untagged
@@ -31418,6 +31497,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1094446332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1094446326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6986d0793e15e242b7fadbeedbf8ccb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
 --- !u!1 &1099333423
 GameObject:
   m_ObjectHideFlags: 0
@@ -35205,6 +35297,7 @@ GameObject:
   - component: {fileID: 1261700861}
   - component: {fileID: 1261700859}
   - component: {fileID: 1261700863}
+  - component: {fileID: 1261700864}
   m_Layer: 5
   m_Name: RewardPanel
   m_TagString: Untagged
@@ -35313,6 +35406,23 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1261700864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261700857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96dd32e7fe386cf4c810c0b84dc21d2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
+  rewards:
+  - {fileID: 1090284151}
+  - {fileID: 309304182}
+  - {fileID: 836891853}
 --- !u!1 &1261975178
 GameObject:
   m_ObjectHideFlags: 0
@@ -36011,20 +36121,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediator: {fileID: 714457847}
-  StageInfo: {fileID: 1735134947}
+  stageInfo: {fileID: 1735134947}
   currentStage: 0
   currentField: 0
   enemies: []
-  DeadEnemies: []
+  deadEnemies: []
   keyList: 
   tutorialEnemy: {fileID: 5945258373864545318, guid: 6938401e80717bb4cba69782b41896ce, type: 3}
   bossGimic: {fileID: 1139970678}
   bossGimicPanel: {fileID: 9346514}
   bossGimicText: {fileID: 922681673}
   backGround: {fileID: 245898601}
-  TutorialStage: 0
-  latStage: 5
+  tutorialStage: 0
+  lastStage: 0
   lastField: 4
+  eventStage: 0
   enemySpawner: {fileID: 1453744876}
 --- !u!1 &1285515110
 GameObject:
@@ -36539,6 +36650,7 @@ GameObject:
   - component: {fileID: 1310011773}
   - component: {fileID: 1310011772}
   - component: {fileID: 1310011771}
+  - component: {fileID: 1310011775}
   m_Layer: 5
   m_Name: DiceRewardPanel
   m_TagString: Untagged
@@ -36648,6 +36760,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310011769}
   m_CullTransparentMesh: 0
+--- !u!114 &1310011775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310011769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74755c16dd5e73042b8db8450aa5842f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
+  diceRewards:
+  - {fileID: 1711232030}
+  - {fileID: 1885614415}
+  - {fileID: 1633919376}
 --- !u!1 &1313012294
 GameObject:
   m_ObjectHideFlags: 0
@@ -40110,7 +40239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb83535a641be8b4eaddb8cc6d748646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pos:
+  sides:
   - {fileID: 1229999463}
   - {fileID: 1416911237}
   - {fileID: 1757319990}
@@ -42879,7 +43008,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 494.4585, y: -603.145}
+  m_AnchoredPosition: {x: 494.4585, y: -612.645}
   m_SizeDelta: {x: 800, y: 751.1052}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1554758867
@@ -44260,8 +44389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mediator: {fileID: 714457847}
-  onDiceRoll: 0
-  SpinControlers:
+  spinControlers:
   - {fileID: 2090748552}
   - {fileID: 2048577147}
   - {fileID: 1307049725}
@@ -44282,8 +44410,7 @@ MonoBehaviour:
   numbersCount: 000000000000000000000000000000000000000000000000
   selectedDice: 
   manipulList: 0000000000000000000000000000000000000000
-  tutorialControl: 0
-  tutorialControlMode: 0
+  tutorialMode: 0
   reRoll: {fileID: 893039073}
   confirm: {fileID: 1904706002}
   countToResult: 0
@@ -44292,9 +44419,6 @@ MonoBehaviour:
   enemyDiceTwin2: {fileID: 1906955485}
   enemyDiceTriple1: {fileID: 873358941}
   enemyDiceTriple2: {fileID: 731158471}
-  enemyValue: 0
-  enemyValue2: 0
-  enemyValue3: 0
   currentEnemyDice: 0
   coroutineList: []
 --- !u!1 &1623392014
@@ -48483,6 +48607,7 @@ GameObject:
   - component: {fileID: 1753722632}
   - component: {fileID: 1753722631}
   - component: {fileID: 1753722630}
+  - component: {fileID: 1753722633}
   m_Layer: 5
   m_Name: PausePanel
   m_TagString: Untagged
@@ -48577,6 +48702,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753722628}
   m_CullTransparentMesh: 1
+--- !u!114 &1753722633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1753722628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a4c9e4cc5bb5149978f5c0ac5a3e7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
 --- !u!1 &1755673386
 GameObject:
   m_ObjectHideFlags: 0
@@ -48590,6 +48728,7 @@ GameObject:
   - component: {fileID: 1755673390}
   - component: {fileID: 1755673389}
   - component: {fileID: 1755673388}
+  - component: {fileID: 1755673392}
   m_Layer: 5
   m_Name: MagicInfoPanel
   m_TagString: Untagged
@@ -48696,6 +48835,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755673386}
   m_CullTransparentMesh: 1
+--- !u!114 &1755673392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755673386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5deb1675012fa224ebe4f4bd0ab3d946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
 --- !u!1 &1757319990
 GameObject:
   m_ObjectHideFlags: 0
@@ -48740,6 +48892,7 @@ GameObject:
   - component: {fileID: 1762972512}
   - component: {fileID: 1762972511}
   - component: {fileID: 1762972510}
+  - component: {fileID: 1762972514}
   m_Layer: 5
   m_Name: ArtifactInfoPanel
   m_TagString: Untagged
@@ -48848,6 +49001,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1762972508}
   m_CullTransparentMesh: 1
+--- !u!114 &1762972514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762972508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d95d5b94a507d60439ad77bbbe8a3bb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mediator: {fileID: 0}
 --- !u!1 &1765152472
 GameObject:
   m_ObjectHideFlags: 0

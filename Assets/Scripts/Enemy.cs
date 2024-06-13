@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.ParticleSystem;
 
 public class Enemy : MonoBehaviour
 {
@@ -46,7 +47,7 @@ public class Enemy : MonoBehaviour
         canvas.sortingOrder = 10;
         effectPos = canvas.transform.Find("effectPos").GetComponent<Transform>();
 
-        if(isimmune && mediator.stageMgr.currentField == 4)
+        if(isimmune && mediator.stageMgr.currentField == mediator.stageMgr.lastField)
         {
             ImmuneEffect(true);
         }
@@ -59,7 +60,6 @@ public class Enemy : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-    // TO-DO 테이블에 추가 요청
 
     public void TutoSet()
     {
@@ -81,72 +81,62 @@ public class Enemy : MonoBehaviour
         DamageInfo.text = Damage.ToString();
     }
 
-    public void OnDamage(int d)
+    public void OnDamage(int damage)
     {
-        if(isimmune)
-        {
-            d = 1;
-        }
-
-        Hp -= d;
-        var DamageMessage = Instantiate(damagePrefab, canvas.transform);
-        DamageMessage.Setup(d, Color.red, true);
-        if (mediator.gameMgr.scrollsound >= 3)
-        {
-            particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 4")), effectPos.transform);
-        }
-        else
-        {
-            particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 1")), effectPos.transform);
-        }
-        var main = particle.main;
-        main.loop = false;
-        particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        particle.Play();
-        Destroy(particle.gameObject, main.duration);
-
-        if (Hp <= 0)
-        {
-            animator.SetTrigger("onDead");
-            Hp = 0;
-            HpBar.fillAmount = (float)Hp / MaxHp;
-            Life.text = Hp.ToString();
-            return;
-        }
-
-        animator.SetTrigger("GetHit");
-        HpBar.fillAmount = (float)Hp / MaxHp;
-        Life.text = Hp.ToString();
+        ApplyDamage(damage, mediator.gameMgr.scrollsound >= 3 ? "Hit 4" : "Hit 1");
     }
 
-    public void OnTicDamage(int d)
+    public void OnTicDamage(int damage)
+    {
+        ApplyDamage(damage, "Hit 13");
+    }
+
+    private void ApplyDamage(int damage, string particleEffectName)
     {
         if (isimmune)
         {
-            d = 1;
+            damage = 1;
         }
 
-        Hp -= d;
+        Hp -= damage;
+        ShowDamageMessage(damage);
+        PlayParticleEffect(particleEffectName);
+
+        if (Hp <= 0)
+        {
+            animator.SetTrigger("onDead");
+            Hp = 0;
+        }
+        else
+        {
+            animator.SetTrigger("GetHit");
+        }
+
+        UpdateHealthUI();
+    }
+
+    private void ShowDamageMessage(int damage)
+    {
         var DamageMessage = Instantiate(damagePrefab, canvas.transform);
-        DamageMessage.Setup(d, Color.red, true);
-        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Hit 13")), effectPos.transform);
+        DamageMessage.Setup(damage, Color.red, true);
+    }
+
+    private void PlayParticleEffect(string effectName)
+    {
+        particle = Instantiate(Resources.Load<ParticleSystem>($"VFX/magic hit/{effectName}"), effectPos.transform);
         var main = particle.main;
         main.loop = false;
         particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         particle.Play();
         Destroy(particle.gameObject, main.duration);
-        if (Hp <= 0)
-        {
-            animator.SetTrigger("onDead");
-            Hp = 0;
-            HpBar.fillAmount = (float)Hp / MaxHp;
-            Life.text = Hp.ToString();
-            return;
-        }
-        animator.SetTrigger("GetHit");
+    }
+
+    private void UpdateHealthUI()
+    {
         HpBar.fillAmount = (float)Hp / MaxHp;
         Life.text = Hp.ToString();
     }
+
 
     public void WindEffect()
     {
@@ -198,7 +188,7 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
-        mediator.stageMgr.DeadEnemies.Add(this);
+        mediator.stageMgr.deadEnemies.Add(this);
         mediator.stageMgr.enemies.Remove(this);
         onDead = true;
         time = Time.time;
@@ -225,12 +215,8 @@ public class Enemy : MonoBehaviour
         }
         var HealMessage = Instantiate(damagePrefab, canvas.transform);
         HealMessage.Setup(d, Color.green, true);
-        particle = Instantiate(Resources.Load<ParticleSystem>(string.Format("VFX/magic hit/{0}", "Boss1_Healing")), effectPos.transform);
-        var main = particle.main;
-        main.loop = false;
-        particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        particle.Play();
-        Destroy(particle.gameObject, main.duration);
+
+        PlayParticleEffect("Boss1_Healing");
         HpBar.fillAmount = (float)Hp / MaxHp;
         Life.text = Hp.ToString();
     }

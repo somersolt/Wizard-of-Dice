@@ -9,7 +9,13 @@ public class StageMgr : MonoBehaviour
     private GameMgr gameMgr;
     private DiceMgr diceMgr;
 
-    private enum PosNum
+
+    public void mediatorCaching()
+    {
+        gameMgr = mediator.gameMgr;
+        diceMgr = mediator.diceMgr;
+    }
+    private enum EnemySideIndex
     {
         Left = 0,
         Center = 1,
@@ -17,14 +23,18 @@ public class StageMgr : MonoBehaviour
     }
 
     [SerializeField]
-    private TextMeshProUGUI StageInfo;
+    private TextMeshProUGUI stageInfo;
+    [HideInInspector]
     public int currentStage;
+    [HideInInspector]
     public int currentField;
-
+    [HideInInspector]
     public List<Enemy> enemies = new List<Enemy>();
-    public List<Enemy> DeadEnemies = new List<Enemy>();
+    [HideInInspector]
+    public List<Enemy> deadEnemies = new List<Enemy>();
+    [HideInInspector]
     public List<int> keyList = new List<int>();
-    public Enemy tutorialEnemy; // TO-DO 테스트 적
+    public Enemy tutorialEnemy;
 
     public Toggle bossGimic;
     [SerializeField]
@@ -35,77 +45,74 @@ public class StageMgr : MonoBehaviour
     [SerializeField]
     private SpriteRenderer backGround;
 
-    public int TutorialStage = 0;
-    public int latStage;
+    [HideInInspector]
+    public int tutorialStage = 0;
+    [HideInInspector]
+    public int lastStage;
+    [HideInInspector]
     public int lastField;
+    [HideInInspector]
+    public int eventStage;
 
     public EnemySpawner enemySpawner;
     private void Awake()
     {
-        latStage = 7;
+        lastStage = 7;
         lastField = 4;
+        eventStage = 6;
         bossGimic.onValueChanged.AddListener((isOn) => OnToggleValueChanged(isOn));
     }
 
     private void Start()
     {
-        gameMgr = mediator.gameMgr;
-        diceMgr = mediator.diceMgr;
+        mediatorCaching();
     }
-    public void GameStart()
+    public void StartGameSet()
     {
         currentStage = 0;
         currentField = 1;
-        enemySpawner.Spawn(tutorialEnemy, (int)PosNum.Center);
-        StageInfo.text = $"Tutorial";
+        enemySpawner.Spawn(tutorialEnemy, (int)EnemySideIndex.Center);
+        stageInfo.text = "Tutorial";
     }
 
     private void OnToggleValueChanged(bool isOn)
     {
-        if (isOn)
-        {
-            bossGimicPanel.gameObject.SetActive(true);
-        }
-        else
-        {
-            bossGimicPanel.gameObject.SetActive(false);
-        }
+        bossGimicPanel.gameObject.SetActive(isOn);
     }
 
     public void NextStage(bool LoadData = false)
     {
 
-        if (!LoadData)
+        if (LoadData)
+        {
+            mediator.Caching();
+            mediator.bgm.PlayBGM(mediator.bgm.GetBgmOnGameStart(currentField, currentStage), 3);
+        }
+        else
         {
             currentStage++;
-            if (currentStage == 8)
+            if (currentStage > lastStage)
             {
                 currentStage = 1;
                 currentField++;
             }
-
-            SaveLoadSystem.Save(gameMgr, this);
+            mediator.bgm.PlayBGM(mediator.bgm.GetBgmOnNextStage(currentField, currentStage), 3);
+            SaveLoadSystem.Save(gameMgr, this, mediator.ui);
         }
 
-        if (currentField == 3 || currentField == 4)
+        if (currentField > 2)
         {
             gameMgr.artifact.valueData.Stat1 = 5;
         }
 
-        gameMgr.ui.ArtifactInfoUpdate();
+        mediator.ui.ArtifactInfoUpdate();
 
-        StageInfo.text = $"Stage \n {currentField} - {currentStage}";
+        stageInfo.text = $"Stage \n {currentField} - {currentStage}";
         var path = currentField.ToString() + currentStage.ToString();
         backGround.sprite = Resources.Load<Sprite>(string.Format("Field/{0}", path));
-        if (LoadData)
-        {
-            BGM.Instance.PlayBGM(BGM.Instance.StartBgm(currentField, currentStage), 3);
-        }
-        else
-        {
-            BGM.Instance.PlayBGM(BGM.Instance.ChangeBgm(currentField, currentStage), 3);
-        }
+
         gameMgr.TurnUpdate(10);
+
         if (currentStage == 1 && currentField == 1)
         {
             gameMgr.tutorial.skipButton.gameObject.SetActive(false);
@@ -113,85 +120,41 @@ public class StageMgr : MonoBehaviour
             gameMgr.currentDiceCount = GameMgr.DiceCount.three;
             SetEnemy();
         }
-        else if (currentStage == 6)
+        else if (currentStage == eventStage)
         {
-            gameMgr.ui.EventStage();
+            mediator.ui.EventStage();
             return;
         }
         else
         {
             SetEnemy();
         }
-
-
-        switch (gameMgr.currentDiceCount)
-        {
-            case GameMgr.DiceCount.three:
-                diceMgr.DiceThree();
-                diceMgr.DiceRoll(true);
-                break;
-            case GameMgr.DiceCount.four:
-                diceMgr.DiceFour();
-                diceMgr.DiceRoll(true);
-                break;
-            case GameMgr.DiceCount.five:
-                diceMgr.DiceFive();
-                diceMgr.DiceRoll(true);
-                break;
-        }
+        diceMgr.DiceSet();
+        diceMgr.DiceRoll(true);
     }
 
     private void SetEnemy()
     {
         MonsterData enemyData = new MonsterData();
         keyList = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).AllItemIds;
-        if (currentStage == 7)
+        if (currentStage == lastStage)
         {
-            bossGimic.gameObject.SetActive(true);
-            if (currentField == 1)
-            {
-                bossGimicText.text = "<size=50> 킹 슬라임\n <size=35><color=red> -매 턴 체력 10 회복";
-            }
-
-            if (currentField == 2)
-            {
-                bossGimicText.text = "<size=50> 사악한 마법사 \n <size=35><color=red> -매 턴 체력 10 회복 \n-2회 공격";
-                diceMgr.SetEnemyDiceCount(1);
-                gameMgr.bossDoubleAttack = true;
-                gameMgr.AttackCount = 2;
-
-            }
-
-            if (currentField == 3)
-            {
-                bossGimicText.text = "<size=50> 데스 \n <size=35><color=red> -주사위 개수 +1 \n-2회 공격";
-                diceMgr.SetEnemyDiceCount(2);
-                gameMgr.bossDoubleAttack = true;
-                gameMgr.AttackCount = 2;
-
-            }
-            else if (currentField == 4)
-            {
-                bossGimicText.text = "<size=50> 데스 메이지 \n <size=35><color=red> -5턴 동안 데미지 면역 \n-주사위 개수 +1\n-5턴 이후 주사위 개수 +2, 2회 공격";
-                diceMgr.SetEnemyDiceCount(2);
-                gameMgr.bossDoubleAttack = false;
-                gameMgr.AttackCount = 1;
-            }
+            BossGimicTextSet();
         }
         else
         {
             bossGimic.isOn = false;
             bossGimic.gameObject.SetActive(false);
-            diceMgr.SetEnemyDiceCount(1);
+            diceMgr.currentEnemyDice = 1;
             gameMgr.bossDoubleAttack = false;
-            gameMgr.AttackCount = 1;
+            gameMgr.attackCount = 1;
         }
-
+        diceMgr.SetEnemyDiceCount(diceMgr.currentEnemyDice);
         foreach (int i in keyList)
         {
             if (i / 1000 == 2)
             {
-                if (i % 100 / 10 == currentField && i % 10 == currentStage && currentStage != 7)
+                if (i % 100 / 10 == currentField && i % 10 == currentStage && currentStage != lastStage)
                 {
                     enemyData = DataTableMgr.Get<MonsterTable>(DataTableIds.Monster).Get(i);
 
@@ -200,23 +163,23 @@ public class StageMgr : MonoBehaviour
                     switch (count)
                     {
                         case 1:
-                            enemySpawner.Spawn(enemy, (int)PosNum.Center, enemyData);
+                            enemySpawner.Spawn(enemy, (int)EnemySideIndex.Center, enemyData);
                             break;
                         case 2:
-                            enemySpawner.Spawn(enemy, (int)PosNum.Left, enemyData);
-                            enemySpawner.Spawn(enemy, (int)PosNum.Right, enemyData);
+                            enemySpawner.Spawn(enemy, (int)EnemySideIndex.Left, enemyData);
+                            enemySpawner.Spawn(enemy, (int)EnemySideIndex.Right, enemyData);
                             break;
                         case 3:
-                            enemySpawner.Spawn(enemy, (int)PosNum.Left, enemyData);
-                            enemySpawner.Spawn(enemy, (int)PosNum.Center, enemyData);
-                            enemySpawner.Spawn(enemy, (int)PosNum.Right, enemyData);
+                            enemySpawner.Spawn(enemy, (int)EnemySideIndex.Left, enemyData);
+                            enemySpawner.Spawn(enemy, (int)EnemySideIndex.Center, enemyData);
+                            enemySpawner.Spawn(enemy, (int)EnemySideIndex.Right, enemyData);
                             break;
                     }
 
                     return;
                 }
             }
-            else if (i / 1000 == 3 && currentStage == 7)
+            else if (i / 1000 == 3 && currentStage == lastStage)
             {
                 if (i % 100 / 10 == currentField)
                 {
@@ -225,14 +188,14 @@ public class StageMgr : MonoBehaviour
 
                     var Boss = Resources.Load<Enemy>(string.Format("Prefabs/Monsters/{0}", BossEnemyData.ID));
                     Boss.isBoss = true;
-                    if (currentField == 4)
+                    if (currentField == lastField)
                     {
                         Boss.isimmune = true;
                     }
                     var enemy = Resources.Load<Enemy>(string.Format("Prefabs/Monsters/{0}", enemyData.ID));
-                    enemySpawner.Spawn(enemy, (int)PosNum.Left, enemyData);
-                    enemySpawner.Spawn(Boss, (int)PosNum.Center, BossEnemyData);
-                    enemySpawner.Spawn(enemy, (int)PosNum.Right, enemyData);
+                    enemySpawner.Spawn(enemy, (int)EnemySideIndex.Left, enemyData);
+                    enemySpawner.Spawn(Boss, (int)EnemySideIndex.Center, BossEnemyData);
+                    enemySpawner.Spawn(enemy, (int)EnemySideIndex.Right, enemyData);
 
                     return;
                 }
@@ -240,5 +203,34 @@ public class StageMgr : MonoBehaviour
         }
     }
 
+    private void BossGimicTextSet()
+    {
+        bossGimic.gameObject.SetActive(true);
+        switch (currentField)
+        {
+            case 1:
+                bossGimicText.text = "<size=50> 킹 슬라임\n <size=35><color=red> -매 턴 체력 10 회복";
+                diceMgr.currentEnemyDice = 1;
+                break;
+            case 2:
+                bossGimicText.text = "<size=50> 사악한 마법사 \n <size=35><color=red> -매 턴 체력 10 회복 \n-2회 공격";
+                diceMgr.currentEnemyDice = 2;
+                gameMgr.bossDoubleAttack = true;
+                gameMgr.attackCount = 2;
+                break;
+            case 3:
+                bossGimicText.text = "<size=50> 데스 \n <size=35><color=red> -주사위 개수 +1 \n-2회 공격";
+                diceMgr.currentEnemyDice = 2;
+                gameMgr.bossDoubleAttack = true;
+                gameMgr.attackCount = 2;
+                break;
+            case 4:
+                bossGimicText.text = "<size=50> 데스 메이지 \n <size=35><color=red> -5턴 동안 데미지 면역 \n-주사위 개수 +1\n-5턴 이후 주사위 개수 +2, 2회 공격";
+                diceMgr.currentEnemyDice = 2;
+                gameMgr.bossDoubleAttack = false;
+                gameMgr.attackCount = 1;
+                break;
+        }
+    }
 
 }
