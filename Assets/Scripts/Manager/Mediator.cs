@@ -8,6 +8,7 @@ public class Mediator : MonoBehaviour
     public StageMgr stageMgr;
     public DiceMgr diceMgr;
 
+    public ArtifactCollection artifacts;
     public BGM bgm;
     public UI ui;
     private void Awake()
@@ -17,6 +18,7 @@ public class Mediator : MonoBehaviour
         diceMgr = FindObjectOfType<DiceMgr>();
         bgm = FindObjectOfType<BGM>();
         ui = FindObjectOfType<UI>();
+        artifacts = FindObjectOfType<ArtifactCollection>();
     }
 
     public void Caching()

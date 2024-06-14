@@ -23,7 +23,6 @@ public class GameMgr : MonoBehaviour
     public Tutorial tutorial;
     [HideInInspector]
     public bool tutorialMode;
-    public Artifact artifact;
 
     private bool onTicWait;
     private int dodgeNumber;
@@ -314,7 +313,7 @@ public class GameMgr : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            artifact.playersArtifacts[0] = 1;
+            mediator.artifacts.playersArtifactsLevel[0] = 1;
             Debug.Log("1번유물");
 
         }
@@ -334,27 +333,27 @@ public class GameMgr : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            artifact.playersArtifacts[4] = 1;
+            mediator.artifacts.playersArtifactsLevel[4] = 1;
             Debug.Log("5번유물");
         }
         if (Input.GetKeyDown(KeyCode.T))
         {
-            artifact.playersArtifacts[5] = 1;
+            mediator.artifacts.playersArtifactsLevel[5] = 1;
             Debug.Log("6번유물");
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            artifact.playersArtifacts[6] = 1;
+            mediator.artifacts.playersArtifactsLevel[6] = 1;
             Debug.Log("7번유물");
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            artifact.playersArtifacts[7] = 1;
+            mediator.artifacts.playersArtifactsLevel[7] = 1;
             Debug.Log("8번유물");
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            artifact.playersArtifacts[8] = 1;
+            mediator.artifacts.playersArtifactsLevel[8] = 1;
             Debug.Log("9번유물");
         }
         // 테스트 코드
@@ -399,10 +398,10 @@ public class GameMgr : MonoBehaviour
     {
         if (PlayerHp <= 0)
         {
-            if (artifact.playersArtifacts[7] == 1) //8번 유물
+            if (mediator.artifacts.playersArtifactsLevel[7] == 1) //8번 유물
             {
                 UseArtifact8();
-                PlayerHp = artifact.valueData.Value7;
+                PlayerHp = mediator.artifacts.valueData.Value7;
 
                 var DamageMessage = Instantiate(messagePrefab, canvas.transform);
                 DamageMessage.Setup("유물 사용!", Color.blue);
@@ -431,7 +430,7 @@ public class GameMgr : MonoBehaviour
         }
 
 
-        if (artifact.playersArtifacts[0] == 1)
+        if (mediator.artifacts.playersArtifactsLevel[0] == 1)
         {
             if (monsterSignal == stageMgr.enemies.Count && !onTicWait)
             {
@@ -763,13 +762,13 @@ public class GameMgr : MonoBehaviour
     public void PlayerOndamage(int enemyDamage)
     {
         dodgeNumber = 100;
-        if (artifact.playersArtifacts[5] == 1)
+        if (mediator.artifacts.playersArtifactsLevel[5] == 1)
         {
             dodgeNumber = UnityEngine.Random.Range(0, 100);
         }
 
 
-        if (dodgeNumber < artifact.valueData.Value5)
+        if (dodgeNumber < mediator.artifacts.valueData.Value5)
         {
             var DamageMessage = Instantiate(messagePrefab, messagePos.transform);
             audioSource.PlayOneShot(audioClips[3]);
@@ -868,7 +867,7 @@ public class GameMgr : MonoBehaviour
 
     public void UseArtifact8()
     {
-        artifact.playersArtifacts[7] = 2;
+        mediator.artifacts.playersArtifactsLevel[7] = 2;
         foreach (var a in mediator.ui.playerArtifactPanel.artifactInfo)
         {
             if (a.text == "원코인 추가")
@@ -916,12 +915,12 @@ public class GameMgr : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            artifact.playersArtifactsNumber[i] = SaveLoadSystem.CurrSaveData.savePlay.ArtifactList[i];
+            mediator.artifacts.playersArtifactsNumber[i] = SaveLoadSystem.CurrSaveData.savePlay.ArtifactList[i];
         }
 
         for (int i = 0; i < 10; i++)
         {
-            artifact.playersArtifacts[i] = SaveLoadSystem.CurrSaveData.savePlay.ArtifactLevelList[i];
+            mediator.artifacts.playersArtifactsLevel[i] = SaveLoadSystem.CurrSaveData.savePlay.ArtifactLevelList[i];
         }
 
 
@@ -934,7 +933,7 @@ public class GameMgr : MonoBehaviour
             }
         } // 초월마법등록
 
-        foreach (var artifact in artifact.artifacts)
+        foreach (var artifact in mediator.artifacts.artifactList)
         {
             if (artifact.ID == 0)
             {
@@ -942,38 +941,38 @@ public class GameMgr : MonoBehaviour
             }
         } //유물상점 업데이트
 
-        if (artifact.playersArtifactsNumber[0] != -1)
+        if (mediator.artifacts.playersArtifactsNumber[0] != -1)
         {
-            foreach (var a in artifact.artifacts)
+            foreach (var a in mediator.artifacts.artifactList)
             {
-                if (a.ID == artifact.playersArtifactsNumber[0])
+                if (a.ID == mediator.artifacts.playersArtifactsNumber[0])
                 {
-                    artifact.artifacts.Remove(a);
+                    mediator.artifacts.artifactList.Remove(a);
                     mediator.ui.playerArtifactPanel.ArtifactUpdate(a, 0);
                     LoadArtifactCheck(a.ID);
                     break;
                 }
             }
 
-            if (artifact.playersArtifactsNumber[1] != -1)
+            if (mediator.artifacts.playersArtifactsNumber[1] != -1)
             {
-                foreach (var a in artifact.artifacts)
+                foreach (var a in mediator.artifacts.artifactList)
                 {
-                    if (a.ID == artifact.playersArtifactsNumber[1])
+                    if (a.ID == mediator.artifacts.playersArtifactsNumber[1])
                     {
-                        artifact.artifacts.Remove(a);
+                        mediator.artifacts.artifactList.Remove(a);
                         mediator.ui.playerArtifactPanel.ArtifactUpdate(a, 1);
                         LoadArtifactCheck(a.ID);
                         break;
                     }
                 }
-                if (artifact.playersArtifactsNumber[2] != -1)
+                if (mediator.artifacts.playersArtifactsNumber[2] != -1)
                 {
-                    foreach (var a in artifact.artifacts)
+                    foreach (var a in mediator.artifacts.artifactList)
                     {
-                        if (a.ID == artifact.playersArtifactsNumber[2])
+                        if (a.ID == mediator.artifacts.playersArtifactsNumber[2])
                         {
-                            artifact.artifacts.Remove(a);
+                            mediator.artifacts.artifactList.Remove(a);
                             mediator.ui.playerArtifactPanel.ArtifactUpdate(a, 2);
                             LoadArtifactCheck(a.ID);
                             break;
@@ -983,7 +982,7 @@ public class GameMgr : MonoBehaviour
             }
         }
 
-        foreach (var a in artifact.playersArtifacts)
+        foreach (var a in mediator.artifacts.playersArtifactsLevel)
         {
             if (a == 2)
             {
