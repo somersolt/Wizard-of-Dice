@@ -92,15 +92,15 @@ public class RewardPanel : Panel
         }
 
         spellNames[2].text = "신체 강화";
-        spellInfos[2].text = $"기본 공격력 + <color=red>{mediator.gameMgr.artifact.valueData.Stat1}</color> \n 주사위 개수 x {mediator.gameMgr.artifact.valueData.Stat3} (<color=green>{(int)mediator.gameMgr.currentDiceCount * mediator.gameMgr.artifact.valueData.Stat3}</color>) 만큼 회복";
+        spellInfos[2].text = $"기본 공격력 + <color=red>{mediator.artifacts.valueData.Stat1}</color> \n 주사위 개수 x {mediator.artifacts.valueData.Stat3} (<color=green>{(int)mediator.gameMgr.currentDiceCount * mediator.artifacts.valueData.Stat3}</color>) 만큼 회복";
         spellLevels[2].text = " ";
         if (mode == RewardMode.Artifact && count > 0)
         {
-            rewards[2].onClick.AddListener(() => GetStatus(mediator.gameMgr.artifact.valueData.Stat1, RewardMode.Artifact, count));
+            rewards[2].onClick.AddListener(() => GetStatus(mediator.artifacts.valueData.Stat1, RewardMode.Artifact, count));
         }
         else
         {
-            rewards[2].onClick.AddListener(() => GetStatus(mediator.gameMgr.artifact.valueData.Stat1));
+            rewards[2].onClick.AddListener(() => GetStatus(mediator.artifacts.valueData.Stat1));
         }
         SlideOpenPanel();
     }
@@ -165,11 +165,11 @@ public class RewardPanel : Panel
                 }
             }
 
-            mediator.gameMgr.PlayerHeal((int)mediator.gameMgr.currentDiceCount * mediator.gameMgr.artifact.valueData.Stat3, 0);
+            mediator.gameMgr.PlayerHeal((int)mediator.gameMgr.currentDiceCount * mediator.artifacts.valueData.Stat3, 0);
         }
 
         mediator.gameMgr.curruntBonusStat += value;
-        foreach (var artifact in mediator.gameMgr.artifact.artifacts)
+        foreach (var artifact in mediator.artifacts.artifactList)
         {
             if (artifact.ID == 0)
             {

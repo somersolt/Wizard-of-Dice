@@ -30,15 +30,15 @@ public class ArtifactRewardPanel : Panel
         {
             int index = i;
             artifacts[i].onClick.AddListener(() => { GetArifact(artifactDatas[index], index); });
-            int a = Random.Range(0, mediator.gameMgr.artifact.artifacts.Count);
-            if (mediator.gameMgr.artifact.artifacts.Count != 0)
+            int a = Random.Range(0, mediator.artifacts.artifactList.Count);
+            if (mediator.artifacts.artifactList.Count != 0)
             {
-                artifactDatas[i] = mediator.gameMgr.artifact.artifacts[a];
+                artifactDatas[i] = mediator.artifacts.artifactList[a];
                 artifactsNames[i].text = artifactDatas[i].NAME;
                 artifactsInfos[i].text = artifactDatas[i].DESC;
-                mediator.gameMgr.artifact.artifacts.Remove(mediator.gameMgr.artifact.artifacts[a]);
+                mediator.artifacts.artifactList.Remove(mediator.artifacts.artifactList[a]);
             }
-            else if (mediator.gameMgr.artifact.artifacts.Count == 0)
+            else if (mediator.artifacts.artifactList.Count == 0)
             {
                 Debug.Log("¿À·ù");
             }
@@ -56,14 +56,14 @@ public class ArtifactRewardPanel : Panel
             if (i == index)
             {
                 artifactData.ONARTIFACT = true;
-                mediator.gameMgr.artifact.playersArtifacts[artifactData.ID]++;
+                mediator.artifacts.playersArtifactsLevel[artifactData.ID]++;
                 mediator.ui.playerArtifactPanel.ArtifactUpdate(artifactData, mediator.stageMgr.currentField - 1);
                 continue;
             }
 
             if (i != index)
             {
-                mediator.gameMgr.artifact.artifacts.Add(artifactDatas[i]);
+                mediator.artifacts.artifactList.Add(artifactDatas[i]);
             }
         }
         GetArtifactEffect(artifactData.ID);
@@ -73,7 +73,7 @@ public class ArtifactRewardPanel : Panel
         if (artifactData.ID == 3)
         {
             mediator.ui.rewardPanel.OnReward(RewardMode.Artifact
-                , mediator.gameMgr.artifact.valueData.Value3 - 1);
+                , mediator.artifacts.valueData.Value3 - 1);
             return;
         }
 
@@ -110,7 +110,7 @@ public class ArtifactRewardPanel : Panel
             case 8:
                 break;
             case 9:
-                mediator.gameMgr.MaxLifeSet(mediator.gameMgr.artifact.valueData.Value9);
+                mediator.gameMgr.MaxLifeSet(mediator.artifacts.valueData.Value9);
                 RewardSound(3);
                 mediator.gameMgr.LifeMax();
                 break;

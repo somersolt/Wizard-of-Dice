@@ -238,9 +238,9 @@ public class DiceMgr : MonoBehaviour
                 buttonLock[i].gameObject.SetActive(false);
             }
 
-            if (gameMgr.artifact.playersArtifacts[8] == 1)//9번 유물
+            if (mediator.artifacts.playersArtifactsLevel[8] == 1)//9번 유물
             {
-                rerollCount = gameMgr.artifact.valueData.Value8 + maxRerollCount;
+                rerollCount = mediator.artifacts.valueData.Value8 + maxRerollCount;
             }
             else
             {

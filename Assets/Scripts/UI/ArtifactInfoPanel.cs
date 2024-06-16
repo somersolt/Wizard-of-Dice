@@ -43,7 +43,7 @@ public class ArtifactInfoPanel : Panel
 
     public void ArtifactUpdate(ArtifactData artifactData, int index)
     {
-        mediator.gameMgr.artifact.playersArtifactsNumber[index] = artifactData.ID;
+        mediator.artifacts.playersArtifactsNumber[index] = artifactData.ID;
         playerArtifacts[index].gameObject.SetActive(true);
         playerArtifactName[index].text = artifactData.NAME;
         playerArtifactInfo[index].text = artifactData.DESC;

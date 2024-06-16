@@ -97,12 +97,12 @@ public class StageMgr : MonoBehaviour
                 currentField++;
             }
             mediator.bgm.PlayBGM(mediator.bgm.GetBgmOnNextStage(currentField, currentStage), 3);
-            SaveLoadSystem.Save(gameMgr, this, mediator.ui);
+            SaveLoadSystem.Save(mediator);
         }
 
         if (currentField > 2)
         {
-            gameMgr.artifact.valueData.Stat1 = 5;
+            mediator.artifacts.valueData.Stat1 = 5;
         }
 
         mediator.ui.playerArtifactPanel.ArtifactInfoUpdate();

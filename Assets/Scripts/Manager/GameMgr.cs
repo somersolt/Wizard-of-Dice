@@ -559,7 +559,7 @@ public class GameMgr : MonoBehaviour
         currentRanks = ranks;
         currentValue = value;
 
-        currentDamage = DamageCheckSystem.DamageCheck(currentValue, rankList, currentRanks, this, diceMgr, mediator.ui);
+        currentDamage = DamageCheckSystem.DamageCheck(currentValue, rankList, currentRanks, mediator);
         damageInfo.text = currentDamage.ToString();
         targetInfo.text = currentTarget.ToString();
 

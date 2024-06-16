@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public static class DamageCheckSystem
 {
 
-    public static int DamageCheck(int value, int[] ranks, RanksFlag checkedlist, GameMgr gameMgr, DiceMgr diceMgr, UI ui)
+    public static int DamageCheck(int value, int[] ranks, RanksFlag checkedlist, Mediator mediator)
     {
         int totalvalue = value;
         int sum = 0;
@@ -14,9 +14,9 @@ public static class DamageCheckSystem
         int target = 1;
         int result = 0;
 
-        if (gameMgr.artifact.playersArtifacts[6] == 1) //7번 유물
+        if (mediator.artifacts.playersArtifactsLevel[6] == 1) //7번 유물
         {
-            totalvalue += diceMgr.numbersCount[0] * gameMgr.artifact.valueData.Value6;
+            totalvalue += mediator.diceMgr.numbersCount[0] * mediator.artifacts.valueData.Value6;
         }
         for (int i = 0; i < ranks.Length; i++)
         {
@@ -36,14 +36,14 @@ public static class DamageCheckSystem
             }
         }
 
-        if (gameMgr.artifact.playersArtifacts[4] == 1 && gameMgr.currentDiceCount == GameMgr.DiceCount.three)
+        if (mediator.artifacts.playersArtifactsLevel[4] == 1 && mediator.gameMgr.currentDiceCount == GameMgr.DiceCount.three)
         {
-            multiple += gameMgr.artifact.valueData.Value4; // 유물 5번
+            multiple += mediator.artifacts.valueData.Value4; // 유물 5번
         }
 
-        result = (totalvalue + sum + gameMgr.curruntBonusStat) * (100 + multiple) / 100;
-        ui.damageInfoPanel.DamageInfoUpdate(totalvalue, gameMgr.curruntBonusStat, sum, multiple, result);
-        gameMgr.StatusEffectsUpdate(target, barrier, recovery);
+        result = (totalvalue + sum + mediator.gameMgr.curruntBonusStat) * (100 + multiple) / 100;
+        mediator.ui.damageInfoPanel.DamageInfoUpdate(totalvalue, mediator.gameMgr.curruntBonusStat, sum, multiple, result);
+        mediator.gameMgr.StatusEffectsUpdate(target, barrier, recovery);
 
         return result;
 

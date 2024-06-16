@@ -45,43 +45,43 @@ public class SaveLoadSystem
         }
     }
 
-    public static bool Save(GameMgr gameMgr, StageMgr stageMgr, UI ui)
+    public static bool Save(Mediator mediator)
     {
 
         PlayerPrefs.SetInt("Save", 1);
 
         CurrSaveData.savePlay = new SavePlayData();
-        CurrSaveData.savePlay.Stage = stageMgr.currentField * 10 + stageMgr.currentStage;
-        CurrSaveData.savePlay.DiceCount = (int)gameMgr.currentDiceCount;
-        CurrSaveData.savePlay.Damage = gameMgr.curruntBonusStat;
-        CurrSaveData.savePlay.Hp = gameMgr.GetHp();
-        CurrSaveData.savePlay.MaxHp = gameMgr.GetMaxHp();
-        CurrSaveData.savePlay.RankList = gameMgr.GetRankList();
+        CurrSaveData.savePlay.Stage = mediator.stageMgr.currentField * 10 + mediator.stageMgr.currentStage;
+        CurrSaveData.savePlay.DiceCount = (int)mediator.gameMgr.currentDiceCount;
+        CurrSaveData.savePlay.Damage = mediator.gameMgr.curruntBonusStat;
+        CurrSaveData.savePlay.Hp = mediator.gameMgr.GetHp();
+        CurrSaveData.savePlay.MaxHp = mediator.gameMgr.GetMaxHp();
+        CurrSaveData.savePlay.RankList = mediator.gameMgr.GetRankList();
         CurrSaveData.savePlay.RankRewardList = new List<int>();
         CurrSaveData.savePlay.RankRewardList.Clear();
         for (int i = 0; i < 9; i++)
         {
-            if (i >= ui.rewardPanel.rewardList.Count)
+            if (i >= mediator.ui.rewardPanel.rewardList.Count)
             {
                 CurrSaveData.savePlay.RankRewardList.Add(0);
             }
             else
             {
-                CurrSaveData.savePlay.RankRewardList.Add(ui.rewardPanel.rewardList[i].ID);
+                CurrSaveData.savePlay.RankRewardList.Add(mediator.ui.rewardPanel.rewardList[i].ID);
             }
         }
         CurrSaveData.savePlay.ArtifactList = new List<int>();
         CurrSaveData.savePlay.ArtifactList.Clear();
         for (int i = 0; i < 3; i++)
         {
-            CurrSaveData.savePlay.ArtifactList.Add(gameMgr.artifact.playersArtifactsNumber[i]);
+            CurrSaveData.savePlay.ArtifactList.Add(mediator.artifacts.playersArtifactsNumber[i]);
         }
 
         CurrSaveData.savePlay.ArtifactLevelList = new List<int>();
         CurrSaveData.savePlay.ArtifactLevelList.Clear();
         for (int i = 0; i < 10; i++)
         {
-            CurrSaveData.savePlay.ArtifactLevelList.Add(gameMgr.artifact.playersArtifacts[i]);
+            CurrSaveData.savePlay.ArtifactLevelList.Add(mediator.artifacts.playersArtifactsLevel[i]);
         }
 
 

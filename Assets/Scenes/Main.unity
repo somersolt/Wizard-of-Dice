@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -15674,7 +15674,6 @@ MonoBehaviour:
   mediator: {fileID: 714457847}
   tutorial: {fileID: 878964856}
   tutorialMode: 0
-  artifact: {fileID: 1499820768}
   currentTurn: 1
   turnInfo: {fileID: 339694776}
   canvas: {fileID: 620109643}
@@ -21480,6 +21479,7 @@ MonoBehaviour:
   gameMgr: {fileID: 0}
   stageMgr: {fileID: 0}
   diceMgr: {fileID: 0}
+  artifacts: {fileID: 0}
   bgm: {fileID: 0}
   ui: {fileID: 0}
 --- !u!1 &719761574
@@ -41161,11 +41161,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1499820766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0c824830c48ec540bc205727880edae, type: 3}
+  m_Script: {fileID: 11500000, guid: 19929a48d949e6747a722a0a0d9a3602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   valueData: {fileID: 11400000, guid: b2743ee6be2347d49a4884f695a88c38, type: 2}
-  playersArtifacts: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
+  playersArtifactsLevel: 00000000000000000000000000000000000000000000000000000000000000000000000000000000
   playersArtifactsNumber: 000000000000000000000000
 --- !u!1 &1501944250
 GameObject:

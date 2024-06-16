@@ -65,11 +65,11 @@ public class DIceRewardPanel : Panel
 
         diceRewards[1].onClick.AddListener(() =>
         {
-            mediator.ui.rewardPanel.GetStatus(mediator.gameMgr.artifact.valueData.Stat2, RewardMode.Event);
+            mediator.ui.rewardPanel.GetStatus(mediator.artifacts.valueData.Stat2, RewardMode.Event);
         });
 
         diceRewardNames[1].text = "마나 증량";
-        diceRewardInfos[1].text = $"주사위 개수를 늘리지 않고 공격력 <color=red>{mediator.gameMgr.artifact.valueData.Stat2}</color> 증가 \n 주사위 눈금 총합에 <color=red>{mediator.gameMgr.artifact.valueData.Stat2}</color>을 더합니다.";
+        diceRewardInfos[1].text = $"주사위 개수를 늘리지 않고 공격력 <color=red>{mediator.artifacts.valueData.Stat2}</color> 증가 \n 주사위 눈금 총합에 <color=red>{mediator.artifacts.valueData.Stat2}</color>을 더합니다.";
 
         foreach (var ranks in mediator.gameMgr.GetRankList())
         {

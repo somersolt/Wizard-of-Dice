@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Mediator : MonoBehaviour
@@ -19,6 +20,7 @@ public class Mediator : MonoBehaviour
         bgm = FindObjectOfType<BGM>();
         ui = FindObjectOfType<UI>();
         artifacts = FindObjectOfType<ArtifactCollection>();
+        artifacts.init(this);
     }
 
     public void Caching()

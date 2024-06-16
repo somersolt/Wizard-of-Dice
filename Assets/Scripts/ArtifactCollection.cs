@@ -10,9 +10,9 @@ public class ArtifactCollection : MonoBehaviour
     public int[] playersArtifactsLevel = new int[10];
     public int[] playersArtifactsNumber = new int[3];
 
-    private void Awake()
+    public void init(Mediator _mediator)
     {
-        mediator = FindObjectOfType<Mediator>();
+        mediator = _mediator;
 
         ArtifactData data1 = new ArtifactData();
         data1.Set(0, "방화광", $"매턴 모든 적에게 '기본 공격력'(<color=purple>{mediator.gameMgr.curruntBonusStat}</color>) 만큼의 데미지");
